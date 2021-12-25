@@ -17,7 +17,7 @@ jobs:
           # password : zeein39464000
           password: ~!zeein3946400
           # password: ${{ secrets.PASSWORD }}
-          port: 21
+          port: 22
           # port: ${{ secrets.PORT }}
           script: |
             whoami
