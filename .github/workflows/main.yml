@@ -13,7 +13,7 @@ jobs:
           host: zeein.co.kr
           # username : violet
           # username: ${{ secrets.USERNAME }}
-          username: violet
+          username: zeein
           # password : zeein39464000
           password: zeein39464000
           # password: ${{ secrets.PASSWORD }}
