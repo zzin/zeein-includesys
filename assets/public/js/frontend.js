@@ -35087,7 +35087,11 @@ ScrambleTextPlugin_getGSAP() && ScrambleTextPlugin_gsap.registerPlugin(ScrambleT
 
 
 
-gsap_gsapWithCSS.registerPlugin(ScrollTrigger, TextPlugin, ScrambleTextPlugin);
+
+var pageMain_require = __webpack_require__(26),
+    pageMain_SplitText = pageMain_require.default;
+
+gsap_gsapWithCSS.registerPlugin(ScrollTrigger, TextPlugin, ScrambleTextPlugin, pageMain_SplitText);
 
 core.use([Navigation, Pagination, Autoplay]);
 
@@ -35095,6 +35099,35 @@ var initMain = function initMain() {
   var body = document.body;
   var root = document.getElementsByTagName('html')[0];
   var whatCards = document.querySelectorAll('.card-wrap');
+  var titleWraps = document.querySelectorAll('.title-wrap');
+  Array.from(titleWraps).forEach(function (el) {
+    var titleH2 = el.getElementsByTagName('h2')[0];
+    var titleP = el.getElementsByTagName('p')[0];
+    var spliteText = new pageMain_SplitText(titleH2, {
+      type: 'words, chars'
+    }),
+        targets = spliteText.chars;
+    var tl = gsap_gsapWithCSS.timeline({
+      scrollTrigger: {
+        trigger: titleH2,
+        start: 'top bottom-=50px',
+        toggleActions: 'play pause resume reset' // markers: true,
+
+      }
+    });
+    tl.from(targets, {
+      opacity: 0,
+      y: 40,
+      duration: 0.75,
+      stagger: 0.0525,
+      ease: Back.easeOut.config(2)
+    }).from(titleP, {
+      opacity: 0,
+      x: 10,
+      duration: 0.85,
+      ease: Power2.easeOut
+    }, '-=.5');
+  });
 
   var initHero = function initHero() {
     var changeString = function changeString() {
@@ -35109,6 +35142,7 @@ var initMain = function initMain() {
       // choose the right development partner for your web project.
       // looking for web development services?
       // how to choose a web development partner
+      //
 
       var tl = gsap_gsapWithCSS.timeline({
         repeat: -1,

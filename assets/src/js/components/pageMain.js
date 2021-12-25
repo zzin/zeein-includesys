@@ -11,8 +11,9 @@ import gsap, {
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import TextPlugin from 'gsap/TextPlugin';
 import ScrambleTextPlugin from 'gsap/ScrambleTextPlugin';
+const { default: SplitText } = require('gsap/SplitText');
 
-gsap.registerPlugin(ScrollTrigger, TextPlugin, ScrambleTextPlugin);
+gsap.registerPlugin(ScrollTrigger, TextPlugin, ScrambleTextPlugin, SplitText);
 import Swiper, { Navigation, Pagination, Autoplay } from 'swiper';
 Swiper.use([Navigation, Pagination, Autoplay]);
 
@@ -20,6 +21,38 @@ const initMain = () => {
 	const body = document.body;
 	const root = document.getElementsByTagName('html')[0];
 	const whatCards = document.querySelectorAll('.card-wrap');
+
+	const titleWraps = document.querySelectorAll('.title-wrap');
+	Array.from(titleWraps).forEach((el) => {
+		const titleH2 = el.getElementsByTagName('h2')[0];
+		const titleP = el.getElementsByTagName('p')[0];
+		const spliteText = new SplitText(titleH2, { type: 'words, chars' }),
+			targets = spliteText.chars;
+		const tl = gsap.timeline({
+			scrollTrigger: {
+				trigger: titleH2,
+				start: 'top bottom-=50px',
+				toggleActions: 'play pause resume reset',
+				// markers: true,
+			},
+		});
+		tl.from(targets, {
+			opacity: 0,
+			y: 40,
+			duration: 0.75,
+			stagger: 0.0525,
+			ease: Back.easeOut.config(2),
+		}).from(
+			titleP,
+			{
+				opacity: 0,
+				x: 10,
+				duration: 0.85,
+				ease: Power2.easeOut,
+			},
+			'-=.5'
+		);
+	});
 
 	const initHero = () => {
 		const changeString = () => {
@@ -35,6 +68,7 @@ const initMain = () => {
 			// choose the right development partner for your web project.
 			// looking for web development services?
 			// how to choose a web development partner
+			//
 			const tl = gsap.timeline({
 				repeat: -1,
 				repeatDelay: delayTime,

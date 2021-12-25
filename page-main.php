@@ -6,10 +6,10 @@ get_header();
 		<div class="h-screen w-screen flex items-center bg-black overflow-hidden relative">
 			<div class="inset-0 absolute bg-cover bg-no-repeat bg-right opacity-50" style="background-image:url(<?php bloginfo('template_url');?>/assets/public/images/bg-top-main.jpg); min-height: 600px;"></div>
       <div class="container mx-auto px-6 md:px-8 relative">
-        <h1 class="slogan-title text-5xl md:text-7xl uppercase font-semibold text-white mb-10 text-opacity-40">
+        <h1 class="slogan-title text-5xl md:text-7xl uppercase font-semibold text-white mb-10 text-opacity-40 dark:text-indigo-700 dark:text-opacity-60">
           Your<br />
-          <em class="text-white not-italic font-light" id="word-1">technology</em><br />
-          <em class="text-white not-italic font-light" id="word-2">business</em><br />
+          <em class="text-white not-italic font-light dark:text-indigo-700" id="word-1">technology</em><br />
+          <em class="text-white not-italic font-light dark:text-indigo-700" id="word-2">business</em><br />
           partner
         </h1>
         <p class="slogan-desc text-white text-base md:text-lg text-opacity-80 br-remove">
@@ -19,13 +19,13 @@ get_header();
       </div>
 		</div>
 		<div class="container mx-auto px-6 md:px-8 my-12 md:my-32">
-			<div class="block lg:hidden mb-8">
-				<h2 class="text-5xl font-semibold text-gray-900 mb-6 dark:text-gray-100">What we do</h2>
+			<div class="title-wrap block lg:hidden mb-8">
+				<h2 class="text-5xl font-semibold text-gray-900 mb-6 dark:text-indigo-700">What we do</h2>
 				<p class="word-break-keep-all text-sm text-gray-400">인클루드시스는 소프트웨어 전문 개발 업체로서 기술역량을 집중하기 위한 '핵심역량 연구 영역'과 대용량 서비스를 운영, 기술지원, 고도화를 기획&amp;개발 하는 '운영 고도화 개발 영역'을 본사의 비전과 발전 방향으로 합니다.</p>
 			</div>
 			<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 md:gap-4 lg:gap-6 pb-10">
-				<div class="grid-items hidden lg:block">
-					<h2 class="text-7xl font-semibold text-gray-900 mb-6 dark:text-gray-100">What<br />we do</h2>
+				<div class="title-wrap grid-items hidden lg:block">
+					<h2 class="text-7xl font-semibold text-gray-900 mb-6 dark:text-indigo-700">What<br />we do</h2>
 					<p class="word-break-keep-all text-sm text-gray-400">인클루드시스는 소프트웨어 전문 개발 업체로서 기술역량을 집중하기 위한 '핵심역량 연구 영역'과 대용량 서비스를 운영, 기술지원, 고도화를 기획&amp;개발 하는 '운영 고도화 개발 영역'을 본사의 비전과 발전 방향으로 합니다.</p>
 				</div>
 				<div class="grid-items card-wrap">
@@ -105,8 +105,8 @@ get_header();
 		<div class="overflow-x-hidden">
 			<div class="container mx-auto px-6 md:px-8 mb-12 md:mb-32">
 				<div class="title-wrap">
-					<h2 class="text-5xl md:text-7xl font-semibold text-gray-900 mb-6 dark:text-gray-100">Portfolio</h2>
-						<p class="word-break-keep-all text-sm text-gray-400">인클루드시스와 함께하시면 원하시는 모든것을 현실로 만들어 드립니다.</p>
+					<h2 class="text-5xl md:text-7xl font-semibold text-gray-900 mb-6 dark:text-indigo-700">Portfolio</h2>
+					<p class="word-break-keep-all text-sm text-gray-400">인클루드시스와 함께하시면 원하시는 모든것을 현실로 만들어 드립니다.</p>
 				</div>
 				<div class="swiper-wrap -mx-2 lg:-mx-3 xl:-mx-4 relative" data-component="swiper-portfolio">
 					<div class="swiper-wrapper">
