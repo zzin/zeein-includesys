@@ -21,7 +21,6 @@ jobs:
           # port: ${{ secrets.PORT }}
           script: |
             whoami
-            la -al
-          # cd /Users/violet/htdocs/zeeincokrinclude/wp-content/themes
-          # rm -rf zeein-includesys
-          # git clone https://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@github.com/zzin/zeein-includesys.git zeein-includesys
+            cd /Users/violet/htdocs/zeeincokrinclude/wp-content/themes
+            rm -rf zeein-includesys
+            git clone https://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@github.com/zzin/zeein-includesys.git zeein-includesys
