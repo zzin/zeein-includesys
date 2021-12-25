@@ -5,10 +5,14 @@ import gsap, {
 	Power3,
 	Power4,
 	Back,
+	Linear,
 	Elastic,
 } from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-gsap.registerPlugin(ScrollTrigger);
+import TextPlugin from 'gsap/TextPlugin';
+import ScrambleTextPlugin from 'gsap/ScrambleTextPlugin';
+
+gsap.registerPlugin(ScrollTrigger, TextPlugin, ScrambleTextPlugin);
 import Swiper, { Navigation, Pagination, Autoplay } from 'swiper';
 Swiper.use([Navigation, Pagination, Autoplay]);
 
@@ -16,6 +20,58 @@ const initMain = () => {
 	const body = document.body;
 	const root = document.getElementsByTagName('html')[0];
 	const whatCards = document.querySelectorAll('.card-wrap');
+
+	const initHero = () => {
+		const changeString = () => {
+			const word1 = document.getElementById('word-1');
+			const word2 = document.getElementById('word-2');
+			const delayTime = 4;
+			const termTime = '+=4';
+			const backTime = '-=1';
+			const durationTime = 1.4;
+			// your trusted development partner
+			// your system integration partner
+			// your web service partner
+			// choose the right development partner for your web project.
+			// looking for web development services?
+			// how to choose a web development partner
+			const tl = gsap.timeline({
+				repeat: -1,
+				repeatDelay: delayTime,
+				defaults: { duration: durationTime, ease: 'none' },
+			});
+			tl.to(word1, { scrambleText: { text: 'trusted' } })
+				.to(word2, { scrambleText: { text: 'development' } }, backTime)
+				.to(word1, { scrambleText: { text: 'system' } }, termTime)
+				.to(word2, { scrambleText: { text: 'integration' } }, backTime)
+				.to(word1, { scrambleText: { text: 'web' } }, termTime)
+				.to(word2, { scrambleText: { text: 'service' } }, backTime)
+				.to(word1, { scrambleText: { text: 'technology' } }, termTime)
+				.to(word2, { scrambleText: { text: 'bisiness' } }, backTime);
+		};
+
+		const sloganTitle = document.querySelector('.slogan-title');
+		const sloganDesc = document.querySelector('.slogan-desc');
+		const sloganTl = gsap.timeline({ onComplete: changeString });
+		sloganTl
+			.from(
+				sloganTitle,
+				{
+					y: 40,
+					duration: 1,
+					autoAlpha: 0,
+					ease: Power2.easeOut,
+				},
+				'+=1'
+			)
+			.from(
+				sloganDesc,
+				{ y: 20, duration: 0.85, autoAlpha: 0, ease: Power2.easeOut },
+				'<50%'
+			);
+	};
+	initHero();
+
 	Array.from(whatCards).forEach((el) => {
 		const gridTitle = el.querySelector('.grid-title');
 		const gridContent = el.querySelector('.grid-content');

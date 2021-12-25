@@ -23,6 +23,14 @@ input:checked ~ .dot {
 	margin-bottom: 0;
 }
 
+.br-remove {
+	br {
+		@apply hidden;
+		@screen md {
+			@apply block;
+		}
+	}
+}
 .gs-dev-tools {
 	z-index: 10000;
 }

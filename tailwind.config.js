@@ -17,6 +17,9 @@ module.exports = {
 			playfair: ['playfair', 'sans-serif', 'roboto', 'elandChoice'],
 		},
 		extend: {
+			colors: {
+				'black-dark': '#0A0F19',
+			},
 			height: (theme) => ({
 				'100px': '100px',
 				'screen-20': '20vh',

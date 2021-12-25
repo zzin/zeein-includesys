@@ -1,16 +1,16 @@
 
-	<footer id="colophon" class="site-footer pb-12 bg-gray-50">
+	<footer id="colophon" class="site-footer pb-12 bg-gray-50 dark:bg-black-dark">
 		<div class="container mx-auto px-6 md:px-8 pt-12">
 			<strong class="text-base md:text-lg text-gray-500 font-medium block mb-2">(주)인클루드시스</strong>
-			<address class="text-sm md:text-base not-italic mb-0 text-gray-400">
+			<address class="text-sm md:text-base not-italic mb-0 text-gray-400 dark:text-gray-600">
 				서울특별시 마포구 월드컵북로 8길 21(연남동), 인클루드빌딩<br />
 				email: parispk@include.kr&nbsp;&nbsp;&nbsp;&nbsp;
 				tel: 02-2696-2520<br />
 				<div class="hidden md:block text-xs md:text-sm">
-					include © 2021 All rights reserved. | Designed by CLOUDFOLDER.
+					include © 2022 All rights reserved. | Designed by CLOUDFOLDER.
 				</div>
 				<div class="block md:hidden text-xs md:text-sm">
-				include © 2021 All rights reserved.<br />
+				include © 2022 All rights reserved.<br />
 				Designed by CLOUDFOLDER.
 				</div>
 			</address>
@@ -26,9 +26,6 @@
 		</label>
 		<div class="content-wrap relative z-10 color-white">
 			<h3 class="absolute -top-16 text-4xl text-indigo-50 font-medium uppercase">Recruit</h3>
-			<!-- <svg xmlns="http://www.w3.org/2000/svg" class="absolute -top-32 h-12 w-12 stroke-indigo-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-			</svg> -->
 			<h4 class="text-base mb-4 text-white">열정과 의욕을 갖고 있다면<br />인클루드시스와 함께 하실 수 있습니다.</h4>
 			<div class="mb-4">
 				<h5 class="text-sm text-indigo-50 mb-1">모집분야 및 업무</h5>

@@ -735,19 +735,100 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! gsap */ "./node_modules/gsap/index.js");
-/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! gsap */ "./node_modules/gsap/gsap-core.js");
+/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! gsap */ "./node_modules/gsap/gsap-core.js");
 /* harmony import */ var gsap_ScrollTrigger__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! gsap/ScrollTrigger */ "./node_modules/gsap/ScrollTrigger.js");
-/* harmony import */ var swiper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! swiper */ "./node_modules/swiper/swiper.esm.js");
+/* harmony import */ var gsap_TextPlugin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! gsap/TextPlugin */ "./node_modules/gsap/TextPlugin.js");
+/* harmony import */ var gsap_ScrambleTextPlugin__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! gsap/ScrambleTextPlugin */ "./node_modules/gsap/ScrambleTextPlugin.js");
+/* harmony import */ var swiper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! swiper */ "./node_modules/swiper/swiper.esm.js");
 
 
-gsap__WEBPACK_IMPORTED_MODULE_0__["default"].registerPlugin(gsap_ScrollTrigger__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
-swiper__WEBPACK_IMPORTED_MODULE_2__["default"].use([swiper__WEBPACK_IMPORTED_MODULE_2__.Navigation, swiper__WEBPACK_IMPORTED_MODULE_2__.Pagination, swiper__WEBPACK_IMPORTED_MODULE_2__.Autoplay]);
+
+gsap__WEBPACK_IMPORTED_MODULE_0__["default"].registerPlugin(gsap_ScrollTrigger__WEBPACK_IMPORTED_MODULE_1__["default"], gsap_TextPlugin__WEBPACK_IMPORTED_MODULE_2__["default"], gsap_ScrambleTextPlugin__WEBPACK_IMPORTED_MODULE_3__["default"]);
+
+swiper__WEBPACK_IMPORTED_MODULE_4__["default"].use([swiper__WEBPACK_IMPORTED_MODULE_4__.Navigation, swiper__WEBPACK_IMPORTED_MODULE_4__.Pagination, swiper__WEBPACK_IMPORTED_MODULE_4__.Autoplay]);
 
 var initMain = function initMain() {
   var body = document.body;
   var root = document.getElementsByTagName('html')[0];
   var whatCards = document.querySelectorAll('.card-wrap');
+
+  var initHero = function initHero() {
+    var changeString = function changeString() {
+      var word1 = document.getElementById('word-1');
+      var word2 = document.getElementById('word-2');
+      var delayTime = 4;
+      var termTime = '+=4';
+      var backTime = '-=1';
+      var durationTime = 1.4; // your trusted development partner
+      // your system integration partner
+      // your web service partner
+      // choose the right development partner for your web project.
+      // looking for web development services?
+      // how to choose a web development partner
+
+      var tl = gsap__WEBPACK_IMPORTED_MODULE_0__["default"].timeline({
+        repeat: -1,
+        repeatDelay: delayTime,
+        defaults: {
+          duration: durationTime,
+          ease: 'none'
+        }
+      });
+      tl.to(word1, {
+        scrambleText: {
+          text: 'trusted'
+        }
+      }).to(word2, {
+        scrambleText: {
+          text: 'development'
+        }
+      }, backTime).to(word1, {
+        scrambleText: {
+          text: 'system'
+        }
+      }, termTime).to(word2, {
+        scrambleText: {
+          text: 'integration'
+        }
+      }, backTime).to(word1, {
+        scrambleText: {
+          text: 'web'
+        }
+      }, termTime).to(word2, {
+        scrambleText: {
+          text: 'service'
+        }
+      }, backTime).to(word1, {
+        scrambleText: {
+          text: 'technology'
+        }
+      }, termTime).to(word2, {
+        scrambleText: {
+          text: 'bisiness'
+        }
+      }, backTime);
+    };
+
+    var sloganTitle = document.querySelector('.slogan-title');
+    var sloganDesc = document.querySelector('.slogan-desc');
+    var sloganTl = gsap__WEBPACK_IMPORTED_MODULE_0__["default"].timeline({
+      onComplete: changeString
+    });
+    sloganTl.from(sloganTitle, {
+      y: 40,
+      duration: 1,
+      autoAlpha: 0,
+      ease: gsap__WEBPACK_IMPORTED_MODULE_5__.Power2.easeOut
+    }, '+=1').from(sloganDesc, {
+      y: 20,
+      duration: 0.85,
+      autoAlpha: 0,
+      ease: gsap__WEBPACK_IMPORTED_MODULE_5__.Power2.easeOut
+    }, '<50%');
+  };
+
+  initHero();
   Array.from(whatCards).forEach(function (el) {
     var gridTitle = el.querySelector('.grid-title');
     var gridContent = el.querySelector('.grid-content');
@@ -766,22 +847,22 @@ var initMain = function initMain() {
       x: 20,
       autoAlpha: 0,
       duration: 0.5,
-      ease: gsap__WEBPACK_IMPORTED_MODULE_3__.Power2.easeOut
+      ease: gsap__WEBPACK_IMPORTED_MODULE_5__.Power2.easeOut
     }).to(gridImg, {
       scale: 1.05,
       duration: 0.5,
-      ease: gsap__WEBPACK_IMPORTED_MODULE_3__.Power3.easeOut
+      ease: gsap__WEBPACK_IMPORTED_MODULE_5__.Power3.easeOut
     }, '<').to(gridContent, {
       y: 30,
       scale: 1,
       autoAlpha: 1,
       duration: 0.325,
-      ease: gsap__WEBPACK_IMPORTED_MODULE_3__.Power2.easeOut
+      ease: gsap__WEBPACK_IMPORTED_MODULE_5__.Power2.easeOut
     }, '<').to(gridContentTitle, {
       x: 0,
       autoAlpha: 1,
       duration: 0.5,
-      ease: gsap__WEBPACK_IMPORTED_MODULE_3__.Power1.easeInOut
+      ease: gsap__WEBPACK_IMPORTED_MODULE_5__.Power1.easeInOut
     }, '-=0.5');
     el.animation = tl;
     el.addEventListener('mouseenter', function () {
@@ -808,7 +889,7 @@ var initMain = function initMain() {
     btnPrev.classList.add('l' + index);
     btnNext.classList.add('r' + index);
     pagination.classList.add('p' + index);
-    var sw = new swiper__WEBPACK_IMPORTED_MODULE_2__["default"](targetSwiper, {
+    var sw = new swiper__WEBPACK_IMPORTED_MODULE_4__["default"](targetSwiper, {
       // slidesPerView: 1,
       slidesPerView: 'auto',
       // centeredSlides: true,
