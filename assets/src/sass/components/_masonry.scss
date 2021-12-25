@@ -1,0 +1,23 @@
+.masonry-wrapper {
+	.grid-sizer,
+	.grid-item {
+		width: 100%;
+		@screen md {
+			width: 50%;
+		}
+		@screen lg {
+			width: 33.3333%;
+		}
+		@screen xl {
+			width: 25%;
+		}
+		@screen 2xl {
+			width: 20%;
+		}
+		.card {
+			&.is-visible {
+				@apply opacity-100;
+			}
+		}
+	}
+}

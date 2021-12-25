@@ -1,0 +1,13 @@
+label.custom-label-checkbox {
+	.text {
+		@apply inline-block bg-gray-100 text-gray-600 p-2 w-full text-center cursor-pointer rounded hover:bg-gray-200;
+	}
+	input {
+		@apply hidden invisible;
+		&:checked {
+			& + .text {
+				@apply bg-gray-800 text-gray-100;
+			}
+		}
+	}
+}

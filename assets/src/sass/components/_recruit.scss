@@ -1,0 +1,33 @@
+.recruit-wrap {
+	top: 140px;
+	right: 0;
+	transform: translateX(304px);
+	transition: transform 0.2s ease;
+	z-index: 20;
+	label {
+		top: 52px;
+		left: -96px;
+	}
+	&::before {
+		content: '';
+		position: absolute;
+		width: 360px;
+		height: 100vh;
+		top: -140px;
+		left: 0;
+		display: block;
+		z-index: 0;
+		@apply bg-indigo-900;
+	}
+}
+
+#chk-recruit {
+	&:checked {
+		& + .recruit-wrap {
+			transform: translateX(0px);
+			.cursor {
+				transform: scaleY(-1);
+			}
+		}
+	}
+}

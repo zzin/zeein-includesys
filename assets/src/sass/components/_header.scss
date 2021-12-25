@@ -1,0 +1,101 @@
+.site-header {
+	background-color: rgba(255, 255, 255, 0);
+	transition: background-color 0.3s ease;
+	.h-100px {
+		transition: height 0.3s ease;
+	}
+	.main-navigation {
+		.menu-wrap {
+			@apply fixed w-screen h-screen left-0 bg-white z-10 top-0 flex items-center transition-transform duration-500;
+			transform: translateY(-100%);
+			.menu-primary-container {
+				@apply container mx-auto px-4 md:px-8;
+				max-width: 1280px;
+				.menu {
+					display: inline-block;
+					@apply -mx-5;
+					.main-menu-item {
+						.main-menu-link {
+							@apply inline-block mx-3 p-2 text-6xl uppercase font-semibold md:text-8xl;
+						}
+						&.active {
+							.main-menu-link {
+								@apply text-indigo-800;
+							}
+						}
+					}
+				}
+			}
+		}
+		&.toggled {
+			.menu-wrap {
+				transform: translateY(0);
+			}
+		}
+	}
+}
+
+body {
+	&.is-active {
+		.site-header {
+			background-color: rgba(255, 255, 255, 0.2);
+			.h-100px {
+				height: 60px;
+			}
+		}
+	}
+}
+
+.menu-toggle {
+	span {
+		position: absolute;
+		width: 100%;
+		height: 4px;
+		left: 0;
+		// &:first-child,
+		// &:last-child {
+		// 	// transition: transform 0.3s ease 0.3s, top 0.3s, bottom 0.3s;
+		// 	transition-property: top;
+		// }
+		&:first-child,
+		&:last-child {
+			transition-property: top, transform;
+			transition-duration: 0.15s, 0.15s;
+			transition-delay: 0.15s, 0s;
+			transition-timing-function: ease, ease;
+			transform-origin: center;
+		}
+		&:last-child {
+			transition-property: bottom, transform;
+		}
+		&:first-child {
+			top: 3px;
+		}
+		&:nth-child(2) {
+			top: calc(50% - 2px);
+			transition: opacity 0.15s ease 0.15s;
+			// top: 50%;
+			// transform: translateY(-50%);
+		}
+		&:last-child {
+			bottom: 3px;
+		}
+	}
+	&[aria-expanded='true'] {
+		span {
+			&:first-child {
+				top: 14px;
+				transform: rotate(45deg);
+				transition-delay: 0s, 0.15s;
+			}
+			&:last-child {
+				bottom: 14px;
+				transform: rotate(-45deg);
+				transition-delay: 0s, 0.15s;
+			}
+			&:nth-child(2) {
+				opacity: 0;
+			}
+		}
+	}
+}

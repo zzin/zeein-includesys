@@ -1,0 +1,11 @@
+body.page {
+	.entry-header {
+		padding-top: 100px;
+		padding-bottom: 20px;
+		@apply bg-neutral-800;
+	}
+	// padding-top: 100px;
+}
+body.home {
+	padding-top: 0;
+}

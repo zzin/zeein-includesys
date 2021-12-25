@@ -1,0 +1,18 @@
+// .entry-header {
+// 	.entry-title {
+// 		position: relative;
+// 		&::before {
+// 			content: '';
+// 			@apply w-24 h-2 absolute bg-gray-900 bottom-0 left-0;
+// 		}
+// 	}
+// }
+.entry-title {
+	visibility: visible;
+	&.active {
+		visibility: hidden;
+	}
+	&.flipping {
+		visibility: visible;
+	}
+}

@@ -1,0 +1,12 @@
+html.dark {
+	body {
+		.site-header {
+			background-color: rgba(0, 0, 0, 0.2);
+		}
+		&.is-active {
+			.site-header {
+				background-color: rgba(0, 0, 0, 0.2);
+			}
+		}
+	}
+}

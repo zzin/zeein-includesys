@@ -1,0 +1,110 @@
+.swiper-pagination,
+.swiper-button-prev,
+.swiper-button-next {
+	z-index: 5;
+}
+.swiper-wrapper {
+	.swiper-slide {
+		width: 96%;
+		@screen sm {
+			width: 60%;
+		}
+		@screen md {
+			width: 50%;
+		}
+		@screen lg {
+			width: 40%;
+		}
+		@screen xl {
+			width: 30%;
+		}
+		// opacity: 0.3;
+		// transition: opacity 0.5s ease 0.15s;
+		// .title,
+		// .desc {
+		// 	transition: all 0.285s ease-out;
+		// 	transition-delay: 0.15s;
+		// 	transform-origin: left bottom;
+		// }
+		// .desc {
+		// 	transform: translateY(-10px);
+		// 	transition: all 0.2s ease-out;
+		// 	transition-delay: 0.2s;
+		// 	ul {
+		// 		em {
+		// 			font-style: normal;
+		// 		}
+		// 	}
+		// }
+		// &.swiper-slide-active {
+		// 	opacity: 1;
+		// 	.title {
+		// 		transform: scale(1.5);
+		// 	}
+		// 	.desc {
+		// 		transform: translateY(0);
+		// 	}
+		// }
+	}
+}
+
+// .bg-wrap {
+// 	.swiper-button-next,
+// 	.swiper-button-prev {
+// 		display: none;
+// 	}
+// 	overflow: hidden;
+// 	// cursor: none;
+// 	.cursor {
+// 		position: fixed;
+// 		@apply bg-blue-600;
+// 		width: 10px;
+// 		height: 10px;
+// 		// top: calc(50% - 5px);
+// 		// left: calc(50% - 5px);
+// 		top: -5px;
+// 		left: -5px;
+// 		border-radius: 100%;
+// 		user-select: none;
+// 		pointer-events: none;
+// 		z-index: 10;
+// 		&-follow {
+// 			position: fixed;
+// 			user-select: none;
+// 			pointer-events: none;
+// 			width: 100px;
+// 			height: 100px;
+// 			top: -50px;
+// 			left: -50px;
+// 			.cursor-icon {
+// 				@apply absolute border border-solid border-gray-500;
+// 				width: 100px;
+// 				height: 100px;
+// 				border-radius: 100%;
+// 				opacity: 0.5;
+// 				transform: scale(0.5);
+// 				transition: transform 0.4s ease;
+// 			}
+// 		}
+// 		&.is-arrow-left,
+// 		&.is-arrow-right {
+// 			& + .cursor-follow {
+// 				.cursor-icon {
+// 					transform: scale(1);
+// 					@apply border-white;
+// 				}
+// 			}
+// 		}
+// 	}
+// }
+
+// .swiper-horizontal > .swiper-pagination-progressbar,
+// .swiper-pagination-progressbar.swiper-pagination-horizontal,
+// .swiper-vertical
+// 	> .swiper-pagination-progressbar.swiper-pagination-progressbar-opposite,
+// .swiper-pagination-progressbar.swiper-pagination-vertical.swiper-pagination-progressbar-opposite {
+// 	height: 10px;
+// }
+// .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
+// 	@apply bg-indigo-700;
+// }

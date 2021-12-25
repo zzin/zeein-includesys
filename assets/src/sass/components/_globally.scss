@@ -1,0 +1,28 @@
+html,
+body {
+	min-height: 100%;
+	font-family: 'roboto', 'NotoSansKR';
+	@apply text-gray-800;
+}
+
+input:checked ~ .dot {
+	transform: translateX(100%);
+	// @apply bg-black;
+}
+
+.word-break-keep-all {
+	word-break: keep-all;
+}
+
+.container {
+	max-width: 1280px;
+}
+
+.post,
+.page {
+	margin-bottom: 0;
+}
+
+.gs-dev-tools {
+	z-index: 10000;
+}

@@ -1,0 +1,68 @@
+/**
+* Importing by selector filtering example
+* https://github.com/maoberlehner/node-sass-magic-importer/tree/master/packages/node-sass-magic-importer#selector-filtering
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	h1 {
+		@apply text-5xl;
+	}
+	h2 {
+		@apply text-4xl;
+	}
+	h3 {
+		@apply text-3xl;
+	}
+	h4 {
+		@apply text-2xl;
+	}
+	h5 {
+		@apply text-xl;
+	}
+}
+
+// @layer utilities {
+// 	@variants responsive {
+// 		.masonry {
+// 			column-gap: 1.5em;
+// 			column-count: 1;
+// 		}
+// 		.masonry-md {
+// 			column-gap: 1.5em;
+// 			column-count: 2;
+// 		}
+// 		.masonry-lg {
+// 			column-gap: 1.5em;
+// 			column-count: 3;
+// 		}
+// 		.masonry-xl {
+// 			column-gap: 1.5em;
+// 			column-count: 4;
+// 		}
+// 		.break-inside {
+// 			break-inside: avoid;
+// 		}
+// 		.masonry,
+// 		.masonry-sm,
+// 		.masonry-md {
+// 			.break-inside:first-child {
+// 				margin-top: 0;
+// 			}
+// 		}
+// 	}
+// }
+
+/**
+* Importing by glob example
+* https://github.com/maoberlehner/node-sass-magic-importer/tree/master/packages/node-sass-magic-importer#globbing
+ */
+
+@import '../fonts/roboto';
+@import '../fonts/notoSansKR';
+@import '../fonts/playfairdisplay';
+// @import 'components/**/*.scss';
+@import './utils/**/*.scss';
+@import './components/index';
