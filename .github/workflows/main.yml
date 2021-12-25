@@ -15,7 +15,7 @@ jobs:
           # username: ${{ secrets.USERNAME }}
           username: zeein
           # password : zeein39464000
-          password: zeein39464000
+          password: ~!zeein3946400
           # password: ${{ secrets.PASSWORD }}
           port: 22
           # port: ${{ secrets.PORT }}
