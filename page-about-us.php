@@ -5,7 +5,7 @@
     <div class="entry-content">
       <div class="container mx-auto px-6 md:px-8">
         <div class="mb-20 md:mb-40">
-          <h2 class="text-2xl md:text-5xl font-semibold mb-4 md:mb-6 word-break-keep-all">프로그램을 처음 학습할 때 접하게 되는 C언어</h2>
+          <h2 class="text-2xl md:text-4xl font-semibold mb-4 md:mb-6 word-break-keep-all">프로그램을 처음 학습할 때 접하게 되는 C언어</h2>
           <div class="text-lg md:text-2xl word-break-keep-all">
             <div class="md:leading-10 tracking-tight">
               프로그램을 처음 학습할 때 C언어를 접하게 됩니다.<br />
@@ -15,7 +15,7 @@
           </div>
         </div>
         <div class="mb-20 md:mb-40">
-          <h2 class="text-2xl md:text-5xl font-semibold mb-4 md:mb-6 word-break-keep-all">통신사 서비스를 구축, 운영 해오며 성장 하였습니다.</h2>
+          <h2 class="text-2xl md:text-4xl font-semibold mb-4 md:mb-6 word-break-keep-all">통신사 서비스를 구축, 운영 해오며 성장 하였습니다.</h2>
           <div class="text-lg md:text-2xl word-break-keep-all">
             <dl class="grid grid-cols-1 md:grid-cols-12">
               <dt class="grid-cols-1 md:col-span-2 font-semibold">설립일</dt>
@@ -34,42 +34,38 @@
           </div>
         </div>
       </div>
-      <div class="bg-wrap bg-black relative">
-        <div class="absolute inset-0 bg-no-repeat bg-center bg-cover opacity-50" style="background-image:url('<?=bloginfo('template_url');?>/assets/public/images/bg-about-us-history-2.jpg'"></div>
-        <!-- <div class="cursor"></div>
-        <div class="cursor-follow"><div class="cursor-icon"></div></div> -->
-        <?php
-        $history = get_field('history');
-        if (have_rows('history')) :
-?>
-        <div class="text-white py-20 overflow-x-hidden">
-          <div class="swiper-wrap" data-component="swiper">
+      <div class="overflow-x-hidden">
+        <div class="container mx-auto px-6 md:px-8 mb-12 md:mb-32">
+          <div class="swiper-wrap -mx-2 lg:-mx-3 xl:-mx-4 relative" data-component="swiper-history">
             <div class="swiper-wrapper">
-<?php
-          while(have_rows('history')) : the_row();
-?>
-              <div class="swiper-slide">
-                <div class="py-10 px-6">
-                  <h3 class="title text-6xl font-medium mb-5"><?=get_sub_field('year');?></h3>
-                  <div class="desc text-base md:text-xl">
+<?php while(have_rows('history')) : the_row(); ?>
+            <div class="swiper-slide">
+              <div class="py-10 px-2 lg:px-3 xl:px-4">
+                <div class="card-history border border-gray-100 bg-gray-50 p-6 md:p-8 rounded-md dark:border-gray-800 w-full">
+                  <h3 class="title text-2xl md:text-4xl font-medium mb-5"><?=get_sub_field('year');?></h3>
+                  <div class="desc text-sm md:text-base">
                     <?=get_sub_field('desc'); ?>
                   </div>
                 </div>
               </div>
-<?php
-          endwhile;
-?>
+            </div>
+<?php endwhile; ?>
             </div>
             <div class="swiper-button-wrapper">
-              <div class="swiper-button-next swiper-next"></div>
-              <div class="swiper-button-prev swiper-prev"></div>
+              <div class="swiper-button-next swiper-next">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+              <div class="swiper-button-prev swiper-prev">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+              </div>
             </div>
-            <div class="swiper-pagination"></div>
           </div>
         </div>
-<?php
-        endif;
-?>
+      </div>
     </div>
   </article>
 </main>

@@ -1,5 +1,5 @@
 import Masonry from 'masonry-layout';
-const imagesLoaded = require('imagesloaded');
+import imagesLoaded from 'imagesloaded';
 
 const masonry = () => {
 	const component = document.querySelector('.masonry-wrapper');
@@ -12,14 +12,19 @@ const masonry = () => {
 			percentPosition: true,
 			// transitionDuration: '0.5s',
 		});
-		imagesLoaded(component).on('progress', (instance, image) => {
-			const targetParnetNode = image.img.parentNode;
+
+		imagesLoaded(component, { background: true }, () => {
 			msnry.layout();
-			setInterval(() => {
-				targetParnetNode.classList.add('is-visible');
-				window.dispatchEvent(new Event('resize'));
-			}, 500);
 		});
+
+		// imagesLoaded(component).on('progress', (instance, image) => {
+		// 	const targetParnetNode = image.img.parentNode;
+		// 	msnry.layout();
+		// 	setInterval(() => {
+		// 		targetParnetNode.classList.add('is-visible');
+		// 		window.dispatchEvent(new Event('resize'));
+		// 	}, 500);
+		// });
 
 		const loadmore = () => {
 			let loading = false,
@@ -50,14 +55,20 @@ const masonry = () => {
 									// console.log('rtn length has');
 									component.insertAdjacentHTML('beforeend', rtn);
 									msnry.reloadItems();
-									// eslint-disable-next-line no-undef
-									imagesLoaded(component).on('progress', (instance, image) => {
-										const targetParnetNode = image.img.parentNode;
+
+									imagesLoaded(component, { background: true }, () => {
 										msnry.layout();
-										setTimeout(() => {
-											targetParnetNode.classList.add('is-visible');
-										}, 500);
 									});
+
+									// eslint-disable-next-line no-undef
+									// imagesLoaded(component).on('progress', (instance, image) => {
+									// 	const targetParnetNode = image.img.parentNode;
+									// 	msnry.layout();
+									// 	setTimeout(() => {
+									// 		targetParnetNode.classList.add('is-visible');
+									// 	}, 500);
+									// });
+
 									// eslint-disable-next-line no-undef
 									frontendAjaxObject.currentPage++;
 								}

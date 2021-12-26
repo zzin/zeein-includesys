@@ -14,13 +14,13 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollToPlugin);
 gsap.registerPlugin(ScrollTrigger);
 import initNavigation from './navigation';
-import swiper from './swiper';
 import masonry from './masonry';
 import initForm from './form';
 import scroll from './scroll';
 import loading from './loading';
 import header from './header';
 import initMain from './pageMain';
+import initAboutUs from './pageAbout';
 
 const body = document.body;
 const menuToggle = document.querySelector('.menu-toggle');
@@ -33,46 +33,17 @@ const leaveAnimation = (data) => {
 			y: -50,
 			duration: 1.5,
 			autoAlpha: 0,
-			// onComplete: () => {
-			// 	resolve();
-			// 	console.log('leaveAnimation complete');
-			// },
 		}).then();
 		resolve();
 	});
 };
 
-// const leaveAnimation = (data) => {
-// 	return new Promise((resolve) => {
-// 		tl.to(data.current.container, {
-// 			y: -50,
-// 			duration: 1.5,
-// 			autoAlpha: 0,
-// 			onComplete: () => {
-// 				resolve();
-// 				console.log('leaveAnimation complete');
-// 			},
-// 		});
-// 	});
-// };
-// const enterAnimation = (data) => {
-// 	return new Promise((resolve) => {
-// 		tl.from(data.next.container, {
-// 			y: 50,
-// 			duration: 1.5,
-// 			autoAlpha: 0,
-// 			onComplete: () => {
-// 				resolve();
-// 				console.log('enterAnimation complete');
-// 			},
-// 		});
-// 	});
-// };
-
 const initJs = (dataNamespace) => {
 	if (!dataNamespace)
 		dataNamespace = document.getElementById('primary').dataset.barbaNamespace;
-	if (dataNamespace === 'page-portfolio') {
+	if (dataNamespace === 'page-about-us') {
+		initAboutUs();
+	} else if (dataNamespace === 'page-portfolio') {
 		masonry();
 	} else if (dataNamespace === 'page-contact') {
 		initForm();
@@ -123,7 +94,7 @@ barba.hooks.after((data) => {
 	// console.log('hook >>>>>>>>>>>>>>>>>>>>>> after');
 	initCursor();
 	initNavigation();
-	swiper();
+	// swiper();
 	scroll();
 	header();
 
@@ -201,7 +172,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 	initCursor();
 	initNavigation();
 	effHeader();
-	swiper();
+	// swiper();
 	// masonry();
 	// initForm();
 	scroll();

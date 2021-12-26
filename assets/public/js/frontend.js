@@ -22463,6 +22463,2090 @@ var initNavigatin = function initNavigatin() {
 };
 
 /* harmony default export */ const components_navigation = (initNavigatin);
+// EXTERNAL MODULE: ./node_modules/masonry-layout/masonry.js
+var masonry_layout_masonry = __webpack_require__(751);
+var masonry_default = /*#__PURE__*/__webpack_require__.n(masonry_layout_masonry);
+// EXTERNAL MODULE: ./node_modules/imagesloaded/imagesloaded.js
+var imagesloaded = __webpack_require__(564);
+var imagesloaded_default = /*#__PURE__*/__webpack_require__.n(imagesloaded);
+;// CONCATENATED MODULE: ./assets/src/js/components/masonry.js
+
+
+
+var masonry = function masonry() {
+  var component = document.querySelector('.masonry-wrapper');
+
+  if (component) {
+    var msnry = new (masonry_default())(component, {
+      horizontalOrder: false,
+      itemSelector: '.grid-item',
+      columnWidth: '.grid-sizer',
+      percentPosition: true // transitionDuration: '0.5s',
+
+    });
+    imagesloaded_default()(component, {
+      background: true
+    }, function () {
+      msnry.layout();
+    }); // imagesLoaded(component).on('progress', (instance, image) => {
+    // 	const targetParnetNode = image.img.parentNode;
+    // 	msnry.layout();
+    // 	setInterval(() => {
+    // 		targetParnetNode.classList.add('is-visible');
+    // 		window.dispatchEvent(new Event('resize'));
+    // 	}, 500);
+    // });
+
+    var loadmore = function loadmore() {
+      var loading = false,
+          hasPost = true;
+      var btnLoadMore = document.getElementById('button-load-more');
+
+      if (btnLoadMore) {
+        btnLoadMore.addEventListener('click', function () {
+          if (!loading) {
+            var data = {
+              action: 'loadmore',
+              // eslint-disable-next-line no-undef
+              query: frontendAjaxObject.posts,
+              // eslint-disable-next-line no-undef
+              page: frontendAjaxObject.currentPage
+            };
+            $.ajax({
+              // eslint-disable-next-line no-undef
+              url: frontendAjaxObject.ajaxurl,
+              data: data,
+              type: 'POST',
+              beforeSend: function beforeSend(xhr) {
+                loading = true;
+              },
+              success: function success(rtn) {
+                loading = false; // console.log(rtn);
+
+                if (rtn.length > 0) {
+                  // console.log('rtn length has');
+                  component.insertAdjacentHTML('beforeend', rtn);
+                  msnry.reloadItems();
+                  imagesloaded_default()(component, {
+                    background: true
+                  }, function () {
+                    msnry.layout();
+                  }); // eslint-disable-next-line no-undef
+                  // imagesLoaded(component).on('progress', (instance, image) => {
+                  // 	const targetParnetNode = image.img.parentNode;
+                  // 	msnry.layout();
+                  // 	setTimeout(() => {
+                  // 		targetParnetNode.classList.add('is-visible');
+                  // 	}, 500);
+                  // });
+                  // eslint-disable-next-line no-undef
+
+                  frontendAjaxObject.currentPage++;
+                }
+
+                if ( // eslint-disable-next-line no-undef
+                frontendAjaxObject.currentPage >= frontendAjaxObject.maxPage) {
+                  btnLoadMore.remove();
+                  hasPost = false;
+                }
+              },
+              error: function error(request, status, _error) {
+                console.log(status + ' / code = ' + request.status + ' message = ' + request.responseText + ' error = ' + _error);
+              }
+            });
+          }
+        });
+        window.addEventListener('scroll', function () {
+          var footer = document.getElementById('colophon');
+          var windowTop = window.pageYOffset;
+          var windowHeight = window.innerHeight;
+          var footerHeight = footer.offsetHeight;
+          var documentHeight = document.body.offsetHeight; // console.log(windowTop, documentHeight - windowHeight - footerHeight);
+
+          if (windowTop > documentHeight - windowHeight - footerHeight - windowHeight / 2) {
+            if (hasPost && !loading) btnLoadMore.click();
+          }
+        });
+      }
+    };
+
+    loadmore();
+  }
+};
+
+/* harmony default export */ const components_masonry = (masonry);
+;// CONCATENATED MODULE: ./assets/src/js/components/form.js
+var initForm = function initForm() {
+  var formRequest = document.getElementById('formRequest');
+
+  if (formRequest) {
+    var submitButton = document.querySelector('.btn-submit');
+    submitButton.addEventListener('click', function (e) {
+      e.preventDefault();
+      var msg = [];
+      var hasRequired = false;
+      var hasCheckbox = false; // checkbox(문의 분야)
+
+      var checkboxes = document.getElementsByName('type[]');
+
+      for (var i = 0; i < checkboxes.length; i++) {
+        console.log(checkboxes[i].checked);
+
+        if (checkboxes[i].checked === true) {
+          hasCheckbox = true;
+          break;
+        }
+      }
+
+      if (!hasCheckbox) {
+        msg.push('문의 분야');
+      }
+
+      for (var _i = 0; _i < formRequest.elements.length; _i++) {
+        var target = formRequest.elements[_i];
+
+        if (target.value === '' && target.hasAttribute('required')) {
+          hasRequired = true;
+          msg.push(target.ariaLabel);
+        }
+      }
+
+      if (hasRequired) {
+        var msgWrap = document.getElementById('msg-wrap');
+        var ul = document.createElement('ul');
+        ul.setAttribute('id', 'errorMsg');
+        ul.setAttribute('class', 'p-5 bg-gray-50 mb-5 rounded-md text-red-400');
+        msgWrap.innerHTML = '';
+        msgWrap.appendChild(ul);
+
+        var renderList = function renderList(element, index, arr) {
+          var li = document.createElement('li');
+          li.setAttribute('class', 'item');
+          ul.appendChild(li);
+          li.innerHTML = li.innerHTML + element + '은(는) 반드시 입력하세요.';
+        };
+
+        msg.forEach(renderList);
+        setTimeout(function () {
+          msgWrap.innerHTML = '';
+        }, 3000);
+      }
+    });
+  }
+};
+
+/* harmony default export */ const components_form = (initForm);
+;// CONCATENATED MODULE: ./assets/src/js/components/scroll.js
+var scroll_scroll = function scroll() {
+  var lastScrollTop = 0;
+  window.addEventListener('scroll', function () {
+    var st = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (st > lastScrollTop) {
+      console.log('down');
+    } else {
+      console.log('up');
+    }
+
+    lastScrollTop = st <= 0 ? 0 : st;
+  });
+};
+
+/* harmony default export */ const components_scroll = (scroll_scroll);
+;// CONCATENATED MODULE: ./node_modules/gsap/index.js
+
+
+var gsap_gsapWithCSS = gsap.registerPlugin(CSSPlugin) || gsap,
+    // to protect from tree shaking
+gsap_TweenMaxWithCSS = gsap_gsapWithCSS.core.Tween;
+
+;// CONCATENATED MODULE: ./assets/src/js/components/loading.js
+ // import GSDevTools from 'gsap/GSDevTools';
+// gsap.registerPlugin(GSDevTools);
+
+var loadingWrap = document.getElementById('loading-wrap');
+var tl = gsap_gsapWithCSS.timeline();
+
+var loadingIn = function loadingIn() {
+  tl.set(loadingWrap, {
+    borderTopLeftRadius: '80% 100px',
+    borderTopRightRadius: '80% 100px'
+  }).to(loadingWrap, {
+    duration: 0.3,
+    y: '0'
+  }).to(loadingWrap, {
+    borderTopLeftRadius: '50% 180px',
+    borderTopRightRadius: '50% 180px',
+    duration: 0.2,
+    ease: Power4.easeOut
+  }, '<').to(loadingWrap, {
+    borderTopLeftRadius: '80% 120px',
+    borderTopRightRadius: '80% 120px',
+    duration: 0.2,
+    ease: Power4.easeOut
+  }, '<').to(loadingWrap, {
+    borderTopLeftRadius: '80% 0px',
+    borderTopRightRadius: '80% 0px',
+    duration: 0.4,
+    ease: Power1.easeOut
+  }); // GSDevTools.create({ paused: true });
+};
+
+var loadingOut = function loadingOut() {
+  tl.to(loadingWrap, {
+    duration: 0.3,
+    borderTopLeftRadius: '80% 50px',
+    borderTopRightRadius: '80% 50px',
+    ease: Power4.easeIn
+  }).to(loadingWrap, {
+    y: '100%',
+    duration: 0.5
+  });
+};
+
+/* harmony default export */ const loading = ({
+  loadingIn: loadingIn,
+  loadingOut: loadingOut
+});
+;// CONCATENATED MODULE: ./node_modules/gsap/utils/matrix.js
+/*!
+ * matrix 3.8.0
+ * https://greensock.com
+ *
+ * Copyright 2008-2021, GreenSock. All rights reserved.
+ * Subject to the terms at https://greensock.com/standard-license or for
+ * Club GreenSock members, the agreement issued with that membership.
+ * @author: Jack Doyle, jack@greensock.com
+*/
+
+/* eslint-disable */
+var matrix_doc,
+    matrix_win,
+    matrix_docElement,
+    matrix_body,
+    _divContainer,
+    _svgContainer,
+    _identityMatrix,
+    _gEl,
+    matrix_transformProp = "transform",
+    matrix_transformOriginProp = matrix_transformProp + "Origin",
+    _hasOffsetBug,
+    _setDoc = function _setDoc(element) {
+  var doc = element.ownerDocument || element;
+
+  if (!(matrix_transformProp in element.style) && "msTransform" in element.style) {
+    //to improve compatibility with old Microsoft browsers
+    matrix_transformProp = "msTransform";
+    matrix_transformOriginProp = matrix_transformProp + "Origin";
+  }
+
+  while (doc.parentNode && (doc = doc.parentNode)) {}
+
+  matrix_win = window;
+  _identityMatrix = new Matrix2D();
+
+  if (doc) {
+    matrix_doc = doc;
+    matrix_docElement = doc.documentElement;
+    matrix_body = doc.body;
+    _gEl = matrix_doc.createElementNS("http://www.w3.org/2000/svg", "g"); // prevent any existing CSS from transforming it
+
+    _gEl.style.transform = "none"; // now test for the offset reporting bug. Use feature detection instead of browser sniffing to make things more bulletproof and future-proof. Hopefully Safari will fix their bug soon but it's 2020 and it's still not fixed.
+
+    var d1 = doc.createElement("div"),
+        d2 = doc.createElement("div");
+
+    matrix_body.appendChild(d1);
+
+    d1.appendChild(d2);
+    d1.style.position = "static";
+    d1.style[matrix_transformProp] = "translate3d(0,0,1px)";
+    _hasOffsetBug = d2.offsetParent !== d1;
+
+    matrix_body.removeChild(d1);
+  }
+
+  return doc;
+},
+    _forceNonZeroScale = function _forceNonZeroScale(e) {
+  // walks up the element's ancestors and finds any that had their scale set to 0 via GSAP, and changes them to 0.0001 to ensure that measurements work. Firefox has a bug that causes it to incorrectly report getBoundingClientRect() when scale is 0.
+  var a, cache;
+
+  while (e && e !== matrix_body) {
+    cache = e._gsap;
+    cache && cache.uncache && cache.get(e, "x"); // force re-parsing of transforms if necessary
+
+    if (cache && !cache.scaleX && !cache.scaleY && cache.renderTransform) {
+      cache.scaleX = cache.scaleY = 1e-4;
+      cache.renderTransform(1, cache);
+      a ? a.push(cache) : a = [cache];
+    }
+
+    e = e.parentNode;
+  }
+
+  return a;
+},
+    // possible future addition: pass an element to _forceDisplay() and it'll walk up all its ancestors and make sure anything with display: none is set to display: block, and if there's no parentNode, it'll add it to the body. It returns an Array that you can then feed to _revertDisplay() to have it revert all the changes it made.
+// _forceDisplay = e => {
+// 	let a = [],
+// 		parent;
+// 	while (e && e !== _body) {
+// 		parent = e.parentNode;
+// 		(_win.getComputedStyle(e).display === "none" || !parent) && a.push(e, e.style.display, parent) && (e.style.display = "block");
+// 		parent || _body.appendChild(e);
+// 		e = parent;
+// 	}
+// 	return a;
+// },
+// _revertDisplay = a => {
+// 	for (let i = 0; i < a.length; i+=3) {
+// 		a[i+1] ? (a[i].style.display = a[i+1]) : a[i].style.removeProperty("display");
+// 		a[i+2] || a[i].parentNode.removeChild(a[i]);
+// 	}
+// },
+_svgTemps = [],
+    //we create 3 elements for SVG, and 3 for other DOM elements and cache them for performance reasons. They get nested in _divContainer and _svgContainer so that just one element is added to the DOM on each successive attempt. Again, performance is key.
+_divTemps = [],
+    _getDocScrollTop = function _getDocScrollTop() {
+  return matrix_win.pageYOffset || matrix_doc.scrollTop || matrix_docElement.scrollTop || matrix_body.scrollTop || 0;
+},
+    _getDocScrollLeft = function _getDocScrollLeft() {
+  return matrix_win.pageXOffset || matrix_doc.scrollLeft || matrix_docElement.scrollLeft || matrix_body.scrollLeft || 0;
+},
+    _svgOwner = function _svgOwner(element) {
+  return element.ownerSVGElement || ((element.tagName + "").toLowerCase() === "svg" ? element : null);
+},
+    _isFixed = function _isFixed(element) {
+  if (matrix_win.getComputedStyle(element).position === "fixed") {
+    return true;
+  }
+
+  element = element.parentNode;
+
+  if (element && element.nodeType === 1) {
+    // avoid document fragments which will throw an error.
+    return _isFixed(element);
+  }
+},
+    _createSibling = function _createSibling(element, i) {
+  if (element.parentNode && (matrix_doc || _setDoc(element))) {
+    var svg = _svgOwner(element),
+        ns = svg ? svg.getAttribute("xmlns") || "http://www.w3.org/2000/svg" : "http://www.w3.org/1999/xhtml",
+        type = svg ? i ? "rect" : "g" : "div",
+        x = i !== 2 ? 0 : 100,
+        y = i === 3 ? 100 : 0,
+        css = "position:absolute;display:block;pointer-events:none;margin:0;padding:0;",
+        e = matrix_doc.createElementNS ? matrix_doc.createElementNS(ns.replace(/^https/, "http"), type) : matrix_doc.createElement(type);
+
+    if (i) {
+      if (!svg) {
+        if (!_divContainer) {
+          _divContainer = _createSibling(element);
+          _divContainer.style.cssText = css;
+        }
+
+        e.style.cssText = css + "width:0.1px;height:0.1px;top:" + y + "px;left:" + x + "px";
+
+        _divContainer.appendChild(e);
+      } else {
+        _svgContainer || (_svgContainer = _createSibling(element));
+        e.setAttribute("width", 0.01);
+        e.setAttribute("height", 0.01);
+        e.setAttribute("transform", "translate(" + x + "," + y + ")");
+
+        _svgContainer.appendChild(e);
+      }
+    }
+
+    return e;
+  }
+
+  throw "Need document and parent.";
+},
+    _consolidate = function _consolidate(m) {
+  // replaces SVGTransformList.consolidate() because a bug in Firefox causes it to break pointer events. See https://greensock.com/forums/topic/23248-touch-is-not-working-on-draggable-in-firefox-windows-v324/?tab=comments#comment-109800
+  var c = new Matrix2D(),
+      i = 0;
+
+  for (; i < m.numberOfItems; i++) {
+    c.multiply(m.getItem(i).matrix);
+  }
+
+  return c;
+},
+    _getCTM = function _getCTM(svg) {
+  var m = svg.getCTM(),
+      transform;
+
+  if (!m) {
+    // Firefox returns null for getCTM() on root <svg> elements, so this is a workaround using a <g> that we temporarily append.
+    transform = svg.style[matrix_transformProp];
+    svg.style[matrix_transformProp] = "none"; // a bug in Firefox causes css transforms to contaminate the getCTM()
+
+    svg.appendChild(_gEl);
+    m = _gEl.getCTM();
+    svg.removeChild(_gEl);
+    transform ? svg.style[matrix_transformProp] = transform : svg.style.removeProperty(matrix_transformProp.replace(/([A-Z])/g, "-$1").toLowerCase());
+  }
+
+  return m || _identityMatrix.clone(); // Firefox will still return null if the <svg> has a width/height of 0 in the browser.
+},
+    _placeSiblings = function _placeSiblings(element, adjustGOffset) {
+  var svg = _svgOwner(element),
+      isRootSVG = element === svg,
+      siblings = svg ? _svgTemps : _divTemps,
+      parent = element.parentNode,
+      container,
+      m,
+      b,
+      x,
+      y,
+      cs;
+
+  if (element === matrix_win) {
+    return element;
+  }
+
+  siblings.length || siblings.push(_createSibling(element, 1), _createSibling(element, 2), _createSibling(element, 3));
+  container = svg ? _svgContainer : _divContainer;
+
+  if (svg) {
+    if (isRootSVG) {
+      b = _getCTM(element);
+      x = -b.e / b.a;
+      y = -b.f / b.d;
+      m = _identityMatrix;
+    } else {
+      b = element.getBBox();
+      m = element.transform ? element.transform.baseVal : {}; // IE11 doesn't follow the spec.
+
+      m = !m.numberOfItems ? _identityMatrix : m.numberOfItems > 1 ? _consolidate(m) : m.getItem(0).matrix; // don't call m.consolidate().matrix because a bug in Firefox makes pointer events not work when consolidate() is called on the same tick as getBoundingClientRect()! See https://greensock.com/forums/topic/23248-touch-is-not-working-on-draggable-in-firefox-windows-v324/?tab=comments#comment-109800
+
+      x = m.a * b.x + m.c * b.y;
+      y = m.b * b.x + m.d * b.y;
+    }
+
+    if (adjustGOffset && element.tagName.toLowerCase() === "g") {
+      x = y = 0;
+    }
+
+    (isRootSVG ? svg : parent).appendChild(container);
+    container.setAttribute("transform", "matrix(" + m.a + "," + m.b + "," + m.c + "," + m.d + "," + (m.e + x) + "," + (m.f + y) + ")");
+  } else {
+    x = y = 0;
+
+    if (_hasOffsetBug) {
+      // some browsers (like Safari) have a bug that causes them to misreport offset values. When an ancestor element has a transform applied, it's supposed to treat it as if it's position: relative (new context). Safari botches this, so we need to find the closest ancestor (between the element and its offsetParent) that has a transform applied and if one is found, grab its offsetTop/Left and subtract them to compensate.
+      m = element.offsetParent;
+      b = element;
+
+      while (b && (b = b.parentNode) && b !== m && b.parentNode) {
+        if ((matrix_win.getComputedStyle(b)[matrix_transformProp] + "").length > 4) {
+          x = b.offsetLeft;
+          y = b.offsetTop;
+          b = 0;
+        }
+      }
+    }
+
+    cs = matrix_win.getComputedStyle(element);
+
+    if (cs.position !== "absolute" && cs.position !== "fixed") {
+      m = element.offsetParent;
+
+      while (parent && parent !== m) {
+        // if there's an ancestor element between the element and its offsetParent that's scrolled, we must factor that in.
+        x += parent.scrollLeft || 0;
+        y += parent.scrollTop || 0;
+        parent = parent.parentNode;
+      }
+    }
+
+    b = container.style;
+    b.top = element.offsetTop - y + "px";
+    b.left = element.offsetLeft - x + "px";
+    b[matrix_transformProp] = cs[matrix_transformProp];
+    b[matrix_transformOriginProp] = cs[matrix_transformOriginProp]; // b.border = m.border;
+    // b.borderLeftStyle = m.borderLeftStyle;
+    // b.borderTopStyle = m.borderTopStyle;
+    // b.borderLeftWidth = m.borderLeftWidth;
+    // b.borderTopWidth = m.borderTopWidth;
+
+    b.position = cs.position === "fixed" ? "fixed" : "absolute";
+    element.parentNode.appendChild(container);
+  }
+
+  return container;
+},
+    _setMatrix = function _setMatrix(m, a, b, c, d, e, f) {
+  m.a = a;
+  m.b = b;
+  m.c = c;
+  m.d = d;
+  m.e = e;
+  m.f = f;
+  return m;
+};
+
+var Matrix2D = /*#__PURE__*/function () {
+  function Matrix2D(a, b, c, d, e, f) {
+    if (a === void 0) {
+      a = 1;
+    }
+
+    if (b === void 0) {
+      b = 0;
+    }
+
+    if (c === void 0) {
+      c = 0;
+    }
+
+    if (d === void 0) {
+      d = 1;
+    }
+
+    if (e === void 0) {
+      e = 0;
+    }
+
+    if (f === void 0) {
+      f = 0;
+    }
+
+    _setMatrix(this, a, b, c, d, e, f);
+  }
+
+  var _proto = Matrix2D.prototype;
+
+  _proto.inverse = function inverse() {
+    var a = this.a,
+        b = this.b,
+        c = this.c,
+        d = this.d,
+        e = this.e,
+        f = this.f,
+        determinant = a * d - b * c || 1e-10;
+    return _setMatrix(this, d / determinant, -b / determinant, -c / determinant, a / determinant, (c * f - d * e) / determinant, -(a * f - b * e) / determinant);
+  };
+
+  _proto.multiply = function multiply(matrix) {
+    var a = this.a,
+        b = this.b,
+        c = this.c,
+        d = this.d,
+        e = this.e,
+        f = this.f,
+        a2 = matrix.a,
+        b2 = matrix.c,
+        c2 = matrix.b,
+        d2 = matrix.d,
+        e2 = matrix.e,
+        f2 = matrix.f;
+    return _setMatrix(this, a2 * a + c2 * c, a2 * b + c2 * d, b2 * a + d2 * c, b2 * b + d2 * d, e + e2 * a + f2 * c, f + e2 * b + f2 * d);
+  };
+
+  _proto.clone = function clone() {
+    return new Matrix2D(this.a, this.b, this.c, this.d, this.e, this.f);
+  };
+
+  _proto.equals = function equals(matrix) {
+    var a = this.a,
+        b = this.b,
+        c = this.c,
+        d = this.d,
+        e = this.e,
+        f = this.f;
+    return a === matrix.a && b === matrix.b && c === matrix.c && d === matrix.d && e === matrix.e && f === matrix.f;
+  };
+
+  _proto.apply = function apply(point, decoratee) {
+    if (decoratee === void 0) {
+      decoratee = {};
+    }
+
+    var x = point.x,
+        y = point.y,
+        a = this.a,
+        b = this.b,
+        c = this.c,
+        d = this.d,
+        e = this.e,
+        f = this.f;
+    decoratee.x = x * a + y * c + e || 0;
+    decoratee.y = x * b + y * d + f || 0;
+    return decoratee;
+  };
+
+  return Matrix2D;
+}(); // Feed in an element and it'll return a 2D matrix (optionally inverted) so that you can translate between coordinate spaces.
+// Inverting lets you translate a global point into a local coordinate space. No inverting lets you go the other way.
+// We needed this to work around various browser bugs, like Firefox doesn't accurately report getScreenCTM() when there
+// are transforms applied to ancestor elements.
+// The matrix math to convert any x/y coordinate is as follows, which is wrapped in a convenient apply() method of Matrix2D above:
+//     tx = m.a * x + m.c * y + m.e
+//     ty = m.b * x + m.d * y + m.f
+
+function getGlobalMatrix(element, inverse, adjustGOffset, includeScrollInFixed) {
+  // adjustGOffset is typically used only when grabbing an element's PARENT's global matrix, and it ignores the x/y offset of any SVG <g> elements because they behave in a special way.
+  if (!element || !element.parentNode || (matrix_doc || _setDoc(element)).documentElement === element) {
+    return new Matrix2D();
+  }
+
+  var zeroScales = _forceNonZeroScale(element),
+      svg = _svgOwner(element),
+      temps = svg ? _svgTemps : _divTemps,
+      container = _placeSiblings(element, adjustGOffset),
+      b1 = temps[0].getBoundingClientRect(),
+      b2 = temps[1].getBoundingClientRect(),
+      b3 = temps[2].getBoundingClientRect(),
+      parent = container.parentNode,
+      isFixed = !includeScrollInFixed && _isFixed(element),
+      m = new Matrix2D((b2.left - b1.left) / 100, (b2.top - b1.top) / 100, (b3.left - b1.left) / 100, (b3.top - b1.top) / 100, b1.left + (isFixed ? 0 : _getDocScrollLeft()), b1.top + (isFixed ? 0 : _getDocScrollTop()));
+
+  parent.removeChild(container);
+
+  if (zeroScales) {
+    b1 = zeroScales.length;
+
+    while (b1--) {
+      b2 = zeroScales[b1];
+      b2.scaleX = b2.scaleY = 0;
+      b2.renderTransform(1, b2);
+    }
+  }
+
+  return inverse ? m.inverse() : m;
+}
+ // export function getMatrix(element) {
+// 	_doc || _setDoc(element);
+// 	let m = (_win.getComputedStyle(element)[_transformProp] + "").substr(7).match(/[-.]*\d+[.e\-+]*\d*[e\-\+]*\d*/g),
+// 		is2D = m && m.length === 6;
+// 	return !m || m.length < 6 ? new Matrix2D() : new Matrix2D(+m[0], +m[1], +m[is2D ? 2 : 4], +m[is2D ? 3 : 5], +m[is2D ? 4 : 12], +m[is2D ? 5 : 13]);
+// }
+;// CONCATENATED MODULE: ./node_modules/gsap/Flip.js
+/*!
+ * Flip 3.8.0
+ * https://greensock.com
+ *
+ * @license Copyright 2008-2021, GreenSock. All rights reserved.
+ * Subject to the terms at https://greensock.com/standard-license or for
+ * Club GreenSock members, the agreement issued with that membership.
+ * @author: Jack Doyle, jack@greensock.com
+*/
+
+/* eslint-disable */
+
+
+var _id = 1,
+    Flip_toArray,
+    Flip_gsap,
+    Flip_RAD2DEG = 180 / Math.PI,
+    Flip_DEG2RAD = Math.PI / 180,
+    _emptyObj = {},
+    _dashedNameLookup = {},
+    _memoizedRemoveProps = {},
+    _callbacks = "onStart,onUpdate,onComplete,onReverseComplete,onInterrupt".split(","),
+    _removeProps = "transform,transformOrigin,width,height,position,top,left,opacity,zIndex".split(","),
+    _getEl = function _getEl(target) {
+  return Flip_toArray(target)[0] || console.warn("Element not found:", target);
+},
+    Flip_round = function _round(value) {
+  return Math.round(value * 10000) / 10000 || 0;
+},
+    _toggleClass = function _toggleClass(targets, className, action) {
+  return targets.forEach(function (el) {
+    return el.classList[action](className);
+  });
+},
+    _reserved = {
+  zIndex: 1,
+  clear: 1,
+  simple: 1,
+  spin: 1,
+  clearProps: 1,
+  targets: 1,
+  toggleClass: 1,
+  onComplete: 1,
+  onUpdate: 1,
+  onInterrupt: 1,
+  onStart: 1,
+  delay: 1,
+  repeat: 1,
+  repeatDelay: 1,
+  yoyo: 1,
+  scale: 1,
+  fade: 1,
+  absolute: 1,
+  props: 1,
+  onEnter: 1,
+  onLeave: 1,
+  custom: 1,
+  paused: 1,
+  nested: 1
+},
+    _fitReserved = {
+  zIndex: 1,
+  simple: 1,
+  clearProps: 1,
+  scale: 1,
+  absolute: 1,
+  fitChild: 1,
+  getVars: 1,
+  props: 1
+},
+    _camelToDashed = function _camelToDashed(p) {
+  return p.replace(/([A-Z])/g, "-$1").toLowerCase();
+},
+    _listToArray = function _listToArray(list) {
+  return typeof list === "string" ? list.split(" ").join("").split(",") : list;
+},
+    // removes extra spaces contaminating the names, returns an Array.
+_closestTenth,
+    _bonusValidated = 1,
+    //<name>Flip</name>
+_copy = function _copy(obj, exclude) {
+  var result = {},
+      p;
+
+  for (p in obj) {
+    exclude[p] || (result[p] = obj[p]);
+  }
+
+  return result;
+},
+    _memoizedProps = {},
+    _memoizeProps = function _memoizeProps(props) {
+  var p = _memoizedProps[props] = _listToArray(props);
+
+  _memoizedRemoveProps[props] = p.concat(_removeProps);
+  return p;
+},
+    _getInverseGlobalMatrix = function _getInverseGlobalMatrix(el) {
+  // integrates caching for improved performance
+  var cache = el._gsap || Flip_gsap.core.getCache(el);
+
+  if (cache.gmCache === Flip_gsap.ticker.frame) {
+    return cache.gMatrix;
+  }
+
+  cache.gmCache = Flip_gsap.ticker.frame;
+  return cache.gMatrix = getGlobalMatrix(el, true, false, true);
+},
+    _getDOMDepth = function _getDOMDepth(el, invert, level) {
+  if (level === void 0) {
+    level = 0;
+  }
+
+  // In invert is true, the sibling depth is increments of 1, and parent/nesting depth is increments of 1000. This lets us order elements in an Array to reflect document flow.
+  var parent = el.parentNode,
+      inc = 1000 * Math.pow(10, level) * (invert ? -1 : 1),
+      l = invert ? -inc * 900 : 0;
+
+  while (el) {
+    l += inc;
+    el = el.previousSibling;
+  }
+
+  return parent ? l + _getDOMDepth(parent, invert, level + 1) : l;
+},
+    _orderByDOMDepth = function _orderByDOMDepth(comps, invert, isElStates) {
+  comps.forEach(function (comp) {
+    return comp.d = _getDOMDepth(isElStates ? comp.element : comp.t, invert);
+  });
+  comps.sort(function (c1, c2) {
+    return c1.d - c2.d;
+  });
+  return comps;
+},
+    _recordInlineStyles = function _recordInlineStyles(elState, props) {
+  // records the current inline CSS properties into an Array in alternating name/value pairs that's stored in a "css" property on the state object so that we can revert later.
+  var style = elState.element.style,
+      a = elState.css = elState.css || [],
+      i = props.length,
+      p,
+      v;
+
+  while (i--) {
+    p = props[i];
+    v = style[p] || style.getPropertyValue(p);
+    a.push(v ? p : _dashedNameLookup[p] || (_dashedNameLookup[p] = _camelToDashed(p)), v);
+  }
+
+  return style;
+},
+    _applyInlineStyles = function _applyInlineStyles(state) {
+  var css = state.css,
+      style = state.element.style,
+      i = 0;
+  state.cache.uncache = 1;
+
+  for (; i < css.length; i += 2) {
+    css[i + 1] ? style[css[i]] = css[i + 1] : style.removeProperty(css[i]);
+  }
+},
+    _setFinalStates = function _setFinalStates(comps, onlyTransforms) {
+  var i = comps.length,
+      comp;
+
+  while (i--) {
+    comp = comps[i];
+    comp.a.cache.uncache = 1;
+  }
+
+  onlyTransforms || comps.finalStates.forEach(_applyInlineStyles);
+},
+    _makeAbsolute = function _makeAbsolute(elState, fallbackNode) {
+  var element = elState.element,
+      width = elState.width,
+      height = elState.height,
+      uncache = elState.uncache,
+      getProp = elState.getProp,
+      style = element.style,
+      result,
+      displayIsNone;
+  typeof fallbackNode !== "object" && (fallbackNode = elState);
+
+  if (getProp("position") !== "absolute") {
+    displayIsNone = getProp("display") === "none";
+
+    if (!elState.isVisible || displayIsNone) {
+      displayIsNone && (_recordInlineStyles(elState, ["display"]).display = fallbackNode.display);
+      elState.matrix = fallbackNode.matrix;
+      elState.width = width = elState.width || fallbackNode.width;
+      elState.height = height = elState.height || fallbackNode.height;
+    }
+
+    style.position = "absolute";
+    style.width = width + "px";
+    style.height = height + "px";
+    style.top || (style.top = "0px");
+    style.left || (style.left = "0px");
+
+    if (uncache) {
+      result = new ElementState(element);
+    } else {
+      // better performance
+      result = _copy(elState, _emptyObj);
+      result.position = "absolute";
+
+      if (elState.simple) {
+        var bounds = element.getBoundingClientRect();
+        result.matrix = new Matrix2D(1, 0, 0, 1, bounds.left + _getDocScrollLeft(), bounds.top + _getDocScrollTop());
+      } else {
+        result.matrix = getGlobalMatrix(element, false, false, true);
+      }
+    }
+
+    result = _fit(result, elState, true);
+    elState.x = parseFloat(result.x);
+    elState.y = parseFloat(result.y);
+  }
+
+  return element;
+},
+    _findElStateInState = function _findElStateInState(state, other) {
+  return other && state.idLookup[_parseElementState(other).id] || state.elementStates[0];
+},
+    _parseElementState = function _parseElementState(elOrNode, props, simple, other) {
+  return elOrNode instanceof ElementState ? elOrNode : elOrNode instanceof FlipState ? _findElStateInState(elOrNode, other) : new ElementState(typeof elOrNode === "string" ? _getEl(elOrNode) || console.warn(elOrNode + " not found") : elOrNode, props, simple);
+},
+    _recordProps = function _recordProps(elState, props) {
+  var getProp = Flip_gsap.getProperty(elState.element, null, "native"),
+      obj = elState.props = {},
+      i = props.length;
+
+  while (i--) {
+    obj[props[i]] = (getProp(props[i]) + "").trim();
+  }
+
+  obj.zIndex && (obj.zIndex = parseFloat(obj.zIndex) || 0);
+  return elState;
+},
+    _applyProps = function _applyProps(element, props) {
+  var style = element.style || element,
+      // could pass in a vars object.
+  p;
+
+  for (p in props) {
+    style[p] = props[p];
+  }
+},
+    _getID = function _getID(el) {
+  var id = el.getAttribute("data-flip-id");
+  id || el.setAttribute("data-flip-id", id = "auto-" + _id++);
+  return id;
+},
+    _getCTMInverse = function _getCTMInverse(el) {
+  return el.getCTM && el.nodeName.toLowerCase() === "svg" && _getCTM(el).inverse();
+},
+    _elementsFromElementStates = function _elementsFromElementStates(elStates) {
+  return elStates.map(function (elState) {
+    return elState.element;
+  });
+},
+    _handleCallback = function _handleCallback(callback, elStates, tl) {
+  return callback && elStates.length && tl.add(callback(_elementsFromElementStates(elStates), tl, new FlipState(elStates, 0, true)), 0);
+},
+    _fit = function _fit(fromState, toState, scale, applyProps, fitChild, vars) {
+  var element = fromState.element,
+      cache = fromState.cache,
+      parent = fromState.parent,
+      x = fromState.x,
+      y = fromState.y,
+      width = toState.width,
+      height = toState.height,
+      scaleX = toState.scaleX,
+      scaleY = toState.scaleY,
+      rotation = toState.rotation,
+      cssText = vars && element.style.cssText,
+      transform = vars && element.getBBox && element.getAttribute("transform"),
+      dimensionState = fromState,
+      _toState$matrix = toState.matrix,
+      e = _toState$matrix.e,
+      f = _toState$matrix.f,
+      deep = fromState.width !== width || fromState.height !== height || fromState.scaleX !== scaleX || fromState.scaleY !== scaleY || fromState.rotation !== rotation,
+      simple = !deep && fromState.simple && toState.simple && !fitChild,
+      skewX,
+      fromPoint,
+      toPoint,
+      getProp,
+      parentMatrix,
+      matrix,
+      bbox;
+
+  if (simple) {
+    scaleX = scaleY = 1;
+    rotation = skewX = 0;
+  } else {
+    parentMatrix = _getInverseGlobalMatrix(parent);
+    matrix = parentMatrix.clone().multiply(toState.ctm ? toState.matrix.clone().multiply(toState.ctm) : toState.matrix); // root SVG elements have a ctm that we must factor out (for example, viewBox:"0 0 94 94" with a width of 200px would scale the internals by 2.127 but when we're matching the size of the root <svg> element itself, that scaling shouldn't factor in!)
+
+    rotation = Flip_round(Math.atan2(matrix.b, matrix.a) * Flip_RAD2DEG);
+    skewX = Flip_round(Math.atan2(matrix.c, matrix.d) * Flip_RAD2DEG + rotation) % 360; // in very rare cases, minor rounding might end up with 360 which should be 0.
+
+    scaleX = Math.sqrt(Math.pow(matrix.a, 2) + Math.pow(matrix.b, 2));
+    scaleY = Math.sqrt(Math.pow(matrix.c, 2) + Math.pow(matrix.d, 2)) * Math.cos(skewX * Flip_DEG2RAD);
+
+    if (fitChild) {
+      fitChild = Flip_toArray(fitChild)[0];
+      getProp = Flip_gsap.getProperty(fitChild);
+      bbox = fitChild.getBBox && typeof fitChild.getBBox === "function" && fitChild.getBBox();
+      dimensionState = {
+        scaleX: getProp("scaleX"),
+        scaleY: getProp("scaleY"),
+        width: bbox ? bbox.width : Math.ceil(parseFloat(getProp("width", "px"))),
+        height: bbox ? bbox.height : parseFloat(getProp("height", "px"))
+      };
+    }
+
+    cache.rotation = rotation + "deg";
+    cache.skewX = skewX + "deg";
+  }
+
+  if (scale) {
+    scaleX *= width / (dimensionState.width || 1e-9);
+    scaleY *= height / (dimensionState.height || 1e-9);
+    cache.scaleX = scaleX;
+    cache.scaleY = scaleY;
+  } else {
+    width *= scaleX / dimensionState.scaleX;
+    height *= scaleY / dimensionState.scaleY;
+    element.style.width = width + "px";
+    element.style.height = height + "px";
+  } // if (fromState.isFixed) { // commented out because it's now taken care of in getGlobalMatrix() with a flag at the end.
+  // 	e -= _getDocScrollLeft();
+  // 	f -= _getDocScrollTop();
+  // }
+
+
+  applyProps && _applyProps(element, toState.props);
+
+  if (simple) {
+    x += e - fromState.matrix.e;
+    y += f - fromState.matrix.f;
+  } else if (deep || parent !== toState.parent) {
+    cache.renderTransform(1, cache);
+    matrix = getGlobalMatrix(fitChild || element, false, false, true);
+    fromPoint = parentMatrix.apply({
+      x: matrix.e,
+      y: matrix.f
+    });
+    toPoint = parentMatrix.apply({
+      x: e,
+      y: f
+    });
+    x += Flip_round(toPoint.x - fromPoint.x);
+    y += Flip_round(toPoint.y - fromPoint.y);
+  } else {
+    // use a faster/cheaper algorithm if we're just moving x/y
+    parentMatrix.e = parentMatrix.f = 0;
+    toPoint = parentMatrix.apply({
+      x: e - fromState.matrix.e,
+      y: f - fromState.matrix.f
+    });
+    x += Flip_round(toPoint.x);
+    y += Flip_round(toPoint.y);
+  }
+
+  if (vars && !(vars instanceof ElementState)) {
+    // revert
+    element.style.cssText = cssText;
+    element.getBBox && element.setAttribute("transform", transform || "");
+    cache.uncache = 1;
+  } else {
+    // or apply the transform immediately
+    cache.x = x + "px";
+    cache.y = y + "px";
+    cache.renderTransform(1, cache);
+  }
+
+  if (vars) {
+    vars.x = x;
+    vars.y = y;
+    vars.rotation = rotation;
+    vars.skewX = skewX;
+
+    if (scale) {
+      vars.scaleX = scaleX;
+      vars.scaleY = scaleY;
+    } else {
+      vars.width = width;
+      vars.height = height;
+    }
+  }
+
+  return vars || cache;
+},
+    _parseState = function _parseState(targetsOrState, vars) {
+  return targetsOrState instanceof FlipState ? targetsOrState : new FlipState(targetsOrState, vars);
+},
+    _getChangingElState = function _getChangingElState(toState, fromState, id) {
+  var to1 = toState.idLookup[id],
+      to2 = toState.alt[id];
+  return to2.isVisible && (!(fromState.getElementState(to2.element) || to2).isVisible || !to1.isVisible) ? to2 : to1;
+},
+    _fromTo = function _fromTo(fromState, toState, vars, relative) {
+  // relative is -1 if "from()", and 1 if "to()"
+  if (!_bonusValidated) {
+    return;
+  }
+
+  fromState instanceof FlipState && toState instanceof FlipState || console.warn("Not a valid state object.");
+  vars = vars || {};
+
+  var _vars = vars,
+      clearProps = _vars.clearProps,
+      onEnter = _vars.onEnter,
+      onLeave = _vars.onLeave,
+      absolute = _vars.absolute,
+      custom = _vars.custom,
+      delay = _vars.delay,
+      paused = _vars.paused,
+      repeat = _vars.repeat,
+      repeatDelay = _vars.repeatDelay,
+      yoyo = _vars.yoyo,
+      toggleClass = _vars.toggleClass,
+      nested = _vars.nested,
+      _zIndex = _vars.zIndex,
+      scale = _vars.scale,
+      fade = _vars.fade,
+      stagger = _vars.stagger,
+      spin = _vars.spin,
+      props = ("props" in vars ? vars : fromState).props,
+      tweenVars = _copy(vars, _reserved),
+      animation = Flip_gsap.timeline({
+    delay: delay,
+    paused: paused,
+    repeat: repeat,
+    repeatDelay: repeatDelay,
+    yoyo: yoyo
+  }),
+      remainingProps = tweenVars,
+      entering = [],
+      leaving = [],
+      comps = [],
+      swapOutTargets = [],
+      spinNum = spin === true ? 1 : spin || 0,
+      spinFunc = typeof spin === "function" ? spin : function () {
+    return spinNum;
+  },
+      interrupted = fromState.interrupted || toState.interrupted,
+      addFunc = animation[relative !== 1 ? "to" : "from"],
+      v,
+      p,
+      endTime,
+      i,
+      el,
+      comp,
+      state,
+      targets,
+      finalStates,
+      fromNode,
+      toNode;
+
+  relative || (toState = new FlipState(toState.targets, props).fit(toState, scale));
+
+  for (p in toState.idLookup) {
+    toNode = !toState.alt[p] ? toState.idLookup[p] : _getChangingElState(toState, fromState, p);
+    el = toNode.element;
+    fromNode = fromState.idLookup[p];
+    fromState.alt[p] && el === fromNode.element && (fromNode = fromState.alt[p]);
+
+    if (fromNode) {
+      comp = {
+        t: el,
+        b: fromNode,
+        a: toNode,
+        sd: fromNode.element === el ? 0 : toNode.isVisible ? 1 : -1
+      };
+      comps.push(comp);
+
+      if (comp.sd) {
+        if (comp.sd < 0) {
+          comp.b = toNode;
+          comp.a = fromNode;
+        } //comp.fb = fromState.getElementState(el) || comp.b; // fallback? Might need to be something other than the before state, like making sure we use the values from the same element.
+
+
+        fade && comps.push(comp.swap = {
+          t: fromNode.element,
+          b: comp.b,
+          a: comp.a,
+          sd: comp.sd * -1,
+          swap: comp
+        });
+      }
+
+      el._flip = fromNode.element._flip = animation;
+    } else if (toNode.isVisible) {
+      comps.push({
+        t: el,
+        b: _copy(toNode, {
+          isVisible: 1
+        }),
+        a: toNode,
+        sd: 0
+      }); // to include it in the "entering" Array and do absolute positioning if necessary
+
+      el._flip = animation;
+    }
+  }
+
+  props && (_memoizedProps[props] || _memoizeProps(props)).forEach(function (p) {
+    return tweenVars[p] = function (i) {
+      return comps[i].a.props[p];
+    };
+  });
+  comps.finalStates = finalStates = [];
+  absolute && _orderByDOMDepth(comps, true).forEach(function (c) {
+    return (c.a.isVisible || c.b.isVisible) && _makeAbsolute(c.sd < 0 ? c.b : c.a, c.b);
+  }); // when making absolute, we must go in a very particular order so that document flow changes don't affect things. Don't make it visible if both the before and after states are invisible! There's no point, and it could make things appear visible during the flip that shouldn't be.
+
+  _orderByDOMDepth(comps); // TODO: cache the matrix, especially for parent because it'll probably get reused quite a bit, but lock it to a particular cycle(?).
+
+
+  for (i = 0; i < comps.length; i++) {
+    comp = comps[i];
+    el = comp.t;
+    nested && !(comp.sd < 0) && (comp.a.matrix = getGlobalMatrix(el, false, false, true)); // moving a parent affects the position of children
+
+    if (comp.sd || comp.b.isVisible && comp.a.isVisible) {
+      if (comp.sd < 0) {
+        // swapping OUT (swap direction of -1 is out)
+        state = new ElementState(el, props, fromState.simple);
+
+        _fit(state, comp.a, scale, 0, 0, state);
+
+        state.matrix = getGlobalMatrix(el, false, false, true);
+        state.css = comp.b.css;
+        comp.a = state;
+        fade && (el.style.opacity = interrupted ? comp.b.opacity : comp.a.opacity);
+        stagger && swapOutTargets.push(el);
+      } else if (comp.sd > 0 && fade) {
+        // swapping IN (swap direction of 1 is in)
+        el.style.opacity = interrupted ? comp.a.opacity - comp.b.opacity : "0";
+      }
+
+      _fit(comp.a, comp.b, scale, props);
+    } else {
+      // either entering or leaving (one side is invisible)
+      if (!comp.b.isVisible) {
+        // entering
+        comp.a.isVisible && entering.push(comp.a);
+        comps.splice(i--, 1);
+      } else if (!comp.a.isVisible) {
+        // leaving
+        comp.b.css = comp.a.css;
+        leaving.push(comp.b);
+        comps.splice(i--, 1);
+        absolute && nested && _fit(comp.a, comp.b, scale, props);
+      }
+    }
+
+    finalStates.push(comp.a);
+  }
+
+  if (scale) {
+    tweenVars.scaleX = function (i) {
+      return comps[i].a.scaleX;
+    };
+
+    tweenVars.scaleY = function (i) {
+      return comps[i].a.scaleY;
+    };
+  } else {
+    tweenVars.width = function (i) {
+      return comps[i].a.width + "px";
+    };
+
+    tweenVars.height = function (i) {
+      return comps[i].a.height + "px";
+    };
+
+    tweenVars.autoRound = vars.autoRound || false;
+  }
+
+  tweenVars.x = function (i) {
+    return comps[i].a.x + "px";
+  };
+
+  tweenVars.y = function (i) {
+    return comps[i].a.y + "px";
+  };
+
+  tweenVars.rotation = function (i) {
+    return comps[i].a.rotation + (spin ? spinFunc(i, targets[i], targets) * 360 : 0);
+  };
+
+  tweenVars.skewX = function (i) {
+    return comps[i].a.skewX;
+  };
+
+  targets = comps.map(function (c) {
+    return c.t;
+  });
+
+  if (_zIndex || _zIndex === 0) {
+    tweenVars.modifiers = {
+      zIndex: function zIndex() {
+        return _zIndex;
+      }
+    };
+    tweenVars.zIndex = _zIndex;
+    tweenVars.immediateRender = vars.immediateRender !== false;
+  }
+
+  fade && (tweenVars.opacity = function (i) {
+    return comps[i].sd < 0 ? 0 : comps[i].sd > 0 ? comps[i].a.opacity : "+=0";
+  });
+
+  if (swapOutTargets.length) {
+    stagger = Flip_gsap.utils.distribute(stagger);
+    var dummyArray = targets.slice(swapOutTargets.length);
+
+    tweenVars.stagger = function (i, el) {
+      return stagger(~swapOutTargets.indexOf(el) ? targets.indexOf(comps[i].swap.t) : i, el, dummyArray);
+    };
+  } // // for testing...
+  // gsap.delayedCall(vars.data ? 50 : 1, function() {
+  // 	animation.eventCallback("onComplete", () => _setFinalStates(comps, !clearProps));
+  // 	addFunc.call(animation, targets, tweenVars, 0).play();
+  // });
+  // return;
+
+
+  _callbacks.forEach(function (name) {
+    return vars[name] && animation.eventCallback(name, vars[name], vars[name + "Params"]);
+  }); // apply callbacks to the timeline, not tweens (because "custom" timing can make multiple tweens)
+
+
+  if (custom && targets.length) {
+    // bust out the custom properties as their own tweens so they can use different eases, durations, etc.
+    remainingProps = _copy(tweenVars, _reserved);
+
+    if ("scale" in custom) {
+      custom.scaleX = custom.scaleY = custom.scale;
+      delete custom.scale;
+    }
+
+    for (p in custom) {
+      v = _copy(custom[p], _fitReserved);
+      v[p] = tweenVars[p];
+      !("duration" in v) && "duration" in tweenVars && (v.duration = tweenVars.duration);
+      v.stagger = tweenVars.stagger;
+      addFunc.call(animation, targets, v, 0);
+      delete remainingProps[p];
+    }
+  }
+
+  if (targets.length || leaving.length || entering.length) {
+    toggleClass && animation.add(function () {
+      return _toggleClass(targets, toggleClass, animation._zTime < 0 ? "remove" : "add");
+    }, 0) && !paused && _toggleClass(targets, toggleClass, "add");
+    targets.length && addFunc.call(animation, targets, remainingProps, 0);
+  }
+
+  _handleCallback(onEnter, entering, animation);
+
+  _handleCallback(onLeave, leaving, animation);
+
+  endTime = animation.duration();
+  animation.call(function () {
+    var forward = animation.time() >= endTime;
+    forward && _setFinalStates(comps, !clearProps);
+    toggleClass && _toggleClass(targets, toggleClass, forward ? "remove" : "add");
+  });
+  return animation;
+},
+    _createLookup = function _createLookup(state) {
+  var lookup = state.idLookup = {},
+      alt = state.alt = {},
+      elStates = state.elementStates,
+      i = elStates.length,
+      elState;
+
+  while (i--) {
+    elState = elStates[i];
+    lookup[elState.id] ? alt[elState.id] = elState : lookup[elState.id] = elState;
+  }
+};
+
+var FlipState = /*#__PURE__*/function () {
+  function FlipState(targets, vars, targetsAreElementStates) {
+    this.props = vars && vars.props;
+    this.simple = !!(vars && vars.simple);
+
+    if (targetsAreElementStates) {
+      this.targets = _elementsFromElementStates(targets);
+      this.elementStates = targets;
+
+      _createLookup(this);
+    } else {
+      this.targets = Flip_toArray(targets);
+      this.update(!vars || vars.clear !== false);
+    }
+  }
+
+  var _proto = FlipState.prototype;
+
+  _proto.update = function update(clear) {
+    var _this = this;
+
+    this.elementStates = this.targets.map(function (el) {
+      return new ElementState(el, _this.props, _this.simple);
+    });
+
+    _createLookup(this);
+
+    this.killFlips(clear);
+    this.recordInlineStyles();
+    return this;
+  };
+
+  _proto.fit = function fit(state, scale, nested) {
+    var elStatesInOrder = _orderByDOMDepth(this.elementStates.slice(0), false, true),
+        toElStates = (state || this).idLookup,
+        i = 0,
+        fromNode,
+        toNode;
+
+    for (; i < elStatesInOrder.length; i++) {
+      fromNode = elStatesInOrder[i];
+      nested && (fromNode.matrix = getGlobalMatrix(fromNode.element, false, false, true)); // moving a parent affects the position of children
+
+      toNode = toElStates[fromNode.id];
+      toNode && _fit(fromNode, toNode, scale, true, 0, fromNode);
+      fromNode.matrix = getGlobalMatrix(fromNode.element, false, false, true);
+    }
+
+    return this;
+  };
+
+  _proto.getProperty = function getProperty(element, property) {
+    var es = this.getElementState(element) || _emptyObj;
+
+    return property in es ? es[property] : (es.props || _emptyObj)[property];
+  };
+
+  _proto.recordInlineStyles = function recordInlineStyles() {
+    var props = _memoizedRemoveProps[this.props] || _removeProps,
+        i = this.elementStates.length;
+
+    while (i--) {
+      _recordInlineStyles(this.elementStates[i], props);
+    }
+  };
+
+  _proto.killFlips = function killFlips(clear) {
+    var found;
+    this.targets.forEach(function (tl) {
+      tl = tl._flip;
+
+      if (tl && tl.progress() < 1 && !tl.paused()) {
+        found = 1;
+        tl.vars.onInterrupt && tl.vars.onInterrupt.apply(tl, tl.vars.onInterruptParams || []);
+        clear && tl.progress(1);
+        tl.kill(); // we should also kill it in case it was added to a parent timeline.
+      }
+    });
+
+    if (found && clear) {
+      // if we found an in-progress Flip animation, we must record all the values in their current state at that point BUT we should update the isVisible value AFTER pushing that flip to completion so that elements that are entering or leaving will populate those Arrays properly.
+      this.elementStates.forEach(function (es) {
+        var b = es.element.getBoundingClientRect();
+        es.isVisible = b.width || b.height || b.top || b.left;
+        es.uncache = 1;
+      });
+    }
+
+    this.interrupted = !!found;
+  };
+
+  _proto.getElementState = function getElementState(element) {
+    return this.elementStates[this.targets.indexOf(_getEl(element))];
+  };
+
+  _proto.makeAbsolute = function makeAbsolute() {
+    return _orderByDOMDepth(this.elementStates.slice(0), true, true).map(_makeAbsolute);
+  };
+
+  return FlipState;
+}();
+
+var ElementState = /*#__PURE__*/function () {
+  function ElementState(element, props, simple) {
+    this.element = element;
+    this.update(props, simple);
+  }
+
+  var _proto2 = ElementState.prototype;
+
+  _proto2.update = function update(props, simple) {
+    var element = this.element,
+        getProp = Flip_gsap.getProperty(element),
+        cache = Flip_gsap.core.getCache(element),
+        bounds = element.getBoundingClientRect(),
+        bbox = element.getBBox && typeof element.getBBox === "function" && element.nodeName.toLowerCase() !== "svg" && element.getBBox(),
+        m = simple ? new Matrix2D(1, 0, 0, 1, bounds.left + _getDocScrollLeft(), bounds.top + _getDocScrollTop()) : getGlobalMatrix(element, false, false, true);
+    this.getProp = getProp;
+    this.element = element;
+    this.id = _getID(element);
+    this.matrix = m;
+    this.cache = cache;
+    this.bounds = bounds;
+    this.isVisible = !!(bounds.width || bounds.height || bounds.left || bounds.top);
+    this.display = getProp("display");
+    this.position = getProp("position");
+    this.isFixed = _isFixed(element);
+    this.parent = element.parentNode;
+    this.x = getProp("x");
+    this.y = getProp("y");
+    this.scaleX = cache.scaleX;
+    this.scaleY = cache.scaleY;
+    this.rotation = getProp("rotation");
+    this.skewX = getProp("skewX");
+    this.opacity = getProp("opacity");
+    this.width = bbox ? bbox.width : _closestTenth(parseFloat(getProp("width", "px")) + 0.04); // round up to the closest 0.25 so that text doesn't wrap.
+
+    this.height = bbox ? bbox.height : parseFloat(getProp("height", "px"));
+    props && _recordProps(this, _memoizedProps[props] || _memoizeProps(props));
+    this.ctm = _getCTMInverse(element);
+    this.simple = simple || Flip_round(m.a) === 1 && !Flip_round(m.b) && !Flip_round(m.c) && Flip_round(m.d) === 1; // allows us to speed through some other tasks if it's not scale/rotated
+
+    this.uncache = 0;
+  };
+
+  return ElementState;
+}();
+
+var Flip = /*#__PURE__*/function () {
+  function Flip() {}
+
+  Flip.getState = function getState(targets, vars) {
+    return _parseState(targets, typeof vars === "string" ? {
+      props: vars
+    } : vars);
+  };
+
+  Flip.from = function from(state, vars) {
+    vars = vars || {};
+    "clearProps" in vars || (vars.clearProps = true);
+    return _fromTo(state, _parseState(vars.targets || state.targets, {
+      props: vars.props || state.props,
+      simple: vars.simple,
+      clear: !!vars.clear
+    }), vars, -1);
+  };
+
+  Flip.to = function to(state, vars) {
+    return _fromTo(state, _parseState(vars.targets || state.targets, {
+      props: vars.props || state.props,
+      simple: vars.simple,
+      clear: !!vars.clear
+    }), vars, 1);
+  };
+
+  Flip.fromTo = function fromTo(fromState, toState, vars) {
+    return _fromTo(fromState, toState, vars);
+  };
+
+  Flip.fit = function fit(fromEl, toEl, vars) {
+    if (!_bonusValidated) {
+      return;
+    }
+
+    var v = vars ? _copy(vars, _fitReserved) : {},
+        _ref = vars || v,
+        absolute = _ref.absolute,
+        scale = _ref.scale,
+        getVars = _ref.getVars,
+        props = _ref.props,
+        runBackwards = _ref.runBackwards,
+        onComplete = _ref.onComplete,
+        simple = _ref.simple,
+        fitChild = vars && vars.fitChild && _getEl(vars.fitChild),
+        before = _parseElementState(toEl, props, simple, fromEl),
+        after = _parseElementState(fromEl, 0, simple, before),
+        inlineProps = props ? _memoizedRemoveProps[props] : _removeProps;
+
+    props && _applyProps(v, before.props);
+
+    if (runBackwards) {
+      _recordInlineStyles(after, inlineProps);
+
+      "immediateRender" in v || (v.immediateRender = true);
+
+      v.onComplete = function () {
+        _applyInlineStyles(after);
+
+        onComplete && onComplete.apply(this, arguments);
+      };
+    }
+
+    absolute && _makeAbsolute(after, before);
+    v = _fit(after, before, scale || fitChild, props, fitChild, v.duration || getVars ? v : 0);
+    return getVars ? v : v.duration ? Flip_gsap.to(after.element, v) : null;
+  };
+
+  Flip.makeAbsolute = function makeAbsolute(targetsOrStates, vars) {
+    return (targetsOrStates instanceof FlipState ? targetsOrStates : new FlipState(targetsOrStates, vars)).makeAbsolute();
+  };
+
+  Flip.isFlipping = function isFlipping(target) {
+    var f = Flip.getByTarget(target);
+    return !!f && f.isActive();
+  };
+
+  Flip.getByTarget = function getByTarget(target) {
+    return (_getEl(target) || _emptyObj)._flip;
+  };
+
+  Flip.getElementState = function getElementState(target, props) {
+    return new ElementState(_getEl(target), props);
+  };
+
+  Flip.convertCoordinates = function convertCoordinates(fromElement, toElement, point) {
+    var m = getGlobalMatrix(toElement, true, true).multiply(getGlobalMatrix(fromElement));
+    return point ? m.apply(point) : m;
+  };
+
+  Flip.register = function register(core) {
+    Flip_gsap = core;
+
+    _setDoc(document.body || document.documentElement);
+
+    Flip_toArray = Flip_gsap.utils.toArray;
+    _closestTenth = Flip_gsap.utils.snap(0.1);
+  };
+
+  return Flip;
+}();
+Flip.version = "3.8.0"; // function whenImagesLoad(el, func) {
+// 	let pending = [],
+// 		onLoad = e => {
+// 			pending.splice(pending.indexOf(e.target), 1);
+// 			e.target.removeEventListener("load", onLoad);
+// 			pending.length || func();
+// 		};
+// 	gsap.utils.toArray(el.tagName.toLowerCase() === "img" ? el : el.querySelectorAll("img")).forEach(img => img.complete || img.addEventListener("load", onLoad) || pending.push(img));
+// 	pending.length || func();
+// }
+
+typeof window !== "undefined" && window.gsap && window.gsap.registerPlugin(Flip);
+
+;// CONCATENATED MODULE: ./assets/src/js/components/header.js
+
+
+
+
+var _require = __webpack_require__(26),
+    SplitText = _require.default;
+
+gsap_gsapWithCSS.registerPlugin(ScrollTrigger, SplitText, Flip); // gsap.registerPlugin(SplitText);
+
+var header = function header() {
+  var title = document.querySelector('.entry-title'); // const entryHeader = document.querySelector('.entry-header');
+
+  if (title) {
+    var splitTitle = new SplitText(title, {
+      type: 'words, chars'
+    }),
+        targets = splitTitle.chars;
+    var tl = gsap_gsapWithCSS.timeline();
+    tl.delay(0.75).from(targets, {
+      autoAlpha: 0,
+      y: 30,
+      duration: 0.85,
+      stagger: 0.0325,
+      ease: Back.easeOut.config(3)
+    }); // const flip = () => {
+    // 	const state = Flip.getState('.top-title, .entry-title');
+    // 	topTitle.classList.toggle('active');
+    // 	title.classList.toggle('active');
+    // 	Flip.from(state, {
+    // 		duration: 0.6,
+    // 		fade: true,
+    // 		absolute: true,
+    // 		toggleClass: 'flipping',
+    // 		ease: 'power1.inOut',
+    // 	});
+    // };
+    // ScrollTrigger.create({
+    // 	trigger: entryHeader,
+    // 	start: 'top top',
+    // 	onEnter: flip,
+    // 	onLeaveBack: flip,
+    // 	markers: true,
+    // });
+  }
+};
+
+/* harmony default export */ const components_header = (header);
+// EXTERNAL MODULE: ./node_modules/gsap/utils/strings.js
+var strings = __webpack_require__(111);
+;// CONCATENATED MODULE: ./node_modules/gsap/TextPlugin.js
+/*!
+ * TextPlugin 3.8.0
+ * https://greensock.com
+ *
+ * @license Copyright 2008-2021, GreenSock. All rights reserved.
+ * Subject to the terms at https://greensock.com/standard-license or for
+ * Club GreenSock members, the agreement issued with that membership.
+ * @author: Jack Doyle, jack@greensock.com
+*/
+
+/* eslint-disable */
+
+
+var TextPlugin_gsap,
+    TextPlugin_tempDiv,
+    TextPlugin_getGSAP = function _getGSAP() {
+  return TextPlugin_gsap || typeof window !== "undefined" && (TextPlugin_gsap = window.gsap) && TextPlugin_gsap.registerPlugin && TextPlugin_gsap;
+};
+
+var TextPlugin = {
+  version: "3.8.0",
+  name: "text",
+  init: function init(target, value, tween) {
+    var i = target.nodeName.toUpperCase(),
+        data = this,
+        _short,
+        text,
+        original,
+        j,
+        condensedText,
+        condensedOriginal,
+        aggregate,
+        s;
+
+    data.svg = target.getBBox && (i === "TEXT" || i === "TSPAN");
+
+    if (!("innerHTML" in target) && !data.svg) {
+      return false;
+    }
+
+    data.target = target;
+
+    if (typeof value !== "object") {
+      value = {
+        value: value
+      };
+    }
+
+    if (!("value" in value)) {
+      data.text = data.original = [""];
+      return;
+    }
+
+    data.delimiter = value.delimiter || "";
+    original = (0,strings/* splitInnerHTML */.d7)(target, data.delimiter, false, value.preserveSpaces);
+
+    if (!TextPlugin_tempDiv) {
+      TextPlugin_tempDiv = document.createElement("div");
+    }
+
+    TextPlugin_tempDiv.innerHTML = value.value;
+    text = (0,strings/* splitInnerHTML */.d7)(TextPlugin_tempDiv, data.delimiter);
+    data.from = tween._from;
+
+    if (data.from) {
+      i = original;
+      original = text;
+      text = i;
+    }
+
+    data.hasClass = !!(value.newClass || value.oldClass);
+    data.newClass = value.newClass;
+    data.oldClass = value.oldClass;
+    i = original.length - text.length;
+    _short = i < 0 ? original : text;
+    data.fillChar = value.fillChar || (value.padSpace ? "&nbsp;" : "");
+
+    if (i < 0) {
+      i = -i;
+    }
+
+    while (--i > -1) {
+      _short.push(data.fillChar);
+    }
+
+    if (value.type === "diff") {
+      j = 0;
+      condensedText = [];
+      condensedOriginal = [];
+      aggregate = "";
+
+      for (i = 0; i < text.length; i++) {
+        s = text[i];
+
+        if (s === original[i]) {
+          aggregate += s;
+        } else {
+          condensedText[j] = aggregate + s;
+          condensedOriginal[j++] = aggregate + original[i];
+          aggregate = "";
+        }
+      }
+
+      text = condensedText;
+      original = condensedOriginal;
+
+      if (aggregate) {
+        text.push(aggregate);
+        original.push(aggregate);
+      }
+    }
+
+    if (value.speed) {
+      tween.duration(Math.min(0.05 / value.speed * _short.length, value.maxDuration || 9999));
+    }
+
+    this.original = original;
+    this.text = text;
+
+    this._props.push("text");
+  },
+  render: function render(ratio, data) {
+    if (ratio > 1) {
+      ratio = 1;
+    } else if (ratio < 0) {
+      ratio = 0;
+    }
+
+    if (data.from) {
+      ratio = 1 - ratio;
+    }
+
+    var text = data.text,
+        hasClass = data.hasClass,
+        newClass = data.newClass,
+        oldClass = data.oldClass,
+        delimiter = data.delimiter,
+        target = data.target,
+        fillChar = data.fillChar,
+        original = data.original,
+        l = text.length,
+        i = ratio * l + 0.5 | 0,
+        applyNew,
+        applyOld,
+        str;
+
+    if (hasClass) {
+      applyNew = newClass && i;
+      applyOld = oldClass && i !== l;
+      str = (applyNew ? "<span class='" + newClass + "'>" : "") + text.slice(0, i).join(delimiter) + (applyNew ? "</span>" : "") + (applyOld ? "<span class='" + oldClass + "'>" : "") + delimiter + original.slice(i).join(delimiter) + (applyOld ? "</span>" : "");
+    } else {
+      str = text.slice(0, i).join(delimiter) + delimiter + original.slice(i).join(delimiter);
+    }
+
+    if (data.svg) {
+      //SVG text elements don't have an "innerHTML" in Microsoft browsers.
+      target.textContent = str;
+    } else {
+      target.innerHTML = fillChar === "&nbsp;" && ~str.indexOf("  ") ? str.split("  ").join("&nbsp;&nbsp;") : str;
+    }
+  }
+};
+TextPlugin.splitInnerHTML = strings/* splitInnerHTML */.d7;
+TextPlugin.emojiSafeSplit = strings/* emojiSafeSplit */.pf;
+TextPlugin.getText = strings/* getText */.Q;
+TextPlugin_getGSAP() && TextPlugin_gsap.registerPlugin(TextPlugin);
+
+;// CONCATENATED MODULE: ./node_modules/gsap/ScrambleTextPlugin.js
+/*!
+ * ScrambleTextPlugin 3.8.0
+ * https://greensock.com
+ *
+ * @license Copyright 2008-2021, GreenSock. All rights reserved.
+ * Subject to the terms at https://greensock.com/standard-license or for
+ * Club GreenSock members, the agreement issued with that membership.
+ * @author: Jack Doyle, jack@greensock.com
+*/
+
+/* eslint-disable */
+
+
+var CharSet = /*#__PURE__*/function () {
+  function CharSet(chars) {
+    this.chars = (0,strings/* emojiSafeSplit */.pf)(chars);
+    this.sets = [];
+    this.length = 50;
+
+    for (var i = 0; i < 20; i++) {
+      this.sets[i] = _scrambleText(80, this.chars); //we create 20 strings that are 80 characters long, randomly chosen and pack them into an array. We then randomly choose the scrambled text from this array in order to greatly improve efficiency compared to creating new randomized text from scratch each and every time it's needed. This is a simple lookup whereas the other technique requires looping through as many times as there are characters needed, and calling Math.random() each time through the loop, building the string, etc.
+    }
+  }
+
+  var _proto = CharSet.prototype;
+
+  _proto.grow = function grow(newLength) {
+    //if we encounter a tween that has more than 80 characters, we'll need to add to the character sets accordingly. Once it's cached, it'll only need to grow again if we exceed that new length. Again, this is an efficiency tactic.
+    for (var i = 0; i < 20; i++) {
+      this.sets[i] += _scrambleText(newLength - this.length, this.chars);
+    }
+
+    this.length = newLength;
+  };
+
+  return CharSet;
+}();
+
+var ScrambleTextPlugin_gsap,
+    ScrambleTextPlugin_coreInitted,
+    ScrambleTextPlugin_getGSAP = function _getGSAP() {
+  return ScrambleTextPlugin_gsap || typeof window !== "undefined" && (ScrambleTextPlugin_gsap = window.gsap) && ScrambleTextPlugin_gsap.registerPlugin && ScrambleTextPlugin_gsap;
+},
+    ScrambleTextPlugin_bonusValidated = 1,
+    //<name>ScrambleTextPlugin</name>
+_spacesExp = /\s+/g,
+    _scrambleText = function _scrambleText(length, chars) {
+  var l = chars.length,
+      s = "";
+
+  while (--length > -1) {
+    s += chars[~~(Math.random() * l)];
+  }
+
+  return s;
+},
+    _upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    _lower = _upper.toLowerCase(),
+    _charsLookup = {
+  upperCase: new CharSet(_upper),
+  lowerCase: new CharSet(_lower),
+  upperAndLowerCase: new CharSet(_upper + _lower)
+},
+    ScrambleTextPlugin_initCore = function _initCore() {
+  ScrambleTextPlugin_coreInitted = ScrambleTextPlugin_gsap = ScrambleTextPlugin_getGSAP();
+};
+
+var ScrambleTextPlugin = {
+  version: "3.8.0",
+  name: "scrambleText",
+  register: function register(core, Plugin, propTween) {
+    ScrambleTextPlugin_gsap = core;
+
+    ScrambleTextPlugin_initCore();
+  },
+  init: function init(target, value, tween, index, targets) {
+    ScrambleTextPlugin_coreInitted || ScrambleTextPlugin_initCore();
+    this.prop = "innerHTML" in target ? "innerHTML" : "textContent" in target ? "textContent" : 0; // SVG text in IE doesn't have innerHTML, but it does have textContent.
+
+    if (!this.prop) {
+      return;
+    }
+
+    this.target = target;
+
+    if (typeof value !== "object") {
+      value = {
+        text: value
+      };
+    }
+
+    var text = value.text || value.value || "",
+        trim = value.trim !== false,
+        data = this,
+        delim,
+        maxLength,
+        charset,
+        splitByChars;
+    data.delimiter = delim = value.delimiter || "";
+    data.original = (0,strings/* emojiSafeSplit */.pf)((0,strings/* getText */.Q)(target).replace(_spacesExp, " ").split("&nbsp;").join(""), delim, trim);
+
+    if (text === "{original}" || text === true || text == null) {
+      text = data.original.join(delim);
+    }
+
+    data.text = (0,strings/* emojiSafeSplit */.pf)((text || "").replace(_spacesExp, " "), delim, trim);
+    data.hasClass = !!(value.newClass || value.oldClass);
+    data.newClass = value.newClass;
+    data.oldClass = value.oldClass;
+    splitByChars = delim === "";
+    data.textHasEmoji = splitByChars && !!data.text.emoji;
+    data.charsHaveEmoji = !!value.chars && !!(0,strings/* emojiSafeSplit */.pf)(value.chars).emoji;
+    data.length = splitByChars ? data.original.length : data.original.join(delim).length;
+    data.lengthDif = (splitByChars ? data.text.length : data.text.join(delim).length) - data.length;
+    data.fillChar = value.fillChar || value.chars && ~value.chars.indexOf(" ") ? "&nbsp;" : "";
+    data.charSet = charset = _charsLookup[value.chars || "upperCase"] || new CharSet(value.chars);
+    data.speed = 0.05 / (value.speed || 1);
+    data.prevScrambleTime = 0;
+    data.setIndex = Math.random() * 20 | 0;
+    maxLength = data.length + Math.max(data.lengthDif, 0);
+
+    if (maxLength > charset.length) {
+      charset.grow(maxLength);
+    }
+
+    data.chars = charset.sets[data.setIndex];
+    data.revealDelay = value.revealDelay || 0;
+    data.tweenLength = value.tweenLength !== false;
+    data.tween = tween;
+    data.rightToLeft = !!value.rightToLeft;
+
+    data._props.push("scrambleText", "text");
+
+    return ScrambleTextPlugin_bonusValidated;
+  },
+  render: function render(ratio, data) {
+    var target = data.target,
+        prop = data.prop,
+        text = data.text,
+        delimiter = data.delimiter,
+        tween = data.tween,
+        prevScrambleTime = data.prevScrambleTime,
+        revealDelay = data.revealDelay,
+        setIndex = data.setIndex,
+        chars = data.chars,
+        charSet = data.charSet,
+        length = data.length,
+        textHasEmoji = data.textHasEmoji,
+        charsHaveEmoji = data.charsHaveEmoji,
+        lengthDif = data.lengthDif,
+        tweenLength = data.tweenLength,
+        oldClass = data.oldClass,
+        newClass = data.newClass,
+        rightToLeft = data.rightToLeft,
+        fillChar = data.fillChar,
+        speed = data.speed,
+        original = data.original,
+        hasClass = data.hasClass,
+        l = text.length,
+        time = tween._time,
+        timeDif = time - prevScrambleTime,
+        i,
+        i2,
+        startText,
+        endText,
+        applyNew,
+        applyOld,
+        str,
+        startClass,
+        endClass,
+        position,
+        r;
+
+    if (revealDelay) {
+      if (tween._from) {
+        time = tween._dur - time; //invert the time for from() tweens
+      }
+
+      ratio = time === 0 ? 0 : time < revealDelay ? 0.000001 : time === tween._dur ? 1 : tween._ease((time - revealDelay) / (tween._dur - revealDelay));
+    }
+
+    if (ratio < 0) {
+      ratio = 0;
+    } else if (ratio > 1) {
+      ratio = 1;
+    }
+
+    if (rightToLeft) {
+      ratio = 1 - ratio;
+    }
+
+    i = ~~(ratio * l + 0.5);
+
+    if (ratio) {
+      if (timeDif > speed || timeDif < -speed) {
+        data.setIndex = setIndex = (setIndex + (Math.random() * 19 | 0)) % 20;
+        data.chars = charSet.sets[setIndex];
+        data.prevScrambleTime += timeDif;
+      }
+
+      endText = chars;
+    } else {
+      endText = original.join(delimiter);
+    }
+
+    r = tween._from ? ratio : 1 - ratio;
+    position = length + (tweenLength ? tween._from ? r * r * r : 1 - r * r * r : 1) * lengthDif;
+
+    if (rightToLeft) {
+      if (ratio === 1 && (tween._from || tween.data === "isFromStart")) {
+        //special case for from() tweens
+        startText = "";
+        endText = original.join(delimiter);
+      } else {
+        str = text.slice(i).join(delimiter);
+
+        if (charsHaveEmoji) {
+          startText = (0,strings/* emojiSafeSplit */.pf)(endText).slice(0, position - (textHasEmoji ? (0,strings/* emojiSafeSplit */.pf)(str) : str).length + 0.5 | 0).join("");
+        } else {
+          startText = endText.substr(0, position - (textHasEmoji ? (0,strings/* emojiSafeSplit */.pf)(str) : str).length + 0.5 | 0);
+        }
+
+        endText = str;
+      }
+    } else {
+      startText = text.slice(0, i).join(delimiter);
+      i2 = (textHasEmoji ? (0,strings/* emojiSafeSplit */.pf)(startText) : startText).length;
+
+      if (charsHaveEmoji) {
+        endText = (0,strings/* emojiSafeSplit */.pf)(endText).slice(i2, position + 0.5 | 0).join("");
+      } else {
+        endText = endText.substr(i2, position - i2 + 0.5 | 0);
+      }
+    }
+
+    if (hasClass) {
+      startClass = rightToLeft ? oldClass : newClass;
+      endClass = rightToLeft ? newClass : oldClass;
+      applyNew = startClass && i !== 0;
+      applyOld = endClass && i !== l;
+      str = (applyNew ? "<span class='" + startClass + "'>" : "") + startText + (applyNew ? "</span>" : "") + (applyOld ? "<span class='" + endClass + "'>" : "") + delimiter + endText + (applyOld ? "</span>" : "");
+    } else {
+      str = startText + delimiter + endText;
+    }
+
+    target[prop] = fillChar === "&nbsp;" && ~str.indexOf("  ") ? str.split("  ").join("&nbsp;&nbsp;") : str;
+  }
+};
+ScrambleTextPlugin.emojiSafeSplit = strings/* emojiSafeSplit */.pf;
+ScrambleTextPlugin.getText = strings/* getText */.Q;
+ScrambleTextPlugin_getGSAP() && ScrambleTextPlugin_gsap.registerPlugin(ScrambleTextPlugin);
+
 ;// CONCATENATED MODULE: ./node_modules/ssr-window/ssr-window.esm.js
 /**
  * SSR Window 4.0.2
@@ -32932,2156 +35016,6 @@ function EffectCards({
 
 
 
-;// CONCATENATED MODULE: ./assets/src/js/components/swiper.js
-
-
-core.use([Navigation, Pagination, Autoplay]);
-
-var swiper = function swiper() {
-  var conponents = document.querySelectorAll('[data-component="swiper"]');
-
-  var initSwiper = function initSwiper(el, index) {
-    var targetSwiper = el;
-    var btnPrev = el.querySelector('.swiper-prev');
-    var btnNext = el.querySelector('.swiper-next');
-    var pagination = el.querySelector('.swiper-pagination');
-    targetSwiper.classList.add('s' + index);
-    btnPrev.classList.add('l' + index);
-    btnNext.classList.add('r' + index);
-    pagination.classList.add('p' + index);
-    var sw = new core(targetSwiper, {
-      // slidesPerView: 1,
-      slidesPerView: 'auto',
-      centeredSlides: true,
-      navigation: {
-        nextEl: '.r' + index,
-        prevEl: '.l' + index
-      },
-      pagination: {
-        el: pagination,
-        type: 'progressbar'
-      }
-    });
-  };
-
-  Array.from(conponents).forEach(function (el, index) {
-    new initSwiper(el, index);
-  }); // const cursor = document.querySelector('.cursor');
-  // const cursorFollow = document.querySelector('.cursor-follow');
-  // const bgWrap = document.querySelector('.bg-wrap');
-  // const numBaseCenter = window.innerWidth / 2;
-  // let flagBg = false;
-  // const moveCircle = (e) => {
-  // 	gsap.to(cursor, {
-  // 		duration: 0.3,
-  // 		x: e.clientX,
-  // 		y: e.clientY,
-  // 	});
-  // 	gsap.to(cursorFollow, {
-  // 		duration: 0.7,
-  // 		x: e.clientX,
-  // 		y: e.clientY,
-  // 	});
-  // 	if (flagBg) {
-  // 		if (numBaseCenter > e.clientX) {
-  // 			console.log('left');
-  // 			cursor.classList.add('is-arrow-left');
-  // 			cursor.classList.remove('is-arrow-right');
-  // 		} else {
-  // 			console.log('right');
-  // 			cursor.classList.add('is-arrow-right');
-  // 			cursor.classList.remove('is-arrow-left');
-  // 		}
-  // 	} else {
-  // 		cursor.classList.remove('is-arrow-right', 'is-arrow-left');
-  // 	}
-  // };
-  // window.addEventListener('mousemove', moveCircle);
-  // const mouseEnter = (e) => {
-  // 	flagBg = true;
-  // 	console.log(window.innerWidth / 2);
-  // };
-  // const mouseLeave = (e) => {
-  // 	flagBg = false;
-  // };
-  // bgWrap.addEventListener('mouseenter', mouseEnter);
-  // bgWrap.addEventListener('mouseleave', mouseLeave);
-};
-
-/* harmony default export */ const components_swiper = (swiper);
-// EXTERNAL MODULE: ./node_modules/masonry-layout/masonry.js
-var masonry_layout_masonry = __webpack_require__(751);
-var masonry_default = /*#__PURE__*/__webpack_require__.n(masonry_layout_masonry);
-;// CONCATENATED MODULE: ./assets/src/js/components/masonry.js
-
-
-var imagesLoaded = __webpack_require__(564);
-
-var masonry = function masonry() {
-  var component = document.querySelector('.masonry-wrapper');
-
-  if (component) {
-    var msnry = new (masonry_default())(component, {
-      horizontalOrder: false,
-      itemSelector: '.grid-item',
-      columnWidth: '.grid-sizer',
-      percentPosition: true // transitionDuration: '0.5s',
-
-    });
-    imagesLoaded(component).on('progress', function (instance, image) {
-      var targetParnetNode = image.img.parentNode;
-      msnry.layout();
-      setInterval(function () {
-        targetParnetNode.classList.add('is-visible');
-        window.dispatchEvent(new Event('resize'));
-      }, 500);
-    });
-
-    var loadmore = function loadmore() {
-      var loading = false,
-          hasPost = true;
-      var btnLoadMore = document.getElementById('button-load-more');
-
-      if (btnLoadMore) {
-        btnLoadMore.addEventListener('click', function () {
-          if (!loading) {
-            var data = {
-              action: 'loadmore',
-              // eslint-disable-next-line no-undef
-              query: frontendAjaxObject.posts,
-              // eslint-disable-next-line no-undef
-              page: frontendAjaxObject.currentPage
-            };
-            $.ajax({
-              // eslint-disable-next-line no-undef
-              url: frontendAjaxObject.ajaxurl,
-              data: data,
-              type: 'POST',
-              beforeSend: function beforeSend(xhr) {
-                loading = true;
-              },
-              success: function success(rtn) {
-                loading = false; // console.log(rtn);
-
-                if (rtn.length > 0) {
-                  // console.log('rtn length has');
-                  component.insertAdjacentHTML('beforeend', rtn);
-                  msnry.reloadItems(); // eslint-disable-next-line no-undef
-
-                  imagesLoaded(component).on('progress', function (instance, image) {
-                    var targetParnetNode = image.img.parentNode;
-                    msnry.layout();
-                    setTimeout(function () {
-                      targetParnetNode.classList.add('is-visible');
-                    }, 500);
-                  }); // eslint-disable-next-line no-undef
-
-                  frontendAjaxObject.currentPage++;
-                }
-
-                if ( // eslint-disable-next-line no-undef
-                frontendAjaxObject.currentPage >= frontendAjaxObject.maxPage) {
-                  btnLoadMore.remove();
-                  hasPost = false;
-                }
-              },
-              error: function error(request, status, _error) {
-                console.log(status + ' / code = ' + request.status + ' message = ' + request.responseText + ' error = ' + _error);
-              }
-            });
-          }
-        });
-        window.addEventListener('scroll', function () {
-          var footer = document.getElementById('colophon');
-          var windowTop = window.pageYOffset;
-          var windowHeight = window.innerHeight;
-          var footerHeight = footer.offsetHeight;
-          var documentHeight = document.body.offsetHeight; // console.log(windowTop, documentHeight - windowHeight - footerHeight);
-
-          if (windowTop > documentHeight - windowHeight - footerHeight - windowHeight / 2) {
-            if (hasPost && !loading) btnLoadMore.click();
-          }
-        });
-      }
-    };
-
-    loadmore();
-  }
-};
-
-/* harmony default export */ const components_masonry = (masonry);
-;// CONCATENATED MODULE: ./assets/src/js/components/form.js
-var initForm = function initForm() {
-  var formRequest = document.getElementById('formRequest');
-
-  if (formRequest) {
-    var submitButton = document.querySelector('.btn-submit');
-    submitButton.addEventListener('click', function (e) {
-      e.preventDefault();
-      var msg = [];
-      var hasRequired = false;
-      var hasCheckbox = false; // checkbox(문의 분야)
-
-      var checkboxes = document.getElementsByName('type[]');
-
-      for (var i = 0; i < checkboxes.length; i++) {
-        console.log(checkboxes[i].checked);
-
-        if (checkboxes[i].checked === true) {
-          hasCheckbox = true;
-          break;
-        }
-      }
-
-      if (!hasCheckbox) {
-        msg.push('문의 분야');
-      }
-
-      for (var _i = 0; _i < formRequest.elements.length; _i++) {
-        var target = formRequest.elements[_i];
-
-        if (target.value === '' && target.hasAttribute('required')) {
-          hasRequired = true;
-          msg.push(target.ariaLabel);
-        }
-      }
-
-      if (hasRequired) {
-        var msgWrap = document.getElementById('msg-wrap');
-        var ul = document.createElement('ul');
-        ul.setAttribute('id', 'errorMsg');
-        ul.setAttribute('class', 'p-5 bg-gray-50 mb-5 rounded-md text-red-400');
-        msgWrap.innerHTML = '';
-        msgWrap.appendChild(ul);
-
-        var renderList = function renderList(element, index, arr) {
-          var li = document.createElement('li');
-          li.setAttribute('class', 'item');
-          ul.appendChild(li);
-          li.innerHTML = li.innerHTML + element + '은(는) 반드시 입력하세요.';
-        };
-
-        msg.forEach(renderList);
-        setTimeout(function () {
-          msgWrap.innerHTML = '';
-        }, 3000);
-      }
-    });
-  }
-};
-
-/* harmony default export */ const components_form = (initForm);
-;// CONCATENATED MODULE: ./assets/src/js/components/scroll.js
-var scroll_scroll = function scroll() {
-  var lastScrollTop = 0;
-  window.addEventListener('scroll', function () {
-    var st = window.pageYOffset || document.documentElement.scrollTop;
-
-    if (st > lastScrollTop) {
-      console.log('down');
-    } else {
-      console.log('up');
-    }
-
-    lastScrollTop = st <= 0 ? 0 : st;
-  });
-};
-
-/* harmony default export */ const components_scroll = (scroll_scroll);
-;// CONCATENATED MODULE: ./node_modules/gsap/index.js
-
-
-var gsap_gsapWithCSS = gsap.registerPlugin(CSSPlugin) || gsap,
-    // to protect from tree shaking
-gsap_TweenMaxWithCSS = gsap_gsapWithCSS.core.Tween;
-
-;// CONCATENATED MODULE: ./assets/src/js/components/loading.js
- // import GSDevTools from 'gsap/GSDevTools';
-// gsap.registerPlugin(GSDevTools);
-
-var loadingWrap = document.getElementById('loading-wrap');
-var tl = gsap_gsapWithCSS.timeline();
-
-var loadingIn = function loadingIn() {
-  tl.set(loadingWrap, {
-    borderTopLeftRadius: '80% 100px',
-    borderTopRightRadius: '80% 100px'
-  }).to(loadingWrap, {
-    duration: 0.3,
-    y: '0'
-  }).to(loadingWrap, {
-    borderTopLeftRadius: '50% 180px',
-    borderTopRightRadius: '50% 180px',
-    duration: 0.2,
-    ease: Power4.easeOut
-  }, '<').to(loadingWrap, {
-    borderTopLeftRadius: '80% 120px',
-    borderTopRightRadius: '80% 120px',
-    duration: 0.2,
-    ease: Power4.easeOut
-  }, '<').to(loadingWrap, {
-    borderTopLeftRadius: '80% 0px',
-    borderTopRightRadius: '80% 0px',
-    duration: 0.4,
-    ease: Power1.easeOut
-  }); // GSDevTools.create({ paused: true });
-};
-
-var loadingOut = function loadingOut() {
-  tl.to(loadingWrap, {
-    duration: 0.3,
-    borderTopLeftRadius: '80% 50px',
-    borderTopRightRadius: '80% 50px',
-    ease: Power4.easeIn
-  }).to(loadingWrap, {
-    y: '100%',
-    duration: 0.5
-  });
-};
-
-/* harmony default export */ const loading = ({
-  loadingIn: loadingIn,
-  loadingOut: loadingOut
-});
-;// CONCATENATED MODULE: ./node_modules/gsap/utils/matrix.js
-/*!
- * matrix 3.8.0
- * https://greensock.com
- *
- * Copyright 2008-2021, GreenSock. All rights reserved.
- * Subject to the terms at https://greensock.com/standard-license or for
- * Club GreenSock members, the agreement issued with that membership.
- * @author: Jack Doyle, jack@greensock.com
-*/
-
-/* eslint-disable */
-var matrix_doc,
-    matrix_win,
-    matrix_docElement,
-    matrix_body,
-    _divContainer,
-    _svgContainer,
-    _identityMatrix,
-    _gEl,
-    matrix_transformProp = "transform",
-    matrix_transformOriginProp = matrix_transformProp + "Origin",
-    _hasOffsetBug,
-    _setDoc = function _setDoc(element) {
-  var doc = element.ownerDocument || element;
-
-  if (!(matrix_transformProp in element.style) && "msTransform" in element.style) {
-    //to improve compatibility with old Microsoft browsers
-    matrix_transformProp = "msTransform";
-    matrix_transformOriginProp = matrix_transformProp + "Origin";
-  }
-
-  while (doc.parentNode && (doc = doc.parentNode)) {}
-
-  matrix_win = window;
-  _identityMatrix = new Matrix2D();
-
-  if (doc) {
-    matrix_doc = doc;
-    matrix_docElement = doc.documentElement;
-    matrix_body = doc.body;
-    _gEl = matrix_doc.createElementNS("http://www.w3.org/2000/svg", "g"); // prevent any existing CSS from transforming it
-
-    _gEl.style.transform = "none"; // now test for the offset reporting bug. Use feature detection instead of browser sniffing to make things more bulletproof and future-proof. Hopefully Safari will fix their bug soon but it's 2020 and it's still not fixed.
-
-    var d1 = doc.createElement("div"),
-        d2 = doc.createElement("div");
-
-    matrix_body.appendChild(d1);
-
-    d1.appendChild(d2);
-    d1.style.position = "static";
-    d1.style[matrix_transformProp] = "translate3d(0,0,1px)";
-    _hasOffsetBug = d2.offsetParent !== d1;
-
-    matrix_body.removeChild(d1);
-  }
-
-  return doc;
-},
-    _forceNonZeroScale = function _forceNonZeroScale(e) {
-  // walks up the element's ancestors and finds any that had their scale set to 0 via GSAP, and changes them to 0.0001 to ensure that measurements work. Firefox has a bug that causes it to incorrectly report getBoundingClientRect() when scale is 0.
-  var a, cache;
-
-  while (e && e !== matrix_body) {
-    cache = e._gsap;
-    cache && cache.uncache && cache.get(e, "x"); // force re-parsing of transforms if necessary
-
-    if (cache && !cache.scaleX && !cache.scaleY && cache.renderTransform) {
-      cache.scaleX = cache.scaleY = 1e-4;
-      cache.renderTransform(1, cache);
-      a ? a.push(cache) : a = [cache];
-    }
-
-    e = e.parentNode;
-  }
-
-  return a;
-},
-    // possible future addition: pass an element to _forceDisplay() and it'll walk up all its ancestors and make sure anything with display: none is set to display: block, and if there's no parentNode, it'll add it to the body. It returns an Array that you can then feed to _revertDisplay() to have it revert all the changes it made.
-// _forceDisplay = e => {
-// 	let a = [],
-// 		parent;
-// 	while (e && e !== _body) {
-// 		parent = e.parentNode;
-// 		(_win.getComputedStyle(e).display === "none" || !parent) && a.push(e, e.style.display, parent) && (e.style.display = "block");
-// 		parent || _body.appendChild(e);
-// 		e = parent;
-// 	}
-// 	return a;
-// },
-// _revertDisplay = a => {
-// 	for (let i = 0; i < a.length; i+=3) {
-// 		a[i+1] ? (a[i].style.display = a[i+1]) : a[i].style.removeProperty("display");
-// 		a[i+2] || a[i].parentNode.removeChild(a[i]);
-// 	}
-// },
-_svgTemps = [],
-    //we create 3 elements for SVG, and 3 for other DOM elements and cache them for performance reasons. They get nested in _divContainer and _svgContainer so that just one element is added to the DOM on each successive attempt. Again, performance is key.
-_divTemps = [],
-    _getDocScrollTop = function _getDocScrollTop() {
-  return matrix_win.pageYOffset || matrix_doc.scrollTop || matrix_docElement.scrollTop || matrix_body.scrollTop || 0;
-},
-    _getDocScrollLeft = function _getDocScrollLeft() {
-  return matrix_win.pageXOffset || matrix_doc.scrollLeft || matrix_docElement.scrollLeft || matrix_body.scrollLeft || 0;
-},
-    _svgOwner = function _svgOwner(element) {
-  return element.ownerSVGElement || ((element.tagName + "").toLowerCase() === "svg" ? element : null);
-},
-    _isFixed = function _isFixed(element) {
-  if (matrix_win.getComputedStyle(element).position === "fixed") {
-    return true;
-  }
-
-  element = element.parentNode;
-
-  if (element && element.nodeType === 1) {
-    // avoid document fragments which will throw an error.
-    return _isFixed(element);
-  }
-},
-    _createSibling = function _createSibling(element, i) {
-  if (element.parentNode && (matrix_doc || _setDoc(element))) {
-    var svg = _svgOwner(element),
-        ns = svg ? svg.getAttribute("xmlns") || "http://www.w3.org/2000/svg" : "http://www.w3.org/1999/xhtml",
-        type = svg ? i ? "rect" : "g" : "div",
-        x = i !== 2 ? 0 : 100,
-        y = i === 3 ? 100 : 0,
-        css = "position:absolute;display:block;pointer-events:none;margin:0;padding:0;",
-        e = matrix_doc.createElementNS ? matrix_doc.createElementNS(ns.replace(/^https/, "http"), type) : matrix_doc.createElement(type);
-
-    if (i) {
-      if (!svg) {
-        if (!_divContainer) {
-          _divContainer = _createSibling(element);
-          _divContainer.style.cssText = css;
-        }
-
-        e.style.cssText = css + "width:0.1px;height:0.1px;top:" + y + "px;left:" + x + "px";
-
-        _divContainer.appendChild(e);
-      } else {
-        _svgContainer || (_svgContainer = _createSibling(element));
-        e.setAttribute("width", 0.01);
-        e.setAttribute("height", 0.01);
-        e.setAttribute("transform", "translate(" + x + "," + y + ")");
-
-        _svgContainer.appendChild(e);
-      }
-    }
-
-    return e;
-  }
-
-  throw "Need document and parent.";
-},
-    _consolidate = function _consolidate(m) {
-  // replaces SVGTransformList.consolidate() because a bug in Firefox causes it to break pointer events. See https://greensock.com/forums/topic/23248-touch-is-not-working-on-draggable-in-firefox-windows-v324/?tab=comments#comment-109800
-  var c = new Matrix2D(),
-      i = 0;
-
-  for (; i < m.numberOfItems; i++) {
-    c.multiply(m.getItem(i).matrix);
-  }
-
-  return c;
-},
-    _getCTM = function _getCTM(svg) {
-  var m = svg.getCTM(),
-      transform;
-
-  if (!m) {
-    // Firefox returns null for getCTM() on root <svg> elements, so this is a workaround using a <g> that we temporarily append.
-    transform = svg.style[matrix_transformProp];
-    svg.style[matrix_transformProp] = "none"; // a bug in Firefox causes css transforms to contaminate the getCTM()
-
-    svg.appendChild(_gEl);
-    m = _gEl.getCTM();
-    svg.removeChild(_gEl);
-    transform ? svg.style[matrix_transformProp] = transform : svg.style.removeProperty(matrix_transformProp.replace(/([A-Z])/g, "-$1").toLowerCase());
-  }
-
-  return m || _identityMatrix.clone(); // Firefox will still return null if the <svg> has a width/height of 0 in the browser.
-},
-    _placeSiblings = function _placeSiblings(element, adjustGOffset) {
-  var svg = _svgOwner(element),
-      isRootSVG = element === svg,
-      siblings = svg ? _svgTemps : _divTemps,
-      parent = element.parentNode,
-      container,
-      m,
-      b,
-      x,
-      y,
-      cs;
-
-  if (element === matrix_win) {
-    return element;
-  }
-
-  siblings.length || siblings.push(_createSibling(element, 1), _createSibling(element, 2), _createSibling(element, 3));
-  container = svg ? _svgContainer : _divContainer;
-
-  if (svg) {
-    if (isRootSVG) {
-      b = _getCTM(element);
-      x = -b.e / b.a;
-      y = -b.f / b.d;
-      m = _identityMatrix;
-    } else {
-      b = element.getBBox();
-      m = element.transform ? element.transform.baseVal : {}; // IE11 doesn't follow the spec.
-
-      m = !m.numberOfItems ? _identityMatrix : m.numberOfItems > 1 ? _consolidate(m) : m.getItem(0).matrix; // don't call m.consolidate().matrix because a bug in Firefox makes pointer events not work when consolidate() is called on the same tick as getBoundingClientRect()! See https://greensock.com/forums/topic/23248-touch-is-not-working-on-draggable-in-firefox-windows-v324/?tab=comments#comment-109800
-
-      x = m.a * b.x + m.c * b.y;
-      y = m.b * b.x + m.d * b.y;
-    }
-
-    if (adjustGOffset && element.tagName.toLowerCase() === "g") {
-      x = y = 0;
-    }
-
-    (isRootSVG ? svg : parent).appendChild(container);
-    container.setAttribute("transform", "matrix(" + m.a + "," + m.b + "," + m.c + "," + m.d + "," + (m.e + x) + "," + (m.f + y) + ")");
-  } else {
-    x = y = 0;
-
-    if (_hasOffsetBug) {
-      // some browsers (like Safari) have a bug that causes them to misreport offset values. When an ancestor element has a transform applied, it's supposed to treat it as if it's position: relative (new context). Safari botches this, so we need to find the closest ancestor (between the element and its offsetParent) that has a transform applied and if one is found, grab its offsetTop/Left and subtract them to compensate.
-      m = element.offsetParent;
-      b = element;
-
-      while (b && (b = b.parentNode) && b !== m && b.parentNode) {
-        if ((matrix_win.getComputedStyle(b)[matrix_transformProp] + "").length > 4) {
-          x = b.offsetLeft;
-          y = b.offsetTop;
-          b = 0;
-        }
-      }
-    }
-
-    cs = matrix_win.getComputedStyle(element);
-
-    if (cs.position !== "absolute" && cs.position !== "fixed") {
-      m = element.offsetParent;
-
-      while (parent && parent !== m) {
-        // if there's an ancestor element between the element and its offsetParent that's scrolled, we must factor that in.
-        x += parent.scrollLeft || 0;
-        y += parent.scrollTop || 0;
-        parent = parent.parentNode;
-      }
-    }
-
-    b = container.style;
-    b.top = element.offsetTop - y + "px";
-    b.left = element.offsetLeft - x + "px";
-    b[matrix_transformProp] = cs[matrix_transformProp];
-    b[matrix_transformOriginProp] = cs[matrix_transformOriginProp]; // b.border = m.border;
-    // b.borderLeftStyle = m.borderLeftStyle;
-    // b.borderTopStyle = m.borderTopStyle;
-    // b.borderLeftWidth = m.borderLeftWidth;
-    // b.borderTopWidth = m.borderTopWidth;
-
-    b.position = cs.position === "fixed" ? "fixed" : "absolute";
-    element.parentNode.appendChild(container);
-  }
-
-  return container;
-},
-    _setMatrix = function _setMatrix(m, a, b, c, d, e, f) {
-  m.a = a;
-  m.b = b;
-  m.c = c;
-  m.d = d;
-  m.e = e;
-  m.f = f;
-  return m;
-};
-
-var Matrix2D = /*#__PURE__*/function () {
-  function Matrix2D(a, b, c, d, e, f) {
-    if (a === void 0) {
-      a = 1;
-    }
-
-    if (b === void 0) {
-      b = 0;
-    }
-
-    if (c === void 0) {
-      c = 0;
-    }
-
-    if (d === void 0) {
-      d = 1;
-    }
-
-    if (e === void 0) {
-      e = 0;
-    }
-
-    if (f === void 0) {
-      f = 0;
-    }
-
-    _setMatrix(this, a, b, c, d, e, f);
-  }
-
-  var _proto = Matrix2D.prototype;
-
-  _proto.inverse = function inverse() {
-    var a = this.a,
-        b = this.b,
-        c = this.c,
-        d = this.d,
-        e = this.e,
-        f = this.f,
-        determinant = a * d - b * c || 1e-10;
-    return _setMatrix(this, d / determinant, -b / determinant, -c / determinant, a / determinant, (c * f - d * e) / determinant, -(a * f - b * e) / determinant);
-  };
-
-  _proto.multiply = function multiply(matrix) {
-    var a = this.a,
-        b = this.b,
-        c = this.c,
-        d = this.d,
-        e = this.e,
-        f = this.f,
-        a2 = matrix.a,
-        b2 = matrix.c,
-        c2 = matrix.b,
-        d2 = matrix.d,
-        e2 = matrix.e,
-        f2 = matrix.f;
-    return _setMatrix(this, a2 * a + c2 * c, a2 * b + c2 * d, b2 * a + d2 * c, b2 * b + d2 * d, e + e2 * a + f2 * c, f + e2 * b + f2 * d);
-  };
-
-  _proto.clone = function clone() {
-    return new Matrix2D(this.a, this.b, this.c, this.d, this.e, this.f);
-  };
-
-  _proto.equals = function equals(matrix) {
-    var a = this.a,
-        b = this.b,
-        c = this.c,
-        d = this.d,
-        e = this.e,
-        f = this.f;
-    return a === matrix.a && b === matrix.b && c === matrix.c && d === matrix.d && e === matrix.e && f === matrix.f;
-  };
-
-  _proto.apply = function apply(point, decoratee) {
-    if (decoratee === void 0) {
-      decoratee = {};
-    }
-
-    var x = point.x,
-        y = point.y,
-        a = this.a,
-        b = this.b,
-        c = this.c,
-        d = this.d,
-        e = this.e,
-        f = this.f;
-    decoratee.x = x * a + y * c + e || 0;
-    decoratee.y = x * b + y * d + f || 0;
-    return decoratee;
-  };
-
-  return Matrix2D;
-}(); // Feed in an element and it'll return a 2D matrix (optionally inverted) so that you can translate between coordinate spaces.
-// Inverting lets you translate a global point into a local coordinate space. No inverting lets you go the other way.
-// We needed this to work around various browser bugs, like Firefox doesn't accurately report getScreenCTM() when there
-// are transforms applied to ancestor elements.
-// The matrix math to convert any x/y coordinate is as follows, which is wrapped in a convenient apply() method of Matrix2D above:
-//     tx = m.a * x + m.c * y + m.e
-//     ty = m.b * x + m.d * y + m.f
-
-function getGlobalMatrix(element, inverse, adjustGOffset, includeScrollInFixed) {
-  // adjustGOffset is typically used only when grabbing an element's PARENT's global matrix, and it ignores the x/y offset of any SVG <g> elements because they behave in a special way.
-  if (!element || !element.parentNode || (matrix_doc || _setDoc(element)).documentElement === element) {
-    return new Matrix2D();
-  }
-
-  var zeroScales = _forceNonZeroScale(element),
-      svg = _svgOwner(element),
-      temps = svg ? _svgTemps : _divTemps,
-      container = _placeSiblings(element, adjustGOffset),
-      b1 = temps[0].getBoundingClientRect(),
-      b2 = temps[1].getBoundingClientRect(),
-      b3 = temps[2].getBoundingClientRect(),
-      parent = container.parentNode,
-      isFixed = !includeScrollInFixed && _isFixed(element),
-      m = new Matrix2D((b2.left - b1.left) / 100, (b2.top - b1.top) / 100, (b3.left - b1.left) / 100, (b3.top - b1.top) / 100, b1.left + (isFixed ? 0 : _getDocScrollLeft()), b1.top + (isFixed ? 0 : _getDocScrollTop()));
-
-  parent.removeChild(container);
-
-  if (zeroScales) {
-    b1 = zeroScales.length;
-
-    while (b1--) {
-      b2 = zeroScales[b1];
-      b2.scaleX = b2.scaleY = 0;
-      b2.renderTransform(1, b2);
-    }
-  }
-
-  return inverse ? m.inverse() : m;
-}
- // export function getMatrix(element) {
-// 	_doc || _setDoc(element);
-// 	let m = (_win.getComputedStyle(element)[_transformProp] + "").substr(7).match(/[-.]*\d+[.e\-+]*\d*[e\-\+]*\d*/g),
-// 		is2D = m && m.length === 6;
-// 	return !m || m.length < 6 ? new Matrix2D() : new Matrix2D(+m[0], +m[1], +m[is2D ? 2 : 4], +m[is2D ? 3 : 5], +m[is2D ? 4 : 12], +m[is2D ? 5 : 13]);
-// }
-;// CONCATENATED MODULE: ./node_modules/gsap/Flip.js
-/*!
- * Flip 3.8.0
- * https://greensock.com
- *
- * @license Copyright 2008-2021, GreenSock. All rights reserved.
- * Subject to the terms at https://greensock.com/standard-license or for
- * Club GreenSock members, the agreement issued with that membership.
- * @author: Jack Doyle, jack@greensock.com
-*/
-
-/* eslint-disable */
-
-
-var _id = 1,
-    Flip_toArray,
-    Flip_gsap,
-    Flip_RAD2DEG = 180 / Math.PI,
-    Flip_DEG2RAD = Math.PI / 180,
-    _emptyObj = {},
-    _dashedNameLookup = {},
-    _memoizedRemoveProps = {},
-    _callbacks = "onStart,onUpdate,onComplete,onReverseComplete,onInterrupt".split(","),
-    _removeProps = "transform,transformOrigin,width,height,position,top,left,opacity,zIndex".split(","),
-    _getEl = function _getEl(target) {
-  return Flip_toArray(target)[0] || console.warn("Element not found:", target);
-},
-    Flip_round = function _round(value) {
-  return Math.round(value * 10000) / 10000 || 0;
-},
-    _toggleClass = function _toggleClass(targets, className, action) {
-  return targets.forEach(function (el) {
-    return el.classList[action](className);
-  });
-},
-    _reserved = {
-  zIndex: 1,
-  clear: 1,
-  simple: 1,
-  spin: 1,
-  clearProps: 1,
-  targets: 1,
-  toggleClass: 1,
-  onComplete: 1,
-  onUpdate: 1,
-  onInterrupt: 1,
-  onStart: 1,
-  delay: 1,
-  repeat: 1,
-  repeatDelay: 1,
-  yoyo: 1,
-  scale: 1,
-  fade: 1,
-  absolute: 1,
-  props: 1,
-  onEnter: 1,
-  onLeave: 1,
-  custom: 1,
-  paused: 1,
-  nested: 1
-},
-    _fitReserved = {
-  zIndex: 1,
-  simple: 1,
-  clearProps: 1,
-  scale: 1,
-  absolute: 1,
-  fitChild: 1,
-  getVars: 1,
-  props: 1
-},
-    _camelToDashed = function _camelToDashed(p) {
-  return p.replace(/([A-Z])/g, "-$1").toLowerCase();
-},
-    _listToArray = function _listToArray(list) {
-  return typeof list === "string" ? list.split(" ").join("").split(",") : list;
-},
-    // removes extra spaces contaminating the names, returns an Array.
-_closestTenth,
-    _bonusValidated = 1,
-    //<name>Flip</name>
-_copy = function _copy(obj, exclude) {
-  var result = {},
-      p;
-
-  for (p in obj) {
-    exclude[p] || (result[p] = obj[p]);
-  }
-
-  return result;
-},
-    _memoizedProps = {},
-    _memoizeProps = function _memoizeProps(props) {
-  var p = _memoizedProps[props] = _listToArray(props);
-
-  _memoizedRemoveProps[props] = p.concat(_removeProps);
-  return p;
-},
-    _getInverseGlobalMatrix = function _getInverseGlobalMatrix(el) {
-  // integrates caching for improved performance
-  var cache = el._gsap || Flip_gsap.core.getCache(el);
-
-  if (cache.gmCache === Flip_gsap.ticker.frame) {
-    return cache.gMatrix;
-  }
-
-  cache.gmCache = Flip_gsap.ticker.frame;
-  return cache.gMatrix = getGlobalMatrix(el, true, false, true);
-},
-    _getDOMDepth = function _getDOMDepth(el, invert, level) {
-  if (level === void 0) {
-    level = 0;
-  }
-
-  // In invert is true, the sibling depth is increments of 1, and parent/nesting depth is increments of 1000. This lets us order elements in an Array to reflect document flow.
-  var parent = el.parentNode,
-      inc = 1000 * Math.pow(10, level) * (invert ? -1 : 1),
-      l = invert ? -inc * 900 : 0;
-
-  while (el) {
-    l += inc;
-    el = el.previousSibling;
-  }
-
-  return parent ? l + _getDOMDepth(parent, invert, level + 1) : l;
-},
-    _orderByDOMDepth = function _orderByDOMDepth(comps, invert, isElStates) {
-  comps.forEach(function (comp) {
-    return comp.d = _getDOMDepth(isElStates ? comp.element : comp.t, invert);
-  });
-  comps.sort(function (c1, c2) {
-    return c1.d - c2.d;
-  });
-  return comps;
-},
-    _recordInlineStyles = function _recordInlineStyles(elState, props) {
-  // records the current inline CSS properties into an Array in alternating name/value pairs that's stored in a "css" property on the state object so that we can revert later.
-  var style = elState.element.style,
-      a = elState.css = elState.css || [],
-      i = props.length,
-      p,
-      v;
-
-  while (i--) {
-    p = props[i];
-    v = style[p] || style.getPropertyValue(p);
-    a.push(v ? p : _dashedNameLookup[p] || (_dashedNameLookup[p] = _camelToDashed(p)), v);
-  }
-
-  return style;
-},
-    _applyInlineStyles = function _applyInlineStyles(state) {
-  var css = state.css,
-      style = state.element.style,
-      i = 0;
-  state.cache.uncache = 1;
-
-  for (; i < css.length; i += 2) {
-    css[i + 1] ? style[css[i]] = css[i + 1] : style.removeProperty(css[i]);
-  }
-},
-    _setFinalStates = function _setFinalStates(comps, onlyTransforms) {
-  var i = comps.length,
-      comp;
-
-  while (i--) {
-    comp = comps[i];
-    comp.a.cache.uncache = 1;
-  }
-
-  onlyTransforms || comps.finalStates.forEach(_applyInlineStyles);
-},
-    _makeAbsolute = function _makeAbsolute(elState, fallbackNode) {
-  var element = elState.element,
-      width = elState.width,
-      height = elState.height,
-      uncache = elState.uncache,
-      getProp = elState.getProp,
-      style = element.style,
-      result,
-      displayIsNone;
-  typeof fallbackNode !== "object" && (fallbackNode = elState);
-
-  if (getProp("position") !== "absolute") {
-    displayIsNone = getProp("display") === "none";
-
-    if (!elState.isVisible || displayIsNone) {
-      displayIsNone && (_recordInlineStyles(elState, ["display"]).display = fallbackNode.display);
-      elState.matrix = fallbackNode.matrix;
-      elState.width = width = elState.width || fallbackNode.width;
-      elState.height = height = elState.height || fallbackNode.height;
-    }
-
-    style.position = "absolute";
-    style.width = width + "px";
-    style.height = height + "px";
-    style.top || (style.top = "0px");
-    style.left || (style.left = "0px");
-
-    if (uncache) {
-      result = new ElementState(element);
-    } else {
-      // better performance
-      result = _copy(elState, _emptyObj);
-      result.position = "absolute";
-
-      if (elState.simple) {
-        var bounds = element.getBoundingClientRect();
-        result.matrix = new Matrix2D(1, 0, 0, 1, bounds.left + _getDocScrollLeft(), bounds.top + _getDocScrollTop());
-      } else {
-        result.matrix = getGlobalMatrix(element, false, false, true);
-      }
-    }
-
-    result = _fit(result, elState, true);
-    elState.x = parseFloat(result.x);
-    elState.y = parseFloat(result.y);
-  }
-
-  return element;
-},
-    _findElStateInState = function _findElStateInState(state, other) {
-  return other && state.idLookup[_parseElementState(other).id] || state.elementStates[0];
-},
-    _parseElementState = function _parseElementState(elOrNode, props, simple, other) {
-  return elOrNode instanceof ElementState ? elOrNode : elOrNode instanceof FlipState ? _findElStateInState(elOrNode, other) : new ElementState(typeof elOrNode === "string" ? _getEl(elOrNode) || console.warn(elOrNode + " not found") : elOrNode, props, simple);
-},
-    _recordProps = function _recordProps(elState, props) {
-  var getProp = Flip_gsap.getProperty(elState.element, null, "native"),
-      obj = elState.props = {},
-      i = props.length;
-
-  while (i--) {
-    obj[props[i]] = (getProp(props[i]) + "").trim();
-  }
-
-  obj.zIndex && (obj.zIndex = parseFloat(obj.zIndex) || 0);
-  return elState;
-},
-    _applyProps = function _applyProps(element, props) {
-  var style = element.style || element,
-      // could pass in a vars object.
-  p;
-
-  for (p in props) {
-    style[p] = props[p];
-  }
-},
-    _getID = function _getID(el) {
-  var id = el.getAttribute("data-flip-id");
-  id || el.setAttribute("data-flip-id", id = "auto-" + _id++);
-  return id;
-},
-    _getCTMInverse = function _getCTMInverse(el) {
-  return el.getCTM && el.nodeName.toLowerCase() === "svg" && _getCTM(el).inverse();
-},
-    _elementsFromElementStates = function _elementsFromElementStates(elStates) {
-  return elStates.map(function (elState) {
-    return elState.element;
-  });
-},
-    _handleCallback = function _handleCallback(callback, elStates, tl) {
-  return callback && elStates.length && tl.add(callback(_elementsFromElementStates(elStates), tl, new FlipState(elStates, 0, true)), 0);
-},
-    _fit = function _fit(fromState, toState, scale, applyProps, fitChild, vars) {
-  var element = fromState.element,
-      cache = fromState.cache,
-      parent = fromState.parent,
-      x = fromState.x,
-      y = fromState.y,
-      width = toState.width,
-      height = toState.height,
-      scaleX = toState.scaleX,
-      scaleY = toState.scaleY,
-      rotation = toState.rotation,
-      cssText = vars && element.style.cssText,
-      transform = vars && element.getBBox && element.getAttribute("transform"),
-      dimensionState = fromState,
-      _toState$matrix = toState.matrix,
-      e = _toState$matrix.e,
-      f = _toState$matrix.f,
-      deep = fromState.width !== width || fromState.height !== height || fromState.scaleX !== scaleX || fromState.scaleY !== scaleY || fromState.rotation !== rotation,
-      simple = !deep && fromState.simple && toState.simple && !fitChild,
-      skewX,
-      fromPoint,
-      toPoint,
-      getProp,
-      parentMatrix,
-      matrix,
-      bbox;
-
-  if (simple) {
-    scaleX = scaleY = 1;
-    rotation = skewX = 0;
-  } else {
-    parentMatrix = _getInverseGlobalMatrix(parent);
-    matrix = parentMatrix.clone().multiply(toState.ctm ? toState.matrix.clone().multiply(toState.ctm) : toState.matrix); // root SVG elements have a ctm that we must factor out (for example, viewBox:"0 0 94 94" with a width of 200px would scale the internals by 2.127 but when we're matching the size of the root <svg> element itself, that scaling shouldn't factor in!)
-
-    rotation = Flip_round(Math.atan2(matrix.b, matrix.a) * Flip_RAD2DEG);
-    skewX = Flip_round(Math.atan2(matrix.c, matrix.d) * Flip_RAD2DEG + rotation) % 360; // in very rare cases, minor rounding might end up with 360 which should be 0.
-
-    scaleX = Math.sqrt(Math.pow(matrix.a, 2) + Math.pow(matrix.b, 2));
-    scaleY = Math.sqrt(Math.pow(matrix.c, 2) + Math.pow(matrix.d, 2)) * Math.cos(skewX * Flip_DEG2RAD);
-
-    if (fitChild) {
-      fitChild = Flip_toArray(fitChild)[0];
-      getProp = Flip_gsap.getProperty(fitChild);
-      bbox = fitChild.getBBox && typeof fitChild.getBBox === "function" && fitChild.getBBox();
-      dimensionState = {
-        scaleX: getProp("scaleX"),
-        scaleY: getProp("scaleY"),
-        width: bbox ? bbox.width : Math.ceil(parseFloat(getProp("width", "px"))),
-        height: bbox ? bbox.height : parseFloat(getProp("height", "px"))
-      };
-    }
-
-    cache.rotation = rotation + "deg";
-    cache.skewX = skewX + "deg";
-  }
-
-  if (scale) {
-    scaleX *= width / (dimensionState.width || 1e-9);
-    scaleY *= height / (dimensionState.height || 1e-9);
-    cache.scaleX = scaleX;
-    cache.scaleY = scaleY;
-  } else {
-    width *= scaleX / dimensionState.scaleX;
-    height *= scaleY / dimensionState.scaleY;
-    element.style.width = width + "px";
-    element.style.height = height + "px";
-  } // if (fromState.isFixed) { // commented out because it's now taken care of in getGlobalMatrix() with a flag at the end.
-  // 	e -= _getDocScrollLeft();
-  // 	f -= _getDocScrollTop();
-  // }
-
-
-  applyProps && _applyProps(element, toState.props);
-
-  if (simple) {
-    x += e - fromState.matrix.e;
-    y += f - fromState.matrix.f;
-  } else if (deep || parent !== toState.parent) {
-    cache.renderTransform(1, cache);
-    matrix = getGlobalMatrix(fitChild || element, false, false, true);
-    fromPoint = parentMatrix.apply({
-      x: matrix.e,
-      y: matrix.f
-    });
-    toPoint = parentMatrix.apply({
-      x: e,
-      y: f
-    });
-    x += Flip_round(toPoint.x - fromPoint.x);
-    y += Flip_round(toPoint.y - fromPoint.y);
-  } else {
-    // use a faster/cheaper algorithm if we're just moving x/y
-    parentMatrix.e = parentMatrix.f = 0;
-    toPoint = parentMatrix.apply({
-      x: e - fromState.matrix.e,
-      y: f - fromState.matrix.f
-    });
-    x += Flip_round(toPoint.x);
-    y += Flip_round(toPoint.y);
-  }
-
-  if (vars && !(vars instanceof ElementState)) {
-    // revert
-    element.style.cssText = cssText;
-    element.getBBox && element.setAttribute("transform", transform || "");
-    cache.uncache = 1;
-  } else {
-    // or apply the transform immediately
-    cache.x = x + "px";
-    cache.y = y + "px";
-    cache.renderTransform(1, cache);
-  }
-
-  if (vars) {
-    vars.x = x;
-    vars.y = y;
-    vars.rotation = rotation;
-    vars.skewX = skewX;
-
-    if (scale) {
-      vars.scaleX = scaleX;
-      vars.scaleY = scaleY;
-    } else {
-      vars.width = width;
-      vars.height = height;
-    }
-  }
-
-  return vars || cache;
-},
-    _parseState = function _parseState(targetsOrState, vars) {
-  return targetsOrState instanceof FlipState ? targetsOrState : new FlipState(targetsOrState, vars);
-},
-    _getChangingElState = function _getChangingElState(toState, fromState, id) {
-  var to1 = toState.idLookup[id],
-      to2 = toState.alt[id];
-  return to2.isVisible && (!(fromState.getElementState(to2.element) || to2).isVisible || !to1.isVisible) ? to2 : to1;
-},
-    _fromTo = function _fromTo(fromState, toState, vars, relative) {
-  // relative is -1 if "from()", and 1 if "to()"
-  if (!_bonusValidated) {
-    return;
-  }
-
-  fromState instanceof FlipState && toState instanceof FlipState || console.warn("Not a valid state object.");
-  vars = vars || {};
-
-  var _vars = vars,
-      clearProps = _vars.clearProps,
-      onEnter = _vars.onEnter,
-      onLeave = _vars.onLeave,
-      absolute = _vars.absolute,
-      custom = _vars.custom,
-      delay = _vars.delay,
-      paused = _vars.paused,
-      repeat = _vars.repeat,
-      repeatDelay = _vars.repeatDelay,
-      yoyo = _vars.yoyo,
-      toggleClass = _vars.toggleClass,
-      nested = _vars.nested,
-      _zIndex = _vars.zIndex,
-      scale = _vars.scale,
-      fade = _vars.fade,
-      stagger = _vars.stagger,
-      spin = _vars.spin,
-      props = ("props" in vars ? vars : fromState).props,
-      tweenVars = _copy(vars, _reserved),
-      animation = Flip_gsap.timeline({
-    delay: delay,
-    paused: paused,
-    repeat: repeat,
-    repeatDelay: repeatDelay,
-    yoyo: yoyo
-  }),
-      remainingProps = tweenVars,
-      entering = [],
-      leaving = [],
-      comps = [],
-      swapOutTargets = [],
-      spinNum = spin === true ? 1 : spin || 0,
-      spinFunc = typeof spin === "function" ? spin : function () {
-    return spinNum;
-  },
-      interrupted = fromState.interrupted || toState.interrupted,
-      addFunc = animation[relative !== 1 ? "to" : "from"],
-      v,
-      p,
-      endTime,
-      i,
-      el,
-      comp,
-      state,
-      targets,
-      finalStates,
-      fromNode,
-      toNode;
-
-  relative || (toState = new FlipState(toState.targets, props).fit(toState, scale));
-
-  for (p in toState.idLookup) {
-    toNode = !toState.alt[p] ? toState.idLookup[p] : _getChangingElState(toState, fromState, p);
-    el = toNode.element;
-    fromNode = fromState.idLookup[p];
-    fromState.alt[p] && el === fromNode.element && (fromNode = fromState.alt[p]);
-
-    if (fromNode) {
-      comp = {
-        t: el,
-        b: fromNode,
-        a: toNode,
-        sd: fromNode.element === el ? 0 : toNode.isVisible ? 1 : -1
-      };
-      comps.push(comp);
-
-      if (comp.sd) {
-        if (comp.sd < 0) {
-          comp.b = toNode;
-          comp.a = fromNode;
-        } //comp.fb = fromState.getElementState(el) || comp.b; // fallback? Might need to be something other than the before state, like making sure we use the values from the same element.
-
-
-        fade && comps.push(comp.swap = {
-          t: fromNode.element,
-          b: comp.b,
-          a: comp.a,
-          sd: comp.sd * -1,
-          swap: comp
-        });
-      }
-
-      el._flip = fromNode.element._flip = animation;
-    } else if (toNode.isVisible) {
-      comps.push({
-        t: el,
-        b: _copy(toNode, {
-          isVisible: 1
-        }),
-        a: toNode,
-        sd: 0
-      }); // to include it in the "entering" Array and do absolute positioning if necessary
-
-      el._flip = animation;
-    }
-  }
-
-  props && (_memoizedProps[props] || _memoizeProps(props)).forEach(function (p) {
-    return tweenVars[p] = function (i) {
-      return comps[i].a.props[p];
-    };
-  });
-  comps.finalStates = finalStates = [];
-  absolute && _orderByDOMDepth(comps, true).forEach(function (c) {
-    return (c.a.isVisible || c.b.isVisible) && _makeAbsolute(c.sd < 0 ? c.b : c.a, c.b);
-  }); // when making absolute, we must go in a very particular order so that document flow changes don't affect things. Don't make it visible if both the before and after states are invisible! There's no point, and it could make things appear visible during the flip that shouldn't be.
-
-  _orderByDOMDepth(comps); // TODO: cache the matrix, especially for parent because it'll probably get reused quite a bit, but lock it to a particular cycle(?).
-
-
-  for (i = 0; i < comps.length; i++) {
-    comp = comps[i];
-    el = comp.t;
-    nested && !(comp.sd < 0) && (comp.a.matrix = getGlobalMatrix(el, false, false, true)); // moving a parent affects the position of children
-
-    if (comp.sd || comp.b.isVisible && comp.a.isVisible) {
-      if (comp.sd < 0) {
-        // swapping OUT (swap direction of -1 is out)
-        state = new ElementState(el, props, fromState.simple);
-
-        _fit(state, comp.a, scale, 0, 0, state);
-
-        state.matrix = getGlobalMatrix(el, false, false, true);
-        state.css = comp.b.css;
-        comp.a = state;
-        fade && (el.style.opacity = interrupted ? comp.b.opacity : comp.a.opacity);
-        stagger && swapOutTargets.push(el);
-      } else if (comp.sd > 0 && fade) {
-        // swapping IN (swap direction of 1 is in)
-        el.style.opacity = interrupted ? comp.a.opacity - comp.b.opacity : "0";
-      }
-
-      _fit(comp.a, comp.b, scale, props);
-    } else {
-      // either entering or leaving (one side is invisible)
-      if (!comp.b.isVisible) {
-        // entering
-        comp.a.isVisible && entering.push(comp.a);
-        comps.splice(i--, 1);
-      } else if (!comp.a.isVisible) {
-        // leaving
-        comp.b.css = comp.a.css;
-        leaving.push(comp.b);
-        comps.splice(i--, 1);
-        absolute && nested && _fit(comp.a, comp.b, scale, props);
-      }
-    }
-
-    finalStates.push(comp.a);
-  }
-
-  if (scale) {
-    tweenVars.scaleX = function (i) {
-      return comps[i].a.scaleX;
-    };
-
-    tweenVars.scaleY = function (i) {
-      return comps[i].a.scaleY;
-    };
-  } else {
-    tweenVars.width = function (i) {
-      return comps[i].a.width + "px";
-    };
-
-    tweenVars.height = function (i) {
-      return comps[i].a.height + "px";
-    };
-
-    tweenVars.autoRound = vars.autoRound || false;
-  }
-
-  tweenVars.x = function (i) {
-    return comps[i].a.x + "px";
-  };
-
-  tweenVars.y = function (i) {
-    return comps[i].a.y + "px";
-  };
-
-  tweenVars.rotation = function (i) {
-    return comps[i].a.rotation + (spin ? spinFunc(i, targets[i], targets) * 360 : 0);
-  };
-
-  tweenVars.skewX = function (i) {
-    return comps[i].a.skewX;
-  };
-
-  targets = comps.map(function (c) {
-    return c.t;
-  });
-
-  if (_zIndex || _zIndex === 0) {
-    tweenVars.modifiers = {
-      zIndex: function zIndex() {
-        return _zIndex;
-      }
-    };
-    tweenVars.zIndex = _zIndex;
-    tweenVars.immediateRender = vars.immediateRender !== false;
-  }
-
-  fade && (tweenVars.opacity = function (i) {
-    return comps[i].sd < 0 ? 0 : comps[i].sd > 0 ? comps[i].a.opacity : "+=0";
-  });
-
-  if (swapOutTargets.length) {
-    stagger = Flip_gsap.utils.distribute(stagger);
-    var dummyArray = targets.slice(swapOutTargets.length);
-
-    tweenVars.stagger = function (i, el) {
-      return stagger(~swapOutTargets.indexOf(el) ? targets.indexOf(comps[i].swap.t) : i, el, dummyArray);
-    };
-  } // // for testing...
-  // gsap.delayedCall(vars.data ? 50 : 1, function() {
-  // 	animation.eventCallback("onComplete", () => _setFinalStates(comps, !clearProps));
-  // 	addFunc.call(animation, targets, tweenVars, 0).play();
-  // });
-  // return;
-
-
-  _callbacks.forEach(function (name) {
-    return vars[name] && animation.eventCallback(name, vars[name], vars[name + "Params"]);
-  }); // apply callbacks to the timeline, not tweens (because "custom" timing can make multiple tweens)
-
-
-  if (custom && targets.length) {
-    // bust out the custom properties as their own tweens so they can use different eases, durations, etc.
-    remainingProps = _copy(tweenVars, _reserved);
-
-    if ("scale" in custom) {
-      custom.scaleX = custom.scaleY = custom.scale;
-      delete custom.scale;
-    }
-
-    for (p in custom) {
-      v = _copy(custom[p], _fitReserved);
-      v[p] = tweenVars[p];
-      !("duration" in v) && "duration" in tweenVars && (v.duration = tweenVars.duration);
-      v.stagger = tweenVars.stagger;
-      addFunc.call(animation, targets, v, 0);
-      delete remainingProps[p];
-    }
-  }
-
-  if (targets.length || leaving.length || entering.length) {
-    toggleClass && animation.add(function () {
-      return _toggleClass(targets, toggleClass, animation._zTime < 0 ? "remove" : "add");
-    }, 0) && !paused && _toggleClass(targets, toggleClass, "add");
-    targets.length && addFunc.call(animation, targets, remainingProps, 0);
-  }
-
-  _handleCallback(onEnter, entering, animation);
-
-  _handleCallback(onLeave, leaving, animation);
-
-  endTime = animation.duration();
-  animation.call(function () {
-    var forward = animation.time() >= endTime;
-    forward && _setFinalStates(comps, !clearProps);
-    toggleClass && _toggleClass(targets, toggleClass, forward ? "remove" : "add");
-  });
-  return animation;
-},
-    _createLookup = function _createLookup(state) {
-  var lookup = state.idLookup = {},
-      alt = state.alt = {},
-      elStates = state.elementStates,
-      i = elStates.length,
-      elState;
-
-  while (i--) {
-    elState = elStates[i];
-    lookup[elState.id] ? alt[elState.id] = elState : lookup[elState.id] = elState;
-  }
-};
-
-var FlipState = /*#__PURE__*/function () {
-  function FlipState(targets, vars, targetsAreElementStates) {
-    this.props = vars && vars.props;
-    this.simple = !!(vars && vars.simple);
-
-    if (targetsAreElementStates) {
-      this.targets = _elementsFromElementStates(targets);
-      this.elementStates = targets;
-
-      _createLookup(this);
-    } else {
-      this.targets = Flip_toArray(targets);
-      this.update(!vars || vars.clear !== false);
-    }
-  }
-
-  var _proto = FlipState.prototype;
-
-  _proto.update = function update(clear) {
-    var _this = this;
-
-    this.elementStates = this.targets.map(function (el) {
-      return new ElementState(el, _this.props, _this.simple);
-    });
-
-    _createLookup(this);
-
-    this.killFlips(clear);
-    this.recordInlineStyles();
-    return this;
-  };
-
-  _proto.fit = function fit(state, scale, nested) {
-    var elStatesInOrder = _orderByDOMDepth(this.elementStates.slice(0), false, true),
-        toElStates = (state || this).idLookup,
-        i = 0,
-        fromNode,
-        toNode;
-
-    for (; i < elStatesInOrder.length; i++) {
-      fromNode = elStatesInOrder[i];
-      nested && (fromNode.matrix = getGlobalMatrix(fromNode.element, false, false, true)); // moving a parent affects the position of children
-
-      toNode = toElStates[fromNode.id];
-      toNode && _fit(fromNode, toNode, scale, true, 0, fromNode);
-      fromNode.matrix = getGlobalMatrix(fromNode.element, false, false, true);
-    }
-
-    return this;
-  };
-
-  _proto.getProperty = function getProperty(element, property) {
-    var es = this.getElementState(element) || _emptyObj;
-
-    return property in es ? es[property] : (es.props || _emptyObj)[property];
-  };
-
-  _proto.recordInlineStyles = function recordInlineStyles() {
-    var props = _memoizedRemoveProps[this.props] || _removeProps,
-        i = this.elementStates.length;
-
-    while (i--) {
-      _recordInlineStyles(this.elementStates[i], props);
-    }
-  };
-
-  _proto.killFlips = function killFlips(clear) {
-    var found;
-    this.targets.forEach(function (tl) {
-      tl = tl._flip;
-
-      if (tl && tl.progress() < 1 && !tl.paused()) {
-        found = 1;
-        tl.vars.onInterrupt && tl.vars.onInterrupt.apply(tl, tl.vars.onInterruptParams || []);
-        clear && tl.progress(1);
-        tl.kill(); // we should also kill it in case it was added to a parent timeline.
-      }
-    });
-
-    if (found && clear) {
-      // if we found an in-progress Flip animation, we must record all the values in their current state at that point BUT we should update the isVisible value AFTER pushing that flip to completion so that elements that are entering or leaving will populate those Arrays properly.
-      this.elementStates.forEach(function (es) {
-        var b = es.element.getBoundingClientRect();
-        es.isVisible = b.width || b.height || b.top || b.left;
-        es.uncache = 1;
-      });
-    }
-
-    this.interrupted = !!found;
-  };
-
-  _proto.getElementState = function getElementState(element) {
-    return this.elementStates[this.targets.indexOf(_getEl(element))];
-  };
-
-  _proto.makeAbsolute = function makeAbsolute() {
-    return _orderByDOMDepth(this.elementStates.slice(0), true, true).map(_makeAbsolute);
-  };
-
-  return FlipState;
-}();
-
-var ElementState = /*#__PURE__*/function () {
-  function ElementState(element, props, simple) {
-    this.element = element;
-    this.update(props, simple);
-  }
-
-  var _proto2 = ElementState.prototype;
-
-  _proto2.update = function update(props, simple) {
-    var element = this.element,
-        getProp = Flip_gsap.getProperty(element),
-        cache = Flip_gsap.core.getCache(element),
-        bounds = element.getBoundingClientRect(),
-        bbox = element.getBBox && typeof element.getBBox === "function" && element.nodeName.toLowerCase() !== "svg" && element.getBBox(),
-        m = simple ? new Matrix2D(1, 0, 0, 1, bounds.left + _getDocScrollLeft(), bounds.top + _getDocScrollTop()) : getGlobalMatrix(element, false, false, true);
-    this.getProp = getProp;
-    this.element = element;
-    this.id = _getID(element);
-    this.matrix = m;
-    this.cache = cache;
-    this.bounds = bounds;
-    this.isVisible = !!(bounds.width || bounds.height || bounds.left || bounds.top);
-    this.display = getProp("display");
-    this.position = getProp("position");
-    this.isFixed = _isFixed(element);
-    this.parent = element.parentNode;
-    this.x = getProp("x");
-    this.y = getProp("y");
-    this.scaleX = cache.scaleX;
-    this.scaleY = cache.scaleY;
-    this.rotation = getProp("rotation");
-    this.skewX = getProp("skewX");
-    this.opacity = getProp("opacity");
-    this.width = bbox ? bbox.width : _closestTenth(parseFloat(getProp("width", "px")) + 0.04); // round up to the closest 0.25 so that text doesn't wrap.
-
-    this.height = bbox ? bbox.height : parseFloat(getProp("height", "px"));
-    props && _recordProps(this, _memoizedProps[props] || _memoizeProps(props));
-    this.ctm = _getCTMInverse(element);
-    this.simple = simple || Flip_round(m.a) === 1 && !Flip_round(m.b) && !Flip_round(m.c) && Flip_round(m.d) === 1; // allows us to speed through some other tasks if it's not scale/rotated
-
-    this.uncache = 0;
-  };
-
-  return ElementState;
-}();
-
-var Flip = /*#__PURE__*/function () {
-  function Flip() {}
-
-  Flip.getState = function getState(targets, vars) {
-    return _parseState(targets, typeof vars === "string" ? {
-      props: vars
-    } : vars);
-  };
-
-  Flip.from = function from(state, vars) {
-    vars = vars || {};
-    "clearProps" in vars || (vars.clearProps = true);
-    return _fromTo(state, _parseState(vars.targets || state.targets, {
-      props: vars.props || state.props,
-      simple: vars.simple,
-      clear: !!vars.clear
-    }), vars, -1);
-  };
-
-  Flip.to = function to(state, vars) {
-    return _fromTo(state, _parseState(vars.targets || state.targets, {
-      props: vars.props || state.props,
-      simple: vars.simple,
-      clear: !!vars.clear
-    }), vars, 1);
-  };
-
-  Flip.fromTo = function fromTo(fromState, toState, vars) {
-    return _fromTo(fromState, toState, vars);
-  };
-
-  Flip.fit = function fit(fromEl, toEl, vars) {
-    if (!_bonusValidated) {
-      return;
-    }
-
-    var v = vars ? _copy(vars, _fitReserved) : {},
-        _ref = vars || v,
-        absolute = _ref.absolute,
-        scale = _ref.scale,
-        getVars = _ref.getVars,
-        props = _ref.props,
-        runBackwards = _ref.runBackwards,
-        onComplete = _ref.onComplete,
-        simple = _ref.simple,
-        fitChild = vars && vars.fitChild && _getEl(vars.fitChild),
-        before = _parseElementState(toEl, props, simple, fromEl),
-        after = _parseElementState(fromEl, 0, simple, before),
-        inlineProps = props ? _memoizedRemoveProps[props] : _removeProps;
-
-    props && _applyProps(v, before.props);
-
-    if (runBackwards) {
-      _recordInlineStyles(after, inlineProps);
-
-      "immediateRender" in v || (v.immediateRender = true);
-
-      v.onComplete = function () {
-        _applyInlineStyles(after);
-
-        onComplete && onComplete.apply(this, arguments);
-      };
-    }
-
-    absolute && _makeAbsolute(after, before);
-    v = _fit(after, before, scale || fitChild, props, fitChild, v.duration || getVars ? v : 0);
-    return getVars ? v : v.duration ? Flip_gsap.to(after.element, v) : null;
-  };
-
-  Flip.makeAbsolute = function makeAbsolute(targetsOrStates, vars) {
-    return (targetsOrStates instanceof FlipState ? targetsOrStates : new FlipState(targetsOrStates, vars)).makeAbsolute();
-  };
-
-  Flip.isFlipping = function isFlipping(target) {
-    var f = Flip.getByTarget(target);
-    return !!f && f.isActive();
-  };
-
-  Flip.getByTarget = function getByTarget(target) {
-    return (_getEl(target) || _emptyObj)._flip;
-  };
-
-  Flip.getElementState = function getElementState(target, props) {
-    return new ElementState(_getEl(target), props);
-  };
-
-  Flip.convertCoordinates = function convertCoordinates(fromElement, toElement, point) {
-    var m = getGlobalMatrix(toElement, true, true).multiply(getGlobalMatrix(fromElement));
-    return point ? m.apply(point) : m;
-  };
-
-  Flip.register = function register(core) {
-    Flip_gsap = core;
-
-    _setDoc(document.body || document.documentElement);
-
-    Flip_toArray = Flip_gsap.utils.toArray;
-    _closestTenth = Flip_gsap.utils.snap(0.1);
-  };
-
-  return Flip;
-}();
-Flip.version = "3.8.0"; // function whenImagesLoad(el, func) {
-// 	let pending = [],
-// 		onLoad = e => {
-// 			pending.splice(pending.indexOf(e.target), 1);
-// 			e.target.removeEventListener("load", onLoad);
-// 			pending.length || func();
-// 		};
-// 	gsap.utils.toArray(el.tagName.toLowerCase() === "img" ? el : el.querySelectorAll("img")).forEach(img => img.complete || img.addEventListener("load", onLoad) || pending.push(img));
-// 	pending.length || func();
-// }
-
-typeof window !== "undefined" && window.gsap && window.gsap.registerPlugin(Flip);
-
-;// CONCATENATED MODULE: ./assets/src/js/components/header.js
-
-
-
-
-var _require = __webpack_require__(26),
-    SplitText = _require.default;
-
-gsap_gsapWithCSS.registerPlugin(ScrollTrigger, SplitText, Flip); // gsap.registerPlugin(SplitText);
-
-var header = function header() {
-  var title = document.querySelector('.entry-title'); // const entryHeader = document.querySelector('.entry-header');
-
-  if (title) {
-    var splitTitle = new SplitText(title, {
-      type: 'words, chars'
-    }),
-        targets = splitTitle.chars;
-    var tl = gsap_gsapWithCSS.timeline();
-    tl.delay(0.75).from(targets, {
-      autoAlpha: 0,
-      y: 30,
-      duration: 0.85,
-      stagger: 0.0325,
-      ease: Back.easeOut.config(3)
-    }); // const flip = () => {
-    // 	const state = Flip.getState('.top-title, .entry-title');
-    // 	topTitle.classList.toggle('active');
-    // 	title.classList.toggle('active');
-    // 	Flip.from(state, {
-    // 		duration: 0.6,
-    // 		fade: true,
-    // 		absolute: true,
-    // 		toggleClass: 'flipping',
-    // 		ease: 'power1.inOut',
-    // 	});
-    // };
-    // ScrollTrigger.create({
-    // 	trigger: entryHeader,
-    // 	start: 'top top',
-    // 	onEnter: flip,
-    // 	onLeaveBack: flip,
-    // 	markers: true,
-    // });
-  }
-};
-
-/* harmony default export */ const components_header = (header);
-// EXTERNAL MODULE: ./node_modules/gsap/utils/strings.js
-var strings = __webpack_require__(111);
-;// CONCATENATED MODULE: ./node_modules/gsap/TextPlugin.js
-/*!
- * TextPlugin 3.8.0
- * https://greensock.com
- *
- * @license Copyright 2008-2021, GreenSock. All rights reserved.
- * Subject to the terms at https://greensock.com/standard-license or for
- * Club GreenSock members, the agreement issued with that membership.
- * @author: Jack Doyle, jack@greensock.com
-*/
-
-/* eslint-disable */
-
-
-var TextPlugin_gsap,
-    TextPlugin_tempDiv,
-    TextPlugin_getGSAP = function _getGSAP() {
-  return TextPlugin_gsap || typeof window !== "undefined" && (TextPlugin_gsap = window.gsap) && TextPlugin_gsap.registerPlugin && TextPlugin_gsap;
-};
-
-var TextPlugin = {
-  version: "3.8.0",
-  name: "text",
-  init: function init(target, value, tween) {
-    var i = target.nodeName.toUpperCase(),
-        data = this,
-        _short,
-        text,
-        original,
-        j,
-        condensedText,
-        condensedOriginal,
-        aggregate,
-        s;
-
-    data.svg = target.getBBox && (i === "TEXT" || i === "TSPAN");
-
-    if (!("innerHTML" in target) && !data.svg) {
-      return false;
-    }
-
-    data.target = target;
-
-    if (typeof value !== "object") {
-      value = {
-        value: value
-      };
-    }
-
-    if (!("value" in value)) {
-      data.text = data.original = [""];
-      return;
-    }
-
-    data.delimiter = value.delimiter || "";
-    original = (0,strings/* splitInnerHTML */.d7)(target, data.delimiter, false, value.preserveSpaces);
-
-    if (!TextPlugin_tempDiv) {
-      TextPlugin_tempDiv = document.createElement("div");
-    }
-
-    TextPlugin_tempDiv.innerHTML = value.value;
-    text = (0,strings/* splitInnerHTML */.d7)(TextPlugin_tempDiv, data.delimiter);
-    data.from = tween._from;
-
-    if (data.from) {
-      i = original;
-      original = text;
-      text = i;
-    }
-
-    data.hasClass = !!(value.newClass || value.oldClass);
-    data.newClass = value.newClass;
-    data.oldClass = value.oldClass;
-    i = original.length - text.length;
-    _short = i < 0 ? original : text;
-    data.fillChar = value.fillChar || (value.padSpace ? "&nbsp;" : "");
-
-    if (i < 0) {
-      i = -i;
-    }
-
-    while (--i > -1) {
-      _short.push(data.fillChar);
-    }
-
-    if (value.type === "diff") {
-      j = 0;
-      condensedText = [];
-      condensedOriginal = [];
-      aggregate = "";
-
-      for (i = 0; i < text.length; i++) {
-        s = text[i];
-
-        if (s === original[i]) {
-          aggregate += s;
-        } else {
-          condensedText[j] = aggregate + s;
-          condensedOriginal[j++] = aggregate + original[i];
-          aggregate = "";
-        }
-      }
-
-      text = condensedText;
-      original = condensedOriginal;
-
-      if (aggregate) {
-        text.push(aggregate);
-        original.push(aggregate);
-      }
-    }
-
-    if (value.speed) {
-      tween.duration(Math.min(0.05 / value.speed * _short.length, value.maxDuration || 9999));
-    }
-
-    this.original = original;
-    this.text = text;
-
-    this._props.push("text");
-  },
-  render: function render(ratio, data) {
-    if (ratio > 1) {
-      ratio = 1;
-    } else if (ratio < 0) {
-      ratio = 0;
-    }
-
-    if (data.from) {
-      ratio = 1 - ratio;
-    }
-
-    var text = data.text,
-        hasClass = data.hasClass,
-        newClass = data.newClass,
-        oldClass = data.oldClass,
-        delimiter = data.delimiter,
-        target = data.target,
-        fillChar = data.fillChar,
-        original = data.original,
-        l = text.length,
-        i = ratio * l + 0.5 | 0,
-        applyNew,
-        applyOld,
-        str;
-
-    if (hasClass) {
-      applyNew = newClass && i;
-      applyOld = oldClass && i !== l;
-      str = (applyNew ? "<span class='" + newClass + "'>" : "") + text.slice(0, i).join(delimiter) + (applyNew ? "</span>" : "") + (applyOld ? "<span class='" + oldClass + "'>" : "") + delimiter + original.slice(i).join(delimiter) + (applyOld ? "</span>" : "");
-    } else {
-      str = text.slice(0, i).join(delimiter) + delimiter + original.slice(i).join(delimiter);
-    }
-
-    if (data.svg) {
-      //SVG text elements don't have an "innerHTML" in Microsoft browsers.
-      target.textContent = str;
-    } else {
-      target.innerHTML = fillChar === "&nbsp;" && ~str.indexOf("  ") ? str.split("  ").join("&nbsp;&nbsp;") : str;
-    }
-  }
-};
-TextPlugin.splitInnerHTML = strings/* splitInnerHTML */.d7;
-TextPlugin.emojiSafeSplit = strings/* emojiSafeSplit */.pf;
-TextPlugin.getText = strings/* getText */.Q;
-TextPlugin_getGSAP() && TextPlugin_gsap.registerPlugin(TextPlugin);
-
-;// CONCATENATED MODULE: ./node_modules/gsap/ScrambleTextPlugin.js
-/*!
- * ScrambleTextPlugin 3.8.0
- * https://greensock.com
- *
- * @license Copyright 2008-2021, GreenSock. All rights reserved.
- * Subject to the terms at https://greensock.com/standard-license or for
- * Club GreenSock members, the agreement issued with that membership.
- * @author: Jack Doyle, jack@greensock.com
-*/
-
-/* eslint-disable */
-
-
-var CharSet = /*#__PURE__*/function () {
-  function CharSet(chars) {
-    this.chars = (0,strings/* emojiSafeSplit */.pf)(chars);
-    this.sets = [];
-    this.length = 50;
-
-    for (var i = 0; i < 20; i++) {
-      this.sets[i] = _scrambleText(80, this.chars); //we create 20 strings that are 80 characters long, randomly chosen and pack them into an array. We then randomly choose the scrambled text from this array in order to greatly improve efficiency compared to creating new randomized text from scratch each and every time it's needed. This is a simple lookup whereas the other technique requires looping through as many times as there are characters needed, and calling Math.random() each time through the loop, building the string, etc.
-    }
-  }
-
-  var _proto = CharSet.prototype;
-
-  _proto.grow = function grow(newLength) {
-    //if we encounter a tween that has more than 80 characters, we'll need to add to the character sets accordingly. Once it's cached, it'll only need to grow again if we exceed that new length. Again, this is an efficiency tactic.
-    for (var i = 0; i < 20; i++) {
-      this.sets[i] += _scrambleText(newLength - this.length, this.chars);
-    }
-
-    this.length = newLength;
-  };
-
-  return CharSet;
-}();
-
-var ScrambleTextPlugin_gsap,
-    ScrambleTextPlugin_coreInitted,
-    ScrambleTextPlugin_getGSAP = function _getGSAP() {
-  return ScrambleTextPlugin_gsap || typeof window !== "undefined" && (ScrambleTextPlugin_gsap = window.gsap) && ScrambleTextPlugin_gsap.registerPlugin && ScrambleTextPlugin_gsap;
-},
-    ScrambleTextPlugin_bonusValidated = 1,
-    //<name>ScrambleTextPlugin</name>
-_spacesExp = /\s+/g,
-    _scrambleText = function _scrambleText(length, chars) {
-  var l = chars.length,
-      s = "";
-
-  while (--length > -1) {
-    s += chars[~~(Math.random() * l)];
-  }
-
-  return s;
-},
-    _upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-    _lower = _upper.toLowerCase(),
-    _charsLookup = {
-  upperCase: new CharSet(_upper),
-  lowerCase: new CharSet(_lower),
-  upperAndLowerCase: new CharSet(_upper + _lower)
-},
-    ScrambleTextPlugin_initCore = function _initCore() {
-  ScrambleTextPlugin_coreInitted = ScrambleTextPlugin_gsap = ScrambleTextPlugin_getGSAP();
-};
-
-var ScrambleTextPlugin = {
-  version: "3.8.0",
-  name: "scrambleText",
-  register: function register(core, Plugin, propTween) {
-    ScrambleTextPlugin_gsap = core;
-
-    ScrambleTextPlugin_initCore();
-  },
-  init: function init(target, value, tween, index, targets) {
-    ScrambleTextPlugin_coreInitted || ScrambleTextPlugin_initCore();
-    this.prop = "innerHTML" in target ? "innerHTML" : "textContent" in target ? "textContent" : 0; // SVG text in IE doesn't have innerHTML, but it does have textContent.
-
-    if (!this.prop) {
-      return;
-    }
-
-    this.target = target;
-
-    if (typeof value !== "object") {
-      value = {
-        text: value
-      };
-    }
-
-    var text = value.text || value.value || "",
-        trim = value.trim !== false,
-        data = this,
-        delim,
-        maxLength,
-        charset,
-        splitByChars;
-    data.delimiter = delim = value.delimiter || "";
-    data.original = (0,strings/* emojiSafeSplit */.pf)((0,strings/* getText */.Q)(target).replace(_spacesExp, " ").split("&nbsp;").join(""), delim, trim);
-
-    if (text === "{original}" || text === true || text == null) {
-      text = data.original.join(delim);
-    }
-
-    data.text = (0,strings/* emojiSafeSplit */.pf)((text || "").replace(_spacesExp, " "), delim, trim);
-    data.hasClass = !!(value.newClass || value.oldClass);
-    data.newClass = value.newClass;
-    data.oldClass = value.oldClass;
-    splitByChars = delim === "";
-    data.textHasEmoji = splitByChars && !!data.text.emoji;
-    data.charsHaveEmoji = !!value.chars && !!(0,strings/* emojiSafeSplit */.pf)(value.chars).emoji;
-    data.length = splitByChars ? data.original.length : data.original.join(delim).length;
-    data.lengthDif = (splitByChars ? data.text.length : data.text.join(delim).length) - data.length;
-    data.fillChar = value.fillChar || value.chars && ~value.chars.indexOf(" ") ? "&nbsp;" : "";
-    data.charSet = charset = _charsLookup[value.chars || "upperCase"] || new CharSet(value.chars);
-    data.speed = 0.05 / (value.speed || 1);
-    data.prevScrambleTime = 0;
-    data.setIndex = Math.random() * 20 | 0;
-    maxLength = data.length + Math.max(data.lengthDif, 0);
-
-    if (maxLength > charset.length) {
-      charset.grow(maxLength);
-    }
-
-    data.chars = charset.sets[data.setIndex];
-    data.revealDelay = value.revealDelay || 0;
-    data.tweenLength = value.tweenLength !== false;
-    data.tween = tween;
-    data.rightToLeft = !!value.rightToLeft;
-
-    data._props.push("scrambleText", "text");
-
-    return ScrambleTextPlugin_bonusValidated;
-  },
-  render: function render(ratio, data) {
-    var target = data.target,
-        prop = data.prop,
-        text = data.text,
-        delimiter = data.delimiter,
-        tween = data.tween,
-        prevScrambleTime = data.prevScrambleTime,
-        revealDelay = data.revealDelay,
-        setIndex = data.setIndex,
-        chars = data.chars,
-        charSet = data.charSet,
-        length = data.length,
-        textHasEmoji = data.textHasEmoji,
-        charsHaveEmoji = data.charsHaveEmoji,
-        lengthDif = data.lengthDif,
-        tweenLength = data.tweenLength,
-        oldClass = data.oldClass,
-        newClass = data.newClass,
-        rightToLeft = data.rightToLeft,
-        fillChar = data.fillChar,
-        speed = data.speed,
-        original = data.original,
-        hasClass = data.hasClass,
-        l = text.length,
-        time = tween._time,
-        timeDif = time - prevScrambleTime,
-        i,
-        i2,
-        startText,
-        endText,
-        applyNew,
-        applyOld,
-        str,
-        startClass,
-        endClass,
-        position,
-        r;
-
-    if (revealDelay) {
-      if (tween._from) {
-        time = tween._dur - time; //invert the time for from() tweens
-      }
-
-      ratio = time === 0 ? 0 : time < revealDelay ? 0.000001 : time === tween._dur ? 1 : tween._ease((time - revealDelay) / (tween._dur - revealDelay));
-    }
-
-    if (ratio < 0) {
-      ratio = 0;
-    } else if (ratio > 1) {
-      ratio = 1;
-    }
-
-    if (rightToLeft) {
-      ratio = 1 - ratio;
-    }
-
-    i = ~~(ratio * l + 0.5);
-
-    if (ratio) {
-      if (timeDif > speed || timeDif < -speed) {
-        data.setIndex = setIndex = (setIndex + (Math.random() * 19 | 0)) % 20;
-        data.chars = charSet.sets[setIndex];
-        data.prevScrambleTime += timeDif;
-      }
-
-      endText = chars;
-    } else {
-      endText = original.join(delimiter);
-    }
-
-    r = tween._from ? ratio : 1 - ratio;
-    position = length + (tweenLength ? tween._from ? r * r * r : 1 - r * r * r : 1) * lengthDif;
-
-    if (rightToLeft) {
-      if (ratio === 1 && (tween._from || tween.data === "isFromStart")) {
-        //special case for from() tweens
-        startText = "";
-        endText = original.join(delimiter);
-      } else {
-        str = text.slice(i).join(delimiter);
-
-        if (charsHaveEmoji) {
-          startText = (0,strings/* emojiSafeSplit */.pf)(endText).slice(0, position - (textHasEmoji ? (0,strings/* emojiSafeSplit */.pf)(str) : str).length + 0.5 | 0).join("");
-        } else {
-          startText = endText.substr(0, position - (textHasEmoji ? (0,strings/* emojiSafeSplit */.pf)(str) : str).length + 0.5 | 0);
-        }
-
-        endText = str;
-      }
-    } else {
-      startText = text.slice(0, i).join(delimiter);
-      i2 = (textHasEmoji ? (0,strings/* emojiSafeSplit */.pf)(startText) : startText).length;
-
-      if (charsHaveEmoji) {
-        endText = (0,strings/* emojiSafeSplit */.pf)(endText).slice(i2, position + 0.5 | 0).join("");
-      } else {
-        endText = endText.substr(i2, position - i2 + 0.5 | 0);
-      }
-    }
-
-    if (hasClass) {
-      startClass = rightToLeft ? oldClass : newClass;
-      endClass = rightToLeft ? newClass : oldClass;
-      applyNew = startClass && i !== 0;
-      applyOld = endClass && i !== l;
-      str = (applyNew ? "<span class='" + startClass + "'>" : "") + startText + (applyNew ? "</span>" : "") + (applyOld ? "<span class='" + endClass + "'>" : "") + delimiter + endText + (applyOld ? "</span>" : "");
-    } else {
-      str = startText + delimiter + endText;
-    }
-
-    target[prop] = fillChar === "&nbsp;" && ~str.indexOf("  ") ? str.split("  ").join("&nbsp;&nbsp;") : str;
-  }
-};
-ScrambleTextPlugin.emojiSafeSplit = strings/* emojiSafeSplit */.pf;
-ScrambleTextPlugin.getText = strings/* getText */.Q;
-ScrambleTextPlugin_getGSAP() && ScrambleTextPlugin_gsap.registerPlugin(ScrambleTextPlugin);
-
 ;// CONCATENATED MODULE: ./assets/src/js/components/pageMain.js
 
 
@@ -35287,6 +35221,37 @@ var initMain = function initMain() {
 };
 
 /* harmony default export */ const pageMain = (initMain);
+;// CONCATENATED MODULE: ./assets/src/js/components/pageAbout.js
+
+core.use([Navigation, Pagination, Autoplay]);
+
+var initAboutUs = function initAboutUs() {
+  var conponents = document.querySelectorAll('[data-component="swiper-history"]');
+
+  var initSwiper = function initSwiper(el, index) {
+    var targetSwiper = el;
+    var btnPrev = el.querySelector('.swiper-prev');
+    var btnNext = el.querySelector('.swiper-next');
+    targetSwiper.classList.add('s' + index);
+    btnPrev.classList.add('l' + index);
+    btnNext.classList.add('r' + index);
+    var sw = new core(targetSwiper, {
+      // slidesPerView: 1,
+      slidesPerView: 'auto',
+      // centeredSlides: true,
+      navigation: {
+        nextEl: '.r' + index,
+        prevEl: '.l' + index
+      }
+    });
+  };
+
+  Array.from(conponents).forEach(function (el, index) {
+    new initSwiper(el, index);
+  });
+};
+
+/* harmony default export */ const pageAbout = (initAboutUs);
 ;// CONCATENATED MODULE: ./assets/src/js/components/barbajs.js
 
 
@@ -35314,46 +35279,18 @@ var leaveAnimation = function leaveAnimation(data) {
     barbajs_tl.to(data.current.container, {
       y: -50,
       duration: 1.5,
-      autoAlpha: 0 // onComplete: () => {
-      // 	resolve();
-      // 	console.log('leaveAnimation complete');
-      // },
-
+      autoAlpha: 0
     }).then();
     resolve();
   });
-}; // const leaveAnimation = (data) => {
-// 	return new Promise((resolve) => {
-// 		tl.to(data.current.container, {
-// 			y: -50,
-// 			duration: 1.5,
-// 			autoAlpha: 0,
-// 			onComplete: () => {
-// 				resolve();
-// 				console.log('leaveAnimation complete');
-// 			},
-// 		});
-// 	});
-// };
-// const enterAnimation = (data) => {
-// 	return new Promise((resolve) => {
-// 		tl.from(data.next.container, {
-// 			y: 50,
-// 			duration: 1.5,
-// 			autoAlpha: 0,
-// 			onComplete: () => {
-// 				resolve();
-// 				console.log('enterAnimation complete');
-// 			},
-// 		});
-// 	});
-// };
-
+};
 
 var initJs = function initJs(dataNamespace) {
   if (!dataNamespace) dataNamespace = document.getElementById('primary').dataset.barbaNamespace;
 
-  if (dataNamespace === 'page-portfolio') {
+  if (dataNamespace === 'page-about-us') {
+    pageAbout();
+  } else if (dataNamespace === 'page-portfolio') {
     components_masonry();
   } else if (dataNamespace === 'page-contact') {
     components_form();
@@ -35392,8 +35329,8 @@ barba_umd_default().hooks.after(function (data) {
   siteNavigation.innerHTML = navigation; // console.log('hook >>>>>>>>>>>>>>>>>>>>>> after');
 
   initCursor();
-  components_navigation();
-  components_swiper();
+  components_navigation(); // swiper();
+
   components_scroll();
   components_header();
   var dataNamespace = data.next.namespace;
@@ -35472,8 +35409,8 @@ barba_umd_default().init({
 window.addEventListener('DOMContentLoaded', function (event) {
   initCursor();
   components_navigation();
-  effHeader();
-  components_swiper(); // masonry();
+  effHeader(); // swiper();
+  // masonry();
   // initForm();
 
   components_scroll();

@@ -1,0 +1,41 @@
+[data-component='swiper-history'] {
+	.swiper-wrapper {
+		.swiper-slide {
+			width: 96%;
+			@screen sm {
+				width: 60%;
+			}
+			@screen md {
+				width: 50%;
+			}
+			@screen lg {
+				width: 40%;
+			}
+			@screen xl {
+				width: 30%;
+			}
+		}
+	}
+	.desc {
+		ul {
+			@apply text-gray-500;
+			li {
+				@apply relative ml-4;
+				word-break: keep-all;
+				&::before {
+					content: '';
+					width: 5px;
+					height: 1px;
+					display: block;
+					position: absolute;
+					background-color: #6b7280;
+					left: -14px;
+					top: 11px;
+				}
+				em {
+					@apply not-italic text-gray-800;
+				}
+			}
+		}
+	}
+}

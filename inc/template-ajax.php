@@ -20,7 +20,9 @@ function zeein_loadmore_ajax_handler(){
   query_posts( $args );
   if ( have_posts() ) :
     while(have_posts()): the_post();
-      get_template_part( 'template-parts/loop', 'work' );
+      echo '<div class="grid-item pb-6 md:p-2 lg:p-3">';
+      get_template_part( 'template-parts/loop', 'portfolio' );
+      echo '</div>';
     endwhile;
   endif;
   wp_reset_query();
