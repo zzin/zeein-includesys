@@ -33,7 +33,10 @@ const initForm = () => {
 				const msgWrap = document.getElementById('msg-wrap');
 				const ul = document.createElement('ul');
 				ul.setAttribute('id', 'errorMsg');
-				ul.setAttribute('class', 'p-5 bg-gray-50 mb-5 rounded-md text-red-400');
+				ul.setAttribute(
+					'class',
+					'p-5 bg-gray-50 mb-5 rounded-md text-red-400 dark:bg-gray-900 dark:text-red-300'
+				);
 				msgWrap.innerHTML = '';
 				msgWrap.appendChild(ul);
 

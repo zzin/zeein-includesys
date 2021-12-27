@@ -6,7 +6,7 @@ get_header();
 		<div class="h-screen w-screen flex items-center bg-black overflow-hidden relative">
 			<div class="inset-0 absolute bg-cover bg-no-repeat bg-right opacity-50" style="background-image:url(<?php bloginfo('template_url');?>/assets/public/images/bg-top-main.jpg); min-height: 600px;"></div>
       <div class="container mx-auto px-6 md:px-8 relative">
-        <h1 class="slogan-title text-5xl md:text-7xl uppercase font-semibold text-white mb-10 text-opacity-40 dark:text-indigo-700 dark:text-opacity-60">
+        <h1 class="slogan-title text-5xl md:text-7xl uppercase font-semibold text-white mb-10 text-opacity-30 dark:text-indigo-700 dark:text-opacity-50">
           Your<br />
           <em class="text-white not-italic font-light dark:text-indigo-700" id="word-1">technology</em><br />
           <em class="text-white not-italic font-light dark:text-indigo-700" id="word-2">business</em><br />
@@ -130,12 +130,12 @@ get_header();
 	?>
 					</div>
 					<div class="swiper-button-wrapper">
-						<div class="swiper-button-next swiper-next">
+						<div class="swiper-button-next swiper-next dark:text-white">
 							<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
 							</svg>
 						</div>
-						<div class="swiper-button-prev swiper-prev">
+						<div class="swiper-button-prev swiper-prev dark:text-white">
 							<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
 							</svg>

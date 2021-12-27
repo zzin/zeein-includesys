@@ -13,18 +13,25 @@ const masonry = () => {
 			// transitionDuration: '0.5s',
 		});
 
+		const changeClass = () => {
+			const preLoadingPortfolios = document.querySelectorAll(
+				'.pre-loading-portfolio'
+			);
+			Array.from(preLoadingPortfolios).forEach((el) => {
+				el.classList.add('is-visible');
+			});
+		};
+
 		imagesLoaded(component, { background: true }, () => {
 			msnry.layout();
-		});
+			// eslint-disable-next-line no-undef
+			frontendAjaxObject.currentPage = 1;
 
-		// imagesLoaded(component).on('progress', (instance, image) => {
-		// 	const targetParnetNode = image.img.parentNode;
-		// 	msnry.layout();
-		// 	setInterval(() => {
-		// 		targetParnetNode.classList.add('is-visible');
-		// 		window.dispatchEvent(new Event('resize'));
-		// 	}, 500);
-		// });
+			const preLoadingPortfolios = document.querySelectorAll(
+				'.pre-loading-portfolio'
+			);
+			changeClass();
+		});
 
 		const loadmore = () => {
 			let loading = false,
@@ -58,23 +65,18 @@ const masonry = () => {
 
 									imagesLoaded(component, { background: true }, () => {
 										msnry.layout();
+										setTimeout(() => {
+											changeClass();
+										}, 500);
 									});
-
-									// eslint-disable-next-line no-undef
-									// imagesLoaded(component).on('progress', (instance, image) => {
-									// 	const targetParnetNode = image.img.parentNode;
-									// 	msnry.layout();
-									// 	setTimeout(() => {
-									// 		targetParnetNode.classList.add('is-visible');
-									// 	}, 500);
-									// });
-
-									// eslint-disable-next-line no-undef
-									frontendAjaxObject.currentPage++;
 								}
+								// eslint-disable-next-line no-undef
+								frontendAjaxObject.currentPage++;
 								if (
 									// eslint-disable-next-line no-undef
-									frontendAjaxObject.currentPage >= frontendAjaxObject.maxPage
+									frontendAjaxObject.currentPage >=
+									// eslint-disable-next-line no-undef
+									frontendAjaxObject.maxPage * 1
 								) {
 									btnLoadMore.remove();
 									hasPost = false;

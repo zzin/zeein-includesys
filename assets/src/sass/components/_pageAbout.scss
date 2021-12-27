@@ -33,7 +33,7 @@
 					top: 11px;
 				}
 				em {
-					@apply not-italic text-gray-800;
+					@apply not-italic text-gray-800 dark:text-gray-300;
 				}
 			}
 		}

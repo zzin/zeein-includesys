@@ -52,15 +52,15 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
               <div>
                 <label class="text-base mb-1 block" for="req_company">이름 / 회사명 <span class="text-sm text-red-500">*</span></label>
-                <input autocomplete="off" autocorrect="off" autocapitalize="off" type="text" name="req_company" id="req_company" class="border border-gray-300 placeholder-gray-400 bg-white text-sm w-full h-10 p-2 focus:outline-none focus:border-gray-600 focus:ring-gray-600 rounded-md focus:ring-1" placeholder="이름 혹은 회사명 입력" aria-label="이름 / 회사명" required value="" />
+                <input autocomplete="off" autocorrect="off" autocapitalize="off" type="text" name="req_company" id="req_company" class="border border-gray-300 placeholder-gray-300 bg-white text-sm w-full h-10 p-2 focus:outline-none focus:border-gray-600 focus:ring-gray-600 rounded-md focus:ring-1 dark:bg-gray-900 dark:border-gray-800 dark:placeholder-gray-700" placeholder="이름 혹은 회사명 입력" aria-label="이름 / 회사명" required value="" />
               </div>
               <div>
                 <label class="text-base mb-1 block" for="req_tel">연락처 <span class="text-sm text-red-500">*</span></label>
-                <input autocomplete="off" autocorrect="off" autocapitalize="off" type="tel" name="req_tel" id="req_tel" class="border border-gray-300 placeholder-gray-400 bg-white text-sm w-full h-10 p-2 focus:outline-none focus:border-gray-600 focus:ring-gray-600 rounded-md focus:ring-1" placeholder="연락처 입력" aria-label="연락처" required value="" />
+                <input autocomplete="off" autocorrect="off" autocapitalize="off" type="tel" name="req_tel" id="req_tel" class="border border-gray-300 placeholder-gray-300 bg-white text-sm w-full h-10 p-2 focus:outline-none focus:border-gray-600 focus:ring-gray-600 rounded-md focus:ring-1 dark:bg-gray-900 dark:border-gray-800 dark:placeholder-gray-700" placeholder="연락처 입력" aria-label="연락처" required value="" />
               </div>
               <div>
                 <label class="text-base mb-1 block" for="req_email">이메일 <span class="text-sm text-red-500">*</span></label>
-                <input autocomplete="off" autocorrect="off" autocapitalize="off" type="email" name="req_email" id="req_email" class="border border-gray-300 placeholder-gray-400 bg-white text-sm w-full h-10 p-2 focus:outline-none focus:border-gray-600 focus:ring-gray-600 rounded-md focus:ring-1" placeholder="이메일 입력" aria-label="이메일" required value="" />
+                <input autocomplete="off" autocorrect="off" autocapitalize="off" type="email" name="req_email" id="req_email" class="border border-gray-300 placeholder-gray-300 bg-white text-sm w-full h-10 p-2 focus:outline-none focus:border-gray-600 focus:ring-gray-600 rounded-md focus:ring-1 dark:bg-gray-900 dark:border-gray-800 dark:placeholder-gray-700" placeholder="이메일 입력" aria-label="이메일" required value="" />
               </div>
             </div>
           </div>
@@ -70,12 +70,12 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
               <div>
                 <label class="text-base mb-1 block" for="req_project">프로젝트명 <span class="text-sm text-red-500">*</span></label>
-                <input autocomplete="off" autocorrect="off" autocapitalize="off" type="text" name="req_project" id="req_project" class="border border-gray-300 placeholder-gray-400 bg-white text-sm w-full h-10 p-2 focus:outline-none focus:border-gray-600 focus:ring-gray-600 rounded-md focus:ring-1" placeholder="프로젝트명" aria-label="프로젝트명" required value="" />
+                <input autocomplete="off" autocorrect="off" autocapitalize="off" type="text" name="req_project" id="req_project" class="border border-gray-300 placeholder-gray-300 bg-white text-sm w-full h-10 p-2 focus:outline-none focus:border-gray-600 focus:ring-gray-600 rounded-md focus:ring-1 dark:bg-gray-900 dark:border-gray-800 dark:placeholder-gray-700" placeholder="프로젝트명" aria-label="프로젝트명" required value="" />
               </div>
               <div>
                 <label class="text-base mb-1 block" for="req_since">희망 제작기간 <span class="text-sm text-red-500">*</span></label>
                 <div class="relative">
-                  <select name="req_since" id="req_since" class="form-select appearance-none block w-full h-10 p-2 border border-gray-300 placeholder-gray-400 bg-white text-sm focus:outline-none focus:border-gray-600 focus:ring-gray-600 rounded-md focus:ring-1" aria-label="희망 제작기간" required>
+                  <select name="req_since" id="req_since" class="form-select appearance-none block w-full h-10 p-2 border border-gray-300 placeholder-gray-300 bg-white text-sm focus:outline-none focus:border-gray-600 focus:ring-gray-600 rounded-md focus:ring-1 dark:bg-gray-900 dark:border-gray-800 dark:placeholder-gray-700" aria-label="희망 제작기간" required>
                     <option value='' selected>희망 제작기간 선택</option>
                     <option value="asap">가장 빠르게(ASAP)</option>
                     <option value="1">1개월 이내</option>
@@ -89,7 +89,7 @@
               </div>
               <div>
                 <label class="text-base mb-1 block" for="req_budget">책정 예산 금액 <span class="text-sm text-red-500">*</span></label>
-                <input autocomplete="off" autocorrect="off" autocapitalize="off" type="text" name="req_budget" id="req_budget" class="border border-gray-300 placeholder-gray-400 bg-white text-sm w-full h-10 p-2 focus:outline-none focus:border-gray-600 focus:ring-gray-600 rounded-md focus:ring-1" placeholder="만단위로 입력 ex) 100 = 100만원" aria-label="책정 예산 금액" required value="" />
+                <input autocomplete="off" autocorrect="off" autocapitalize="off" type="text" name="req_budget" id="req_budget" class="border border-gray-300 placeholder-gray-300 bg-white text-sm w-full h-10 p-2 focus:outline-none focus:border-gray-600 focus:ring-gray-600 rounded-md focus:ring-1 dark:bg-gray-900 dark:border-gray-800 dark:placeholder-gray-700" placeholder="만단위로 입력 ex) 100 = 100만원" aria-label="책정 예산 금액" required value="" />
               </div>
               <div>
                 <label class="text-base mb-1 block" for="req_file">파일 첨부</label>
@@ -99,12 +99,14 @@
                     file:rounded-md file:border-0
                     file:text-sm file:font-medium
                     file:bg-gray-100 file:text-gray-600
-                    hover:file:bg-gray-200" />
+                    hover:file:bg-gray-200
+                    dark:file:bg-gray-900 dark:file:text-gray-400
+                    " />
                 </div>
               </div>
               <div>
                 <label class="text-base mb-1 block" for="req_content">문의 내용 <span class="text-sm text-red-500">*</span></label>
-                <textarea autocomplete="off" autocorrect="off" autocapitalize="off" name="req_content" id="req_content" class="border border-gray-300 placeholder-gray-400 bg-white text-sm w-full h-52 p-2 focus:outline-none focus:border-gray-600 focus:ring-gray-600 rounded-md focus:ring-1" placeholder="문의 내용 입력" aria-label="문의 내용" required></textarea>
+                <textarea autocomplete="off" autocorrect="off" autocapitalize="off" name="req_content" id="req_content" class="border border-gray-300 placeholder-gray-300 bg-white text-sm w-full h-52 p-2 focus:outline-none focus:border-gray-600 focus:ring-gray-600 rounded-md focus:ring-1 dark:bg-gray-900 dark:border-gray-800 dark:placeholder-gray-700" placeholder="문의 내용 입력" aria-label="문의 내용" required></textarea>
               </div>
               <div class="pt-0 md:pt-6">
                 <strong class="text-xs md:text-sm text-gray-400 font-normal">입력하신 정보는 문의내용을 확인을 위해서만 사용하며 수집항목, 목적, 보유기간은 다음과 같습니다.</strong>
@@ -133,8 +135,8 @@
                   </label>
                 </div>
                 <div>
-                  <div id="msg-wrap" class="text-xs"></div>
-                  <button type="submit" class="btn-submit appearance-none w-full h-12 p-2 bg-indigo-500 text-indigo-100 font-medium rounded-md">문의하기</button>
+                  <div id="msg-wrap" class="text-xs dark:bg-gray-900"></div>
+                  <button type="submit" class="btn-submit appearance-none w-full h-12 p-2 bg-indigo-900 text-indigo-100 font-medium rounded-md hover:bg-indigo-800">문의하기</button>
                 </div>
               </div>
             </div>

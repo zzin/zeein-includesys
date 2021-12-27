@@ -170,7 +170,7 @@ function footer_somethings() {
 			'ajaxurl'		=> admin_url('admin-ajax.php'),
 			'themeurl'	=> get_template_directory_uri(),
 			'posts' => ($portfolioQuery) ? json_encode( $portfolioQuery->query_vars ) : null,
-			'currentPage' => get_query_var('paged') ? get_query_var('paged') : 1,
+			'currentPage' => 1,
 			'totalPortfolio' => ($portfolioQuery) ? $portfolioQuery->found_posts : null,
 			'maxPage' => ($portfolioQuery) ? $portfolioQuery->max_num_pages : null,
 		)

@@ -4,7 +4,7 @@ $terms_string = join('/', wp_list_pluck($terms, 'name'));
 $tags = get_the_terms($post->ID, 'portfoliotag');
 $img = get_the_post_thumbnail_url($post->ID, 'large', array( 'class'=> 'card-img-top w-full' ));
 ?>
-<div class="card-portfolio border bg-white border-gray-100 p-8 rounded-md w-full dark:bg-gray-900 dark:border-gray-800">
+<div class="card-portfolio border bg-white border-gray-100 p-8 rounded-md w-full dark:bg-gray-900 dark:border-gray-800 pre-loading-portfolio">
   <h3 class="text-base text-gray-800 mb-2 dark:text-gray-200"><?=get_the_title();?></h3>
   <div class="meta-date text-gray-400 text-sm dark:text-gray-600"><?=get_the_date();?></div>
 <?php
@@ -23,6 +23,6 @@ endif;
   <div class="content text-sm text-gray-600 mt-6 dark:text-gray-400"><?=nl2br(get_the_content());?></div>
   <div class="flex justify-between items-center mt-6">
     <div class="client text-xs text-gray-400 dark:text-gray-600 word-break-keep-all"><?=get_field('client');?></div>
-    <span class="bg-gray-100 text-xs text-gray-400 inline-block py-2 px-3 rounded-md dark:bg-gray-900"><?=$terms_string?></span>
+    <span class="bg-gray-100 text-xs text-gray-400 inline-block py-2 px-3 rounded-md dark:bg-black"><?=$terms_string?></span>
   </div>
 </div>

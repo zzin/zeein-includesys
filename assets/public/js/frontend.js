@@ -22484,18 +22484,23 @@ var masonry = function masonry() {
       percentPosition: true // transitionDuration: '0.5s',
 
     });
+
+    var changeClass = function changeClass() {
+      var preLoadingPortfolios = document.querySelectorAll('.pre-loading-portfolio');
+      Array.from(preLoadingPortfolios).forEach(function (el) {
+        el.classList.add('is-visible');
+      });
+    };
+
     imagesloaded_default()(component, {
       background: true
     }, function () {
-      msnry.layout();
-    }); // imagesLoaded(component).on('progress', (instance, image) => {
-    // 	const targetParnetNode = image.img.parentNode;
-    // 	msnry.layout();
-    // 	setInterval(() => {
-    // 		targetParnetNode.classList.add('is-visible');
-    // 		window.dispatchEvent(new Event('resize'));
-    // 	}, 500);
-    // });
+      msnry.layout(); // eslint-disable-next-line no-undef
+
+      frontendAjaxObject.currentPage = 1;
+      var preLoadingPortfolios = document.querySelectorAll('.pre-loading-portfolio');
+      changeClass();
+    });
 
     var loadmore = function loadmore() {
       var loading = false,
@@ -22531,21 +22536,18 @@ var masonry = function masonry() {
                     background: true
                   }, function () {
                     msnry.layout();
-                  }); // eslint-disable-next-line no-undef
-                  // imagesLoaded(component).on('progress', (instance, image) => {
-                  // 	const targetParnetNode = image.img.parentNode;
-                  // 	msnry.layout();
-                  // 	setTimeout(() => {
-                  // 		targetParnetNode.classList.add('is-visible');
-                  // 	}, 500);
-                  // });
-                  // eslint-disable-next-line no-undef
+                    setTimeout(function () {
+                      changeClass();
+                    }, 500);
+                  });
+                } // eslint-disable-next-line no-undef
 
-                  frontendAjaxObject.currentPage++;
-                }
+
+                frontendAjaxObject.currentPage++;
 
                 if ( // eslint-disable-next-line no-undef
-                frontendAjaxObject.currentPage >= frontendAjaxObject.maxPage) {
+                frontendAjaxObject.currentPage >= // eslint-disable-next-line no-undef
+                frontendAjaxObject.maxPage * 1) {
                   btnLoadMore.remove();
                   hasPost = false;
                 }
@@ -22615,7 +22617,7 @@ var initForm = function initForm() {
         var msgWrap = document.getElementById('msg-wrap');
         var ul = document.createElement('ul');
         ul.setAttribute('id', 'errorMsg');
-        ul.setAttribute('class', 'p-5 bg-gray-50 mb-5 rounded-md text-red-400');
+        ul.setAttribute('class', 'p-5 bg-gray-50 mb-5 rounded-md text-red-400 dark:bg-gray-900 dark:text-red-300');
         msgWrap.innerHTML = '';
         msgWrap.appendChild(ul);
 
@@ -22642,10 +22644,8 @@ var scroll_scroll = function scroll() {
   window.addEventListener('scroll', function () {
     var st = window.pageYOffset || document.documentElement.scrollTop;
 
-    if (st > lastScrollTop) {
-      console.log('down');
-    } else {
-      console.log('up');
+    if (st > lastScrollTop) {// console.log('down');
+    } else {// console.log('up');
     }
 
     lastScrollTop = st <= 0 ? 0 : st;
@@ -27195,7 +27195,7 @@ function updateAutoHeight(speed) {
   } // Update Height
 
 
-  if (newHeight) swiper.$wrapperEl.css('height', `${newHeight}px`);
+  if (newHeight || newHeight === 0) swiper.$wrapperEl.css('height', `${newHeight}px`);
 }
 ;// CONCATENATED MODULE: ./node_modules/swiper/core/update/updateSlidesOffset.js
 function updateSlidesOffset() {
@@ -27917,40 +27917,32 @@ function slideTo(index = 0, speed = this.params.speed, runCallbacks = true, inte
     return true;
   }
 
+  swiper.setTransition(speed);
+  swiper.setTranslate(translate);
+  swiper.updateActiveIndex(slideIndex);
+  swiper.updateSlidesClasses();
+  swiper.emit('beforeTransitionStart', speed, internal);
+  swiper.transitionStart(runCallbacks, direction);
+
   if (speed === 0) {
-    swiper.setTransition(0);
-    swiper.setTranslate(translate);
-    swiper.updateActiveIndex(slideIndex);
-    swiper.updateSlidesClasses();
-    swiper.emit('beforeTransitionStart', speed, internal);
-    swiper.transitionStart(runCallbacks, direction);
     swiper.transitionEnd(runCallbacks, direction);
-  } else {
-    swiper.setTransition(speed);
-    swiper.setTranslate(translate);
-    swiper.updateActiveIndex(slideIndex);
-    swiper.updateSlidesClasses();
-    swiper.emit('beforeTransitionStart', speed, internal);
-    swiper.transitionStart(runCallbacks, direction);
+  } else if (!swiper.animating) {
+    swiper.animating = true;
 
-    if (!swiper.animating) {
-      swiper.animating = true;
-
-      if (!swiper.onSlideToWrapperTransitionEnd) {
-        swiper.onSlideToWrapperTransitionEnd = function transitionEnd(e) {
-          if (!swiper || swiper.destroyed) return;
-          if (e.target !== this) return;
-          swiper.$wrapperEl[0].removeEventListener('transitionend', swiper.onSlideToWrapperTransitionEnd);
-          swiper.$wrapperEl[0].removeEventListener('webkitTransitionEnd', swiper.onSlideToWrapperTransitionEnd);
-          swiper.onSlideToWrapperTransitionEnd = null;
-          delete swiper.onSlideToWrapperTransitionEnd;
-          swiper.transitionEnd(runCallbacks, direction);
-        };
-      }
-
-      swiper.$wrapperEl[0].addEventListener('transitionend', swiper.onSlideToWrapperTransitionEnd);
-      swiper.$wrapperEl[0].addEventListener('webkitTransitionEnd', swiper.onSlideToWrapperTransitionEnd);
+    if (!swiper.onSlideToWrapperTransitionEnd) {
+      swiper.onSlideToWrapperTransitionEnd = function transitionEnd(e) {
+        if (!swiper || swiper.destroyed) return;
+        if (e.target !== this) return;
+        swiper.$wrapperEl[0].removeEventListener('transitionend', swiper.onSlideToWrapperTransitionEnd);
+        swiper.$wrapperEl[0].removeEventListener('webkitTransitionEnd', swiper.onSlideToWrapperTransitionEnd);
+        swiper.onSlideToWrapperTransitionEnd = null;
+        delete swiper.onSlideToWrapperTransitionEnd;
+        swiper.transitionEnd(runCallbacks, direction);
+      };
     }
+
+    swiper.$wrapperEl[0].addEventListener('transitionend', swiper.onSlideToWrapperTransitionEnd);
+    swiper.$wrapperEl[0].addEventListener('webkitTransitionEnd', swiper.onSlideToWrapperTransitionEnd);
   }
 
   return true;
@@ -27989,6 +27981,10 @@ function slideNext(speed = this.params.speed, runCallbacks = true, internal) {
     swiper.loopFix(); // eslint-disable-next-line
 
     swiper._clientLeft = swiper.$wrapperEl[0].clientLeft;
+  }
+
+  if (params.rewind && swiper.isEnd) {
+    return swiper.slideTo(0, speed, runCallbacks, internal);
   }
 
   return swiper.slideTo(swiper.activeIndex + increment, speed, runCallbacks, internal);
@@ -28049,6 +28045,10 @@ function slidePrev(speed = this.params.speed, runCallbacks = true, internal) {
       prevIndex = prevIndex - swiper.slidesPerViewDynamic('previous', true) + 1;
       prevIndex = Math.max(prevIndex, 0);
     }
+  }
+
+  if (params.rewind && swiper.isBeginning) {
+    return swiper.slideTo(swiper.slides.length - 1, speed, runCallbacks, internal);
   }
 
   return swiper.slideTo(prevIndex, speed, runCallbacks, internal);
@@ -29360,6 +29360,8 @@ function checkOverflow() {
   loopedSlides: null,
   loopFillGroupWithBlank: false,
   loopPreventsSlide: true,
+  // rewind
+  rewind: false,
   // Swiping/no swiping
   allowSlidePrev: true,
   allowSlideNext: true,
@@ -30970,19 +30972,19 @@ function Navigation({
       $nextEl,
       $prevEl
     } = swiper.navigation;
-    toggleEl($prevEl, swiper.isBeginning);
-    toggleEl($nextEl, swiper.isEnd);
+    toggleEl($prevEl, swiper.isBeginning && !swiper.params.rewind);
+    toggleEl($nextEl, swiper.isEnd && !swiper.params.rewind);
   }
 
   function onPrevClick(e) {
     e.preventDefault();
-    if (swiper.isBeginning && !swiper.params.loop) return;
+    if (swiper.isBeginning && !swiper.params.loop && !swiper.params.rewind) return;
     swiper.slidePrev();
   }
 
   function onNextClick(e) {
     e.preventDefault();
-    if (swiper.isEnd && !swiper.params.loop) return;
+    if (swiper.isEnd && !swiper.params.loop && !swiper.params.rewind) return;
     swiper.slideNext();
   }
 
@@ -31200,7 +31202,7 @@ function Pagination({
         $el.css(swiper.isHorizontal() ? 'width' : 'height', `${bulletSize * (params.dynamicMainBullets + 4)}px`);
 
         if (params.dynamicMainBullets > 1 && swiper.previousIndex !== undefined) {
-          dynamicBulletIndex += current - swiper.previousIndex;
+          dynamicBulletIndex += current - (swiper.previousIndex - swiper.loopedSlides || 0);
 
           if (dynamicBulletIndex > params.dynamicMainBullets - 1) {
             dynamicBulletIndex = params.dynamicMainBullets - 1;
@@ -31209,7 +31211,7 @@ function Pagination({
           }
         }
 
-        firstIndex = current - dynamicBulletIndex;
+        firstIndex = Math.max(current - dynamicBulletIndex, 0);
         lastIndex = firstIndex + (Math.min(bullets.length, params.dynamicMainBullets) - 1);
         midIndex = (lastIndex + firstIndex) / 2;
       }
@@ -31253,7 +31255,7 @@ function Pagination({
           }
 
           if (swiper.params.loop) {
-            if (bulletIndex >= bullets.length - params.dynamicMainBullets) {
+            if (bulletIndex >= bullets.length) {
               for (let i = params.dynamicMainBullets; i >= 0; i -= 1) {
                 bullets.eq(bullets.length - i).addClass(`${params.bulletActiveClass}-main`);
               }
@@ -33192,7 +33194,7 @@ function A11y({
   }
 
   function updateNavigation() {
-    if (swiper.params.loop || !swiper.navigation) return;
+    if (swiper.params.loop || swiper.params.rewind || !swiper.navigation) return;
     const {
       $nextEl,
       $prevEl
@@ -34980,7 +34982,7 @@ function EffectCards({
 }
 ;// CONCATENATED MODULE: ./node_modules/swiper/swiper.esm.js
 /**
- * Swiper 7.3.2
+ * Swiper 7.4.1
  * Most modern mobile touch slider and framework with hardware accelerated transitions
  * https://swiperjs.com
  *
@@ -34988,7 +34990,7 @@ function EffectCards({
  *
  * Released under the MIT License
  *
- * Released on: December 13, 2021
+ * Released on: December 24, 2021
  */
 
 

@@ -3,9 +3,9 @@ const scroll = () => {
 	window.addEventListener('scroll', () => {
 		const st = window.pageYOffset || document.documentElement.scrollTop;
 		if (st > lastScrollTop) {
-			console.log('down');
+			// console.log('down');
 		} else {
-			console.log('up');
+			// console.log('up');
 		}
 		lastScrollTop = st <= 0 ? 0 : st;
 	});
