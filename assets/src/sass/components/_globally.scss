@@ -31,6 +31,16 @@ input:checked ~ .dot {
 		}
 	}
 }
+
+.br-add {
+	br {
+		@apply block;
+		@screen md {
+			@apply hidden;
+		}
+	}
+}
+
 .gs-dev-tools {
 	z-index: 10000;
 }

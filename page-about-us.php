@@ -4,6 +4,25 @@
     <?php get_template_part( 'template-parts/split/split', 'entry-header' ); ?>
     <div class="entry-content">
       <div class="container mx-auto px-6 md:px-8">
+        <div class="grid grid-cols-2 gap-10 mb-10">
+          <div class="py-5">
+            <figure>
+              <img src="<?=get_template_directory_uri()?>/assets/public/images/logo-color.svg" alt="color logo">
+            </figure>
+          </div>
+          <div>
+            <h2 class="text-xl md:text-3xl font-semibold mb-4 md:mb-6 word-break-keep-all">프로그램을 처음 학습할 때 접하게 되는 C언어</h2>
+            <div class="text-base md:text-xl word-break-keep-all">
+              <div class="md:leading-10 tracking-tight">
+                프로그램을 처음 학습할 때 C언어를 접하게 됩니다.<br />
+                그리고, 코드 첫 줄에 #include를 적어주어 기본으로 필요한 함수를 명시합니다.<br />
+                인클루드시스는 초심의 자세로 "고객에게 꼭 필요한 파트너"라는 의지를 담아 #include를 형상화 하였습니다.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container mx-auto px-6 md:px-8">
         <figure>
           <img src="<?=get_template_directory_uri()?>/assets/public/images/logo-color.svg" alt="color logo">
         </figure>
@@ -73,5 +92,4 @@
     </div>
   </article>
 </main>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a983d31a0e3ac4f6ece571fab081dc94&libraries=services"></script>
 <?php get_footer();?>

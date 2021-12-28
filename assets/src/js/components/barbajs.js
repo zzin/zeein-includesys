@@ -21,9 +21,9 @@ import loading from './loading';
 import header from './header';
 import initMain from './pageMain';
 import initAboutUs from './pageAbout';
+import { animationEnter, animationLeave } from './animations';
 
 const body = document.body;
-const menuToggle = document.querySelector('.menu-toggle');
 
 const tl = gsap.timeline({ defaults: { ease: Power3.inOut } });
 
@@ -102,44 +102,6 @@ barba.hooks.after((data) => {
 	initJs(dataNamespace);
 });
 
-const animationEnter = (container) => {
-	setTimeout(() => {
-		// window.scrollTo(0, 0);
-		return loading.loadingOut();
-	}, 200);
-	// return gsap.from(container, {
-	// 	autoAlpha: 0,
-	// 	duration: 1,
-	// 	clearProps: 'all',
-	// 	ease: 'Power2.easeOut',
-	// });
-};
-
-const animationLeave = (container) => {
-	loading.loadingIn();
-	if (menuToggle.getAttribute('aria-expanded')) menuToggle.click();
-	// if (menuToggle.getAttribute('aria-expanded')) {
-	// 	setTimeout(() => {
-	// 		menuToggle.click();
-	// 	}, 200);
-	// }
-	const tlContainer = gsap.timeline();
-	return (
-		// setTimeout(() => {
-		// 	true
-		// }, 500);
-		tlContainer.to(container, {
-			alpha: 1,
-			duration: 0.6,
-			clearProps: 'all',
-			ease: 'Power2.easeOut',
-			onComplete: () => {
-				container.style.opacity = 0;
-			},
-		})
-	);
-};
-
 const effHeader = () => {
 	ScrollTrigger.create({
 		trigger: body,
@@ -157,7 +119,8 @@ barba.init({
 			once({ next }) {
 				animationEnter(next.container);
 			},
-			leave: ({ current }) => animationLeave(current.container),
+			// leave: ({ current }) => animationLeave(current.container),
+			leave: (data) => animationLeave(data),
 			enter({ next }) {
 				animationEnter(next.container);
 			},
@@ -172,9 +135,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
 	initCursor();
 	initNavigation();
 	effHeader();
-	// swiper();
-	// masonry();
-	// initForm();
 	scroll();
 	header();
 

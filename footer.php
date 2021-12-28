@@ -1,17 +1,30 @@
 
 	<footer id="colophon" class="site-footer pb-12 bg-gray-50 dark:bg-black-dark">
 		<div class="container mx-auto px-6 md:px-8 pt-12">
-			<strong class="text-base md:text-lg text-gray-500 font-medium block mb-2">(주)인클루드시스</strong>
-			<address class="text-sm md:text-base not-italic mb-0 text-gray-400 dark:text-gray-600">
+			<div class="menu-wrap-footer">
+				<?php
+				wp_nav_menu(
+					array(
+						'theme_location' 		=> 'menu-1',
+						'menu_id'        		=> 'primary-menu-footer',
+						'walker'						=> new cssmenu_walker_nav_menu(),
+					)
+				);
+				?>
+			</div>
+			<strong class="text-xs md:text-sm text-gray-500 font-medium block mt-5 mb-1 dark:text-gray-500">(주)인클루드시스</strong>
+			<address class="text-xs md:text-sm not-italic mb-0 text-gray-400 dark:text-gray-600 br-add">
 				서울특별시 마포구 월드컵북로 8길 21(연남동), 인클루드빌딩<br />
-				email: parispk@include.kr&nbsp;&nbsp;&nbsp;&nbsp;
-				tel: 02-2696-2520<br />
-				<div class="hidden md:block text-xs md:text-sm">
+				<span class="hidden mr-3 md:inline-block"></span>
+				이메일: <a href="mailto:parispk@include.kr" target="_blank" class="hover:text-gray-500 hover:underline visited:text-gray-400">parispk@include.kr</a>
+				<span class="hidden mr-3 md:inline-block"></span>
+				전화번호: 02-2696-2520<br />
+				<div class="hidden md:block text-xs md:text-sm mt-3">
 					include © 2022 All rights reserved. | Designed by CLOUDFOLDER.
 				</div>
-				<div class="block md:hidden text-xs md:text-sm">
-				include © 2022 All rights reserved.<br />
-				Designed by CLOUDFOLDER.
+				<div class="block md:hidden text-xs md:text-sm mt-3">
+					include © 2022 All rights reserved.<br />
+					Designed by CLOUDFOLDER.
 				</div>
 			</address>
 		</div>

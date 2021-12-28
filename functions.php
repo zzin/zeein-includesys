@@ -153,6 +153,7 @@ function zeein_scripts() {
 
 	// wp_enqueue_script( 'zeein-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
 
+	wp_enqueue_script( '_zeein-daum-scripts', '//dapi.kakao.com/v2/maps/sdk.js?appkey=a983d31a0e3ac4f6ece571fab081dc94&libraries=services', array(), 'v1.0', true);
 	wp_enqueue_script( '_zeein-frontend-scripts', get_template_directory_uri() . '/assets/public/js/frontend.js', array(), 'v1.0', true );
 	wp_enqueue_script( '_zeein-backend-scripts', get_template_directory_uri() . '/assets/public/js/backend.js', array(), 'v1.0', true );
 

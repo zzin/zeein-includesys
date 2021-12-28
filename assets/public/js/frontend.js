@@ -22669,40 +22669,69 @@ var tl = gsap_gsapWithCSS.timeline();
 
 var loadingIn = function loadingIn() {
   tl.set(loadingWrap, {
-    borderTopLeftRadius: '80% 100px',
-    borderTopRightRadius: '80% 100px'
+    y: '110%'
   }).to(loadingWrap, {
-    duration: 0.3,
-    y: '0'
-  }).to(loadingWrap, {
-    borderTopLeftRadius: '50% 180px',
-    borderTopRightRadius: '50% 180px',
-    duration: 0.2,
-    ease: Power4.easeOut
-  }, '<').to(loadingWrap, {
-    borderTopLeftRadius: '80% 120px',
-    borderTopRightRadius: '80% 120px',
-    duration: 0.2,
-    ease: Power4.easeOut
-  }, '<').to(loadingWrap, {
-    borderTopLeftRadius: '80% 0px',
-    borderTopRightRadius: '80% 0px',
-    duration: 0.4,
-    ease: Power1.easeOut
-  }); // GSDevTools.create({ paused: true });
+    duration: 0.5,
+    y: 0,
+    ease: Power2.easeIn
+  }).delay(1);
 };
 
 var loadingOut = function loadingOut() {
   tl.to(loadingWrap, {
-    duration: 0.3,
-    borderTopLeftRadius: '80% 50px',
-    borderTopRightRadius: '80% 50px',
-    ease: Power4.easeIn
-  }).to(loadingWrap, {
-    y: '100%',
-    duration: 0.5
+    duration: 0.5,
+    y: '-110%',
+    ease: Power2.easeOut
   });
-};
+}; // const loadingIn = () => {
+// 	tl.set(loadingWrap, {
+// 		borderTopLeftRadius: '80% 100px',
+// 		borderTopRightRadius: '80% 100px',
+// 	})
+// 		.to(loadingWrap, {
+// 			duration: 0.3,
+// 			y: '0',
+// 		})
+// 		.to(
+// 			loadingWrap,
+// 			{
+// 				borderTopLeftRadius: '50% 180px',
+// 				borderTopRightRadius: '50% 180px',
+// 				duration: 0.2,
+// 				ease: Power4.easeOut,
+// 			},
+// 			'<'
+// 		)
+// 		.to(
+// 			loadingWrap,
+// 			{
+// 				borderTopLeftRadius: '80% 120px',
+// 				borderTopRightRadius: '80% 120px',
+// 				duration: 0.2,
+// 				ease: Power4.easeOut,
+// 			},
+// 			'<'
+// 		)
+// 		.to(loadingWrap, {
+// 			borderTopLeftRadius: '80% 0px',
+// 			borderTopRightRadius: '80% 0px',
+// 			duration: 0.4,
+// 			ease: Power1.easeOut,
+// 		});
+// 	// GSDevTools.create({ paused: true });
+// };
+// const loadingOut = () => {
+// 	tl.to(loadingWrap, {
+// 		duration: 0.3,
+// 		borderTopLeftRadius: '80% 50px',
+// 		borderTopRightRadius: '80% 50px',
+// 		ease: Power4.easeIn,
+// 	}).to(loadingWrap, {
+// 		y: '100%',
+// 		duration: 0.5,
+// 	});
+// };
+
 
 /* harmony default export */ const loading = ({
   loadingIn: loadingIn,
@@ -35310,6 +35339,57 @@ var initAboutUs = function initAboutUs() {
 };
 
 /* harmony default export */ const pageAbout = (initAboutUs);
+;// CONCATENATED MODULE: ./assets/src/js/components/animations/animationEnter.js
+
+
+
+var animationEnter = function animationEnter(container) {
+  setTimeout(function () {
+    window.scrollTo(0, 0);
+    return loading.loadingOut();
+  }, 200); // return gsap.from(container, {
+  // 	autoAlpha: 0,
+  // 	duration: 1,
+  // 	clearProps: 'all',
+  // 	ease: 'Power2.easeOut',
+  // });
+};
+
+/* harmony default export */ const animations_animationEnter = (animationEnter);
+;// CONCATENATED MODULE: ./assets/src/js/components/animations/animationLeave.js
+
+
+
+var animationLeave = function animationLeave(data) {
+  var menuToggle = document.querySelector('.menu-toggle');
+  console.log(data, data.current.container);
+  loading.loadingIn();
+  if (menuToggle.getAttribute('aria-expanded')) menuToggle.click(); // if (menuToggle.getAttribute('aria-expanded')) {
+  // 	setTimeout(() => {
+  // 		menuToggle.click();
+  // 	}, 200);
+  // }
+  // return setTimeout(() => {
+  // 	return true;
+  // }, 600);
+
+  var tlContainer = gsap_gsapWithCSS.timeline();
+  var container = data.current.container;
+  tlContainer.to(container, {
+    alpha: 1,
+    duration: 0.6,
+    clearProps: 'all',
+    ease: 'Power2.easeOut',
+    onComplete: function onComplete() {
+      container.style.opacity = 0;
+    }
+  });
+};
+
+/* harmony default export */ const animations_animationLeave = (animationLeave);
+;// CONCATENATED MODULE: ./assets/src/js/components/animations/index.js
+
+
 ;// CONCATENATED MODULE: ./assets/src/js/components/barbajs.js
 
 
@@ -35324,8 +35404,8 @@ gsapWithCSS.registerPlugin(ScrollTrigger);
 
 
 
+
 var body = document.body;
-var menuToggle = document.querySelector('.menu-toggle');
 var barbajs_tl = gsapWithCSS.timeline({
   defaults: {
     ease: Power3.inOut
@@ -35395,42 +35475,6 @@ barba_umd_default().hooks.after(function (data) {
   initJs(dataNamespace);
 });
 
-var animationEnter = function animationEnter(container) {
-  setTimeout(function () {
-    // window.scrollTo(0, 0);
-    return loading.loadingOut();
-  }, 200); // return gsap.from(container, {
-  // 	autoAlpha: 0,
-  // 	duration: 1,
-  // 	clearProps: 'all',
-  // 	ease: 'Power2.easeOut',
-  // });
-};
-
-var animationLeave = function animationLeave(container) {
-  loading.loadingIn();
-  if (menuToggle.getAttribute('aria-expanded')) menuToggle.click(); // if (menuToggle.getAttribute('aria-expanded')) {
-  // 	setTimeout(() => {
-  // 		menuToggle.click();
-  // 	}, 200);
-  // }
-
-  var tlContainer = gsapWithCSS.timeline();
-  return (// setTimeout(() => {
-    // 	true
-    // }, 500);
-    tlContainer.to(container, {
-      alpha: 1,
-      duration: 0.6,
-      clearProps: 'all',
-      ease: 'Power2.easeOut',
-      onComplete: function onComplete() {
-        container.style.opacity = 0;
-      }
-    })
-  );
-};
-
 var effHeader = function effHeader() {
   ScrollTrigger.create({
     trigger: body,
@@ -35449,15 +35493,15 @@ barba_umd_default().init({
   transitions: [{
     once: function once(_ref) {
       var next = _ref.next;
-      animationEnter(next.container);
+      animations_animationEnter(next.container);
     },
-    leave: function leave(_ref2) {
-      var current = _ref2.current;
-      return animationLeave(current.container);
+    // leave: ({ current }) => animationLeave(current.container),
+    leave: function leave(data) {
+      return animations_animationLeave(data);
     },
-    enter: function enter(_ref3) {
-      var next = _ref3.next;
-      animationEnter(next.container);
+    enter: function enter(_ref2) {
+      var next = _ref2.next;
+      animations_animationEnter(next.container);
     } // after({ next }) {
     // 	animationEnter(next.container);
     // },
@@ -35467,10 +35511,7 @@ barba_umd_default().init({
 window.addEventListener('DOMContentLoaded', function (event) {
   initCursor();
   components_navigation();
-  effHeader(); // swiper();
-  // masonry();
-  // initForm();
-
+  effHeader();
   components_scroll();
   components_header();
   initJs();

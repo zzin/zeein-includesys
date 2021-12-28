@@ -35,3 +35,15 @@ function zeein_pingback_header() {
 	}
 }
 add_action( 'wp_head', 'zeein_pingback_header' );
+
+/**
+ * Add footer menu > home
+ */
+
+function zeein_wp_nav_menu_items($items, $args) {
+	if ($args->menu_id === 'primary-menu-footer') {
+		$items = '<li id="nav-menu-item-home" class="main-menu-item  menu-item-even menu-item-depth-0 menu-item menu-item-type-post_type menu-item-object-page"><a href="/" class="menu-link main-menu-link"><span class="span">home</span></a></li>' . $items;
+	}
+  return $items;
+}
+add_filter('wp_nav_menu_items','zeein_wp_nav_menu_items', 10, 2);
