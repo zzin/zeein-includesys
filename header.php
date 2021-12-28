@@ -43,7 +43,7 @@
 <?php wp_body_open(); ?>
 <div id="page" class="site">
 	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'zeein' ); ?></a>
-	<div id="loading-wrap"></div>
+	<div id="loading-wrap"><strong class="loading-title"></strong></div>
 	<header id="masthead" class="site-header fixed top-0 w-full z-10">
 		<div class="container mx-auto px-6 md:px-8 relative h-100px">
 			<div class="site-branding absolute top-1/2 -translate-y-1/2 z-10">

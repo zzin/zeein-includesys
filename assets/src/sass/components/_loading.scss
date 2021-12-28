@@ -1,4 +1,7 @@
 #loading-wrap {
-	@apply fixed z-50 inset-0 bg-indigo-900;
+	@apply fixed z-50 inset-0 bg-indigo-900 flex items-center justify-center;
 	transform: translateY(120%);
+	.loading-title {
+		@apply text-white text-4xl font-medium uppercase;
+	}
 }

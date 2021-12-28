@@ -22660,83 +22660,6 @@ var gsap_gsapWithCSS = gsap.registerPlugin(CSSPlugin) || gsap,
     // to protect from tree shaking
 gsap_TweenMaxWithCSS = gsap_gsapWithCSS.core.Tween;
 
-;// CONCATENATED MODULE: ./assets/src/js/components/loading.js
- // import GSDevTools from 'gsap/GSDevTools';
-// gsap.registerPlugin(GSDevTools);
-
-var loadingWrap = document.getElementById('loading-wrap');
-var tl = gsap_gsapWithCSS.timeline();
-
-var loadingIn = function loadingIn() {
-  tl.set(loadingWrap, {
-    y: '110%'
-  }).to(loadingWrap, {
-    duration: 0.5,
-    y: 0,
-    ease: Power2.easeIn
-  }).delay(1);
-};
-
-var loadingOut = function loadingOut() {
-  tl.to(loadingWrap, {
-    duration: 0.5,
-    y: '-110%',
-    ease: Power2.easeOut
-  });
-}; // const loadingIn = () => {
-// 	tl.set(loadingWrap, {
-// 		borderTopLeftRadius: '80% 100px',
-// 		borderTopRightRadius: '80% 100px',
-// 	})
-// 		.to(loadingWrap, {
-// 			duration: 0.3,
-// 			y: '0',
-// 		})
-// 		.to(
-// 			loadingWrap,
-// 			{
-// 				borderTopLeftRadius: '50% 180px',
-// 				borderTopRightRadius: '50% 180px',
-// 				duration: 0.2,
-// 				ease: Power4.easeOut,
-// 			},
-// 			'<'
-// 		)
-// 		.to(
-// 			loadingWrap,
-// 			{
-// 				borderTopLeftRadius: '80% 120px',
-// 				borderTopRightRadius: '80% 120px',
-// 				duration: 0.2,
-// 				ease: Power4.easeOut,
-// 			},
-// 			'<'
-// 		)
-// 		.to(loadingWrap, {
-// 			borderTopLeftRadius: '80% 0px',
-// 			borderTopRightRadius: '80% 0px',
-// 			duration: 0.4,
-// 			ease: Power1.easeOut,
-// 		});
-// 	// GSDevTools.create({ paused: true });
-// };
-// const loadingOut = () => {
-// 	tl.to(loadingWrap, {
-// 		duration: 0.3,
-// 		borderTopLeftRadius: '80% 50px',
-// 		borderTopRightRadius: '80% 50px',
-// 		ease: Power4.easeIn,
-// 	}).to(loadingWrap, {
-// 		y: '100%',
-// 		duration: 0.5,
-// 	});
-// };
-
-
-/* harmony default export */ const loading = ({
-  loadingIn: loadingIn,
-  loadingOut: loadingOut
-});
 ;// CONCATENATED MODULE: ./node_modules/gsap/utils/matrix.js
 /*!
  * matrix 3.8.0
@@ -35339,13 +35262,117 @@ var initAboutUs = function initAboutUs() {
 };
 
 /* harmony default export */ const pageAbout = (initAboutUs);
+;// CONCATENATED MODULE: ./assets/src/js/components/animations/loading.js
+
+
+var loading_require = __webpack_require__(26),
+    loading_SplitText = loading_require.default;
+
+gsap_gsapWithCSS.registerPlugin(loading_SplitText); // import GSDevTools from 'gsap/GSDevTools';
+// gsap.registerPlugin(GSDevTools);
+
+var loadingWrap = document.getElementById('loading-wrap');
+var loadingTitle = loadingWrap.querySelector('.loading-title');
+var tl = gsap_gsapWithCSS.timeline();
+
+var loadingIn = function loadingIn() {
+  loadingTitle.innerHTML = '';
+  tl.set(loadingWrap, {
+    y: '120%'
+  }).to(loadingWrap, {
+    duration: 0.5,
+    y: 0,
+    ease: Power2.easeIn
+  });
+};
+
+var loadingBeforeOut = function loadingBeforeOut(title) {
+  loadingTitle.innerHTML = title;
+  var splitTitle = new loading_SplitText(loadingTitle, {
+    type: 'words, chars'
+  }),
+      targets = splitTitle.chars;
+  tl.from(targets, {
+    autoAlpha: 0,
+    y: 30,
+    duration: 0.65,
+    stagger: 0.0325,
+    ease: Back.easeOut.config(3)
+  }); // tl.from(loadingTitle, {
+  // 	duration: 1,
+  // 	autoAlpha: 0,
+  // });
+};
+
+var loadingOut = function loadingOut() {
+  tl.to(loadingWrap, {
+    duration: 1,
+    y: '-120%',
+    ease: Power2.easeOut
+  }, '+=.5');
+}; // const loadingIn = () => {
+// 	tl.set(loadingWrap, {
+// 		borderTopLeftRadius: '80% 100px',
+// 		borderTopRightRadius: '80% 100px',
+// 	})
+// 		.to(loadingWrap, {
+// 			duration: 0.3,
+// 			y: '0',
+// 		})
+// 		.to(
+// 			loadingWrap,
+// 			{
+// 				borderTopLeftRadius: '50% 180px',
+// 				borderTopRightRadius: '50% 180px',
+// 				duration: 0.2,
+// 				ease: Power4.easeOut,
+// 			},
+// 			'<'
+// 		)
+// 		.to(
+// 			loadingWrap,
+// 			{
+// 				borderTopLeftRadius: '80% 120px',
+// 				borderTopRightRadius: '80% 120px',
+// 				duration: 0.2,
+// 				ease: Power4.easeOut,
+// 			},
+// 			'<'
+// 		)
+// 		.to(loadingWrap, {
+// 			borderTopLeftRadius: '80% 0px',
+// 			borderTopRightRadius: '80% 0px',
+// 			duration: 0.4,
+// 			ease: Power1.easeOut,
+// 		});
+// 	// GSDevTools.create({ paused: true });
+// };
+// const loadingOut = () => {
+// 	tl.to(loadingWrap, {
+// 		duration: 0.3,
+// 		borderTopLeftRadius: '80% 50px',
+// 		borderTopRightRadius: '80% 50px',
+// 		ease: Power4.easeIn,
+// 	}).to(loadingWrap, {
+// 		y: '100%',
+// 		duration: 0.5,
+// 	});
+// };
+
+
+/* harmony default export */ const loading = ({
+  loadingIn: loadingIn,
+  loadingOut: loadingOut,
+  loadingBeforeOut: loadingBeforeOut
+});
 ;// CONCATENATED MODULE: ./assets/src/js/components/animations/animationEnter.js
 
 
 
 var animationEnter = function animationEnter(container) {
+  // console.log(container);
   setTimeout(function () {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
     return loading.loadingOut();
   }, 200); // return gsap.from(container, {
   // 	autoAlpha: 0,
@@ -35360,22 +35387,25 @@ var animationEnter = function animationEnter(container) {
 
 
 
-var animationLeave = function animationLeave(data) {
+var animationLeave = function animationLeave(container) {
   var menuToggle = document.querySelector('.menu-toggle');
-  console.log(data, data.current.container);
-  loading.loadingIn();
-  if (menuToggle.getAttribute('aria-expanded')) menuToggle.click(); // if (menuToggle.getAttribute('aria-expanded')) {
-  // 	setTimeout(() => {
-  // 		menuToggle.click();
-  // 	}, 200);
-  // }
-  // return setTimeout(() => {
-  // 	return true;
-  // }, 600);
+  var tl = gsap_gsapWithCSS.timeline(); // console.log(currentContainer, nextContainer);
+  // const currentContainer = data.current.container;
+  // const nextContainer = data.next.container;
+  // console.log(
+  // 	data,
+  // 	currentContainer,
+  // 	nextContainer,
+  // 	data.current.namespace,
+  // 	data.next.namespace,
+  // 	data.trigger,
+  // 	data.next.container
+  // );
 
-  var tlContainer = gsap_gsapWithCSS.timeline();
-  var container = data.current.container;
-  tlContainer.to(container, {
+  if (menuToggle.getAttribute('aria-expanded')) menuToggle.click(); // console.log(data, data.current.container);
+
+  loading.loadingIn();
+  tl.to(container, {
     alpha: 1,
     duration: 0.6,
     clearProps: 'all',
@@ -35384,10 +35414,37 @@ var animationLeave = function animationLeave(data) {
       container.style.opacity = 0;
     }
   });
+  return tl;
 };
 
 /* harmony default export */ const animations_animationLeave = (animationLeave);
+;// CONCATENATED MODULE: ./assets/src/js/components/animations/animationBeforeEnter.js
+
+
+
+var animationBeforeEnter = function animationBeforeEnter(data) {
+  var sendTitle = 'Home';
+
+  switch (data.next.namespace) {
+    case 'page-about-us':
+      sendTitle = 'About US';
+      break;
+
+    case 'page-portfolio':
+      sendTitle = 'Portfolio';
+      break;
+
+    case 'page-contact':
+      sendTitle = 'Contact';
+      break;
+  }
+
+  loading.loadingBeforeOut(sendTitle);
+};
+
+/* harmony default export */ const animations_animationBeforeEnter = (animationBeforeEnter);
 ;// CONCATENATED MODULE: ./assets/src/js/components/animations/index.js
+
 
 
 ;// CONCATENATED MODULE: ./assets/src/js/components/barbajs.js
@@ -35404,24 +35461,17 @@ gsapWithCSS.registerPlugin(ScrollTrigger);
 
 
 
-
-var body = document.body;
-var barbajs_tl = gsapWithCSS.timeline({
-  defaults: {
-    ease: Power3.inOut
-  }
-});
-
-var leaveAnimation = function leaveAnimation(data) {
-  return new Promise(function (resolve) {
-    barbajs_tl.to(data.current.container, {
-      y: -50,
-      duration: 1.5,
-      autoAlpha: 0
-    }).then();
-    resolve();
-  });
-};
+var body = document.body; // const tl = gsap.timeline({ defaults: { ease: Power3.inOut } });
+// const leaveAnimation = (data) => {
+// 	return new Promise((resolve) => {
+// 		tl.to(data.current.container, {
+// 			y: -50,
+// 			duration: 1.5,
+// 			autoAlpha: 0,
+// 		}).then();
+// 		resolve();
+// 	});
+// };
 
 var initJs = function initJs(dataNamespace) {
   if (!dataNamespace) dataNamespace = document.getElementById('primary').dataset.barbaNamespace;
@@ -35495,12 +35545,16 @@ barba_umd_default().init({
       var next = _ref.next;
       animations_animationEnter(next.container);
     },
-    // leave: ({ current }) => animationLeave(current.container),
-    leave: function leave(data) {
-      return animations_animationLeave(data);
+    leave: function leave(_ref2) {
+      var current = _ref2.current;
+      return animations_animationLeave(current.container);
     },
-    enter: function enter(_ref2) {
-      var next = _ref2.next;
+    beforeEnter: function beforeEnter(data) {
+      return animations_animationBeforeEnter(data);
+    },
+    // leave: (data) => animationLeave(data),
+    enter: function enter(_ref3) {
+      var next = _ref3.next;
       animations_animationEnter(next.container);
     } // after({ next }) {
     // 	animationEnter(next.container);
@@ -35508,7 +35562,7 @@ barba_umd_default().init({
 
   }]
 });
-window.addEventListener('DOMContentLoaded', function (event) {
+window.addEventListener('DOMContentLoaded', function () {
   initCursor();
   components_navigation();
   effHeader();

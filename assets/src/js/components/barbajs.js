@@ -17,26 +17,29 @@ import initNavigation from './navigation';
 import masonry from './masonry';
 import initForm from './form';
 import scroll from './scroll';
-import loading from './loading';
 import header from './header';
 import initMain from './pageMain';
 import initAboutUs from './pageAbout';
-import { animationEnter, animationLeave } from './animations';
+import {
+	animationEnter,
+	animationLeave,
+	animationBeforeEnter,
+} from './animations';
 
 const body = document.body;
 
-const tl = gsap.timeline({ defaults: { ease: Power3.inOut } });
+// const tl = gsap.timeline({ defaults: { ease: Power3.inOut } });
 
-const leaveAnimation = (data) => {
-	return new Promise((resolve) => {
-		tl.to(data.current.container, {
-			y: -50,
-			duration: 1.5,
-			autoAlpha: 0,
-		}).then();
-		resolve();
-	});
-};
+// const leaveAnimation = (data) => {
+// 	return new Promise((resolve) => {
+// 		tl.to(data.current.container, {
+// 			y: -50,
+// 			duration: 1.5,
+// 			autoAlpha: 0,
+// 		}).then();
+// 		resolve();
+// 	});
+// };
 
 const initJs = (dataNamespace) => {
 	if (!dataNamespace)
@@ -119,8 +122,9 @@ barba.init({
 			once({ next }) {
 				animationEnter(next.container);
 			},
-			// leave: ({ current }) => animationLeave(current.container),
-			leave: (data) => animationLeave(data),
+			leave: ({ current }) => animationLeave(current.container),
+			beforeEnter: (data) => animationBeforeEnter(data),
+			// leave: (data) => animationLeave(data),
 			enter({ next }) {
 				animationEnter(next.container);
 			},
@@ -131,7 +135,7 @@ barba.init({
 	],
 });
 
-window.addEventListener('DOMContentLoaded', (event) => {
+window.addEventListener('DOMContentLoaded', () => {
 	initCursor();
 	initNavigation();
 	effHeader();

@@ -1,24 +1,55 @@
-import gsap, { Power0, Power1, Power2, Power3, Power4, Elastic } from 'gsap';
+import gsap, {
+	Power0,
+	Power1,
+	Power2,
+	Power3,
+	Power4,
+	Elastic,
+	Back,
+} from 'gsap';
+const { default: SplitText } = require('gsap/SplitText');
+gsap.registerPlugin(SplitText);
 // import GSDevTools from 'gsap/GSDevTools';
 // gsap.registerPlugin(GSDevTools);
 
 const loadingWrap = document.getElementById('loading-wrap');
+const loadingTitle = loadingWrap.querySelector('.loading-title');
 const tl = gsap.timeline();
 const loadingIn = () => {
-	tl.set(loadingWrap, { y: '110%' })
-		.to(loadingWrap, {
-			duration: 0.5,
-			y: 0,
-			ease: Power2.easeIn,
-		})
-		.delay(1);
-};
-const loadingOut = () => {
-	tl.to(loadingWrap, {
+	loadingTitle.innerHTML = '';
+	tl.set(loadingWrap, { y: '120%' }).to(loadingWrap, {
 		duration: 0.5,
-		y: '-110%',
-		ease: Power2.easeOut,
+		y: 0,
+		ease: Power2.easeIn,
 	});
+};
+const loadingBeforeOut = (title) => {
+	loadingTitle.innerHTML = title;
+	const splitTitle = new SplitText(loadingTitle, { type: 'words, chars' }),
+		targets = splitTitle.chars;
+	tl.from(targets, {
+		autoAlpha: 0,
+		y: 30,
+		duration: 0.65,
+		stagger: 0.0325,
+		ease: Back.easeOut.config(3),
+	});
+	// tl.from(loadingTitle, {
+	// 	duration: 1,
+	// 	autoAlpha: 0,
+	// });
+};
+
+const loadingOut = () => {
+	tl.to(
+		loadingWrap,
+		{
+			duration: 1,
+			y: '-120%',
+			ease: Power2.easeOut,
+		},
+		'+=.5'
+	);
 };
 // const loadingIn = () => {
 // 	tl.set(loadingWrap, {
@@ -69,4 +100,4 @@ const loadingOut = () => {
 // 	});
 // };
 
-export default { loadingIn, loadingOut };
+export default { loadingIn, loadingOut, loadingBeforeOut };

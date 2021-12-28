@@ -1,23 +1,28 @@
 import { gsap, Power0, Power1, Power2, Power3, Power4, Back } from 'gsap';
-import loading from '../loading';
+import loading from './loading';
 
-const animationLeave = (data) => {
+const animationLeave = (container) => {
 	const menuToggle = document.querySelector('.menu-toggle');
-	console.log(data, data.current.container);
-	loading.loadingIn();
-	if (menuToggle.getAttribute('aria-expanded')) menuToggle.click();
-	// if (menuToggle.getAttribute('aria-expanded')) {
-	// 	setTimeout(() => {
-	// 		menuToggle.click();
-	// 	}, 200);
-	// }
-	// return setTimeout(() => {
-	// 	return true;
-	// }, 600);
-	const tlContainer = gsap.timeline();
-	const container = data.current.container;
+	const tl = gsap.timeline();
+	// console.log(currentContainer, nextContainer);
+	// const currentContainer = data.current.container;
+	// const nextContainer = data.next.container;
+	// console.log(
+	// 	data,
+	// 	currentContainer,
+	// 	nextContainer,
+	// 	data.current.namespace,
+	// 	data.next.namespace,
+	// 	data.trigger,
+	// 	data.next.container
+	// );
 
-	tlContainer.to(container, {
+	if (menuToggle.getAttribute('aria-expanded')) menuToggle.click();
+
+	// console.log(data, data.current.container);
+	loading.loadingIn();
+
+	tl.to(container, {
 		alpha: 1,
 		duration: 0.6,
 		clearProps: 'all',
@@ -26,6 +31,7 @@ const animationLeave = (data) => {
 			container.style.opacity = 0;
 		},
 	});
+	return tl;
 };
 
 export default animationLeave;
