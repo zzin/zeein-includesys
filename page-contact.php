@@ -136,7 +136,7 @@
                 </div>
                 <div>
                   <div id="msg-wrap" class="text-xs dark:bg-gray-900"></div>
-                  <button type="submit" class="btn-submit appearance-none w-full h-12 p-2 bg-indigo-900 text-indigo-100 font-medium rounded-md hover:bg-indigo-800">문의하기</button>
+                  <button type="submit" class="btn-submit appearance-none w-full py-4 px-2 bg-indigo-900 text-indigo-100 font-medium rounded-md hover:bg-indigo-800">문의하기</button>
                 </div>
               </div>
             </div>

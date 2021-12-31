@@ -195,6 +195,113 @@ const initMain = () => {
 	Array.from(conponents).forEach((el, index) => {
 		new initSwiper(el, index);
 	});
+
+	const cardWrap = gsap.utils.toArray('.card-wrap');
+	Array.from(cardWrap).forEach((el, index) => {
+		const tl = gsap.timeline({
+			scrollTrigger: {
+				trigger: el,
+				start: 'top+=' + index * 20 + 'px bottom',
+				toggleActions: 'play none none reverse',
+				// markers: true,
+			},
+		});
+		tl.from(el.querySelector('.relative'), {
+			yPercent: 20,
+			autoAlpha: 0,
+		});
+	});
+
+	// const tlCard = gsap.timeline({
+	// 	scrollTrigger: {
+	// 		trigger: '.card-wrap',
+	// 		markers: true,
+	// 		toggleActions: 'play none none reverse',
+	// 	},
+	// });
+	// tlCard.from('.card-wrap .relative', {
+	// 	autoAlpha: 0,
+	// 	yPercent: 20,
+	// 	stagger: 0.1,
+	// });
+
+	// const cardWrapEnter = gsap.timeline(.)
+
+	// ScrollTrigger.create({
+	// 	trigger: '.card-wrap',
+	// 	onEnter: () =>
+	// 		gsap.from('.card-wrap .relative', {
+	// 			duration: 0.65,
+	// 			autoAlpha: 0,
+	// 			yPercent: 20,
+	// 			stagger: 0.05,
+	// 			ease: Power2.easeOut,
+	// 		}),
+	// 	// animation: gsap.from('.card-wrap .relative', {
+	// 	// 	duration: 0.65,
+	// 	// 	autoAlpha: 0,
+	// 	// 	yPercent: 20,
+	// 	// 	stagger: 0.05,
+	// 	// 	ease: Power2.easeOut,
+	// 	// }),
+	// 	toggleActions: 'play none none reverse',
+	// 	// markers: true,
+	// 	// onEnter: cardWrapEnter
+	// });
+	// gsap.set('.card-wrap', { yPercent: 20, autoAlpha: 0 });
+	// ScrollTrigger.batch('.card-wrap', {
+	// 	onEnter: (batch, triggers) =>
+	// 		gsap.to(batch, {
+	// 			autoAlpha: 1,
+	// 			yPercent: 0,
+	// 			duration: 0.25,
+	// 			stagger: 0.1,
+	// 			overwrite: true,
+	// 			ease: Power1.easeOut,
+	// 		}),
+	// 	onLeaveBack: (batch, triggers) =>
+	// 		gsap.set(batch, {
+	// 			autoAlpha: 0,
+	// 			yPercent: 20,
+	// 			stagger: 0.1,
+	// 			overwrite: true,
+	// 		}),
+	// 	markers: true,
+	// });
+
+	// const cardWraps = document.querySelectorAll('.card-wrap');
+	// const CardWrapsRelative = document.querySelectorAll('.card-wrap .relative');
+
+	// ScrollTrigger.batch('.card-wrap', {
+	// 	onEnter: (elements) => {
+	// 		gsap.from(elements, {
+	// 			duration: 0.25,
+	// 			autoAlpha: 0,
+	// 			yPercent: 20,
+	// 			stagger: 0.1,
+	// 			ease: Power2.easeOut,
+	// 			overwrite: true,
+	// 		});
+	// 	},
+	// 	markers: true,
+	// });
+
+	// Array.from(cardWraps).forEach((el, index) => {
+	// 	ScrollTrigger.create({
+	// 		trigger: el,
+	// 		start: 'top+=20% bottom',
+	// 		// targets: el.querySelector('.relative'),
+	// 		markers: true,
+	// 		toggleActions: 'play none none reverse',
+	// 		animation: gsap
+	// 			.from(el.querySelector('.relative'), {
+	// 				duration: 0.5,
+	// 				autoAlpha: 0,
+	// 				yPercent: 20,
+	// 			})
+	// 			.delay(0.125 * index),
+	// 	});
+	// });
 };
 
 export default initMain;

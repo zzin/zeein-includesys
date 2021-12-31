@@ -17,7 +17,6 @@ import initNavigation from './navigation';
 import masonry from './masonry';
 import initForm from './form';
 import scroll from './scroll';
-import header from './header';
 import initMain from './pageMain';
 import initAboutUs from './pageAbout';
 import {
@@ -25,6 +24,8 @@ import {
 	animationLeave,
 	animationBeforeEnter,
 } from './animations';
+import initCookie from './cookies';
+import header from './header';
 
 const body = document.body;
 
@@ -42,6 +43,7 @@ const body = document.body;
 // };
 
 const initJs = (dataNamespace) => {
+	// console.log('initJs: ' + dataNamespace);
 	if (!dataNamespace)
 		dataNamespace = document.getElementById('primary').dataset.barbaNamespace;
 	if (dataNamespace === 'page-about-us') {
@@ -99,7 +101,7 @@ barba.hooks.after((data) => {
 	initNavigation();
 	// swiper();
 	scroll();
-	header();
+	// header();
 
 	const dataNamespace = data.next.namespace;
 	initJs(dataNamespace);
@@ -120,7 +122,10 @@ barba.init({
 	transitions: [
 		{
 			once({ next }) {
-				animationEnter(next.container);
+				const dataNamespace = next.namespace;
+				initJs(dataNamespace);
+				header();
+				// animationEnter(next.container);
 			},
 			leave: ({ current }) => animationLeave(current.container),
 			beforeEnter: (data) => animationBeforeEnter(data),
@@ -140,7 +145,8 @@ window.addEventListener('DOMContentLoaded', () => {
 	initNavigation();
 	effHeader();
 	scroll();
-	header();
+	initCookie();
+	// header();
 
-	initJs();
+	// initJs();
 });

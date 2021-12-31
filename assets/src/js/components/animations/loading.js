@@ -6,7 +6,9 @@ import gsap, {
 	Power4,
 	Elastic,
 	Back,
+	Expo,
 } from 'gsap';
+import header from '../header';
 const { default: SplitText } = require('gsap/SplitText');
 gsap.registerPlugin(SplitText);
 // import GSDevTools from 'gsap/GSDevTools';
@@ -24,15 +26,16 @@ const loadingIn = () => {
 	});
 };
 const loadingBeforeOut = (title) => {
-	loadingTitle.innerHTML = title;
+	loadingTitle.innerHTML = 'LOADING';
 	const splitTitle = new SplitText(loadingTitle, { type: 'words, chars' }),
 		targets = splitTitle.chars;
 	tl.from(targets, {
 		autoAlpha: 0,
-		y: 30,
-		duration: 0.65,
-		stagger: 0.0325,
-		ease: Back.easeOut.config(3),
+		y: 10,
+		duration: 0.425,
+		stagger: 0.025,
+		// ease: Expo.easeInOut,
+		ease: Back.easeOut.config(2),
 	});
 	// tl.from(loadingTitle, {
 	// 	duration: 1,
@@ -47,6 +50,7 @@ const loadingOut = () => {
 			duration: 1,
 			y: '-120%',
 			ease: Power2.easeOut,
+			onStart: header,
 		},
 		'+=.5'
 	);

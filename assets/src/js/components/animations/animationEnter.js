@@ -4,7 +4,7 @@ import loading from './loading';
 const animationEnter = (container) => {
 	// console.log(container);
 	setTimeout(() => {
-		// window.scrollTo(0, 0);
+		window.scrollTo(0, 0);
 		return loading.loadingOut();
 	}, 200);
 	// return gsap.from(container, {
