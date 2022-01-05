@@ -32,10 +32,7 @@
   var html = document.querySelector('html');
 
   var toggleDarkMode = function toggleDarkMode(event) {
-    event.stopPropagation(); // e.preventDefault();
-    // console.log('toggle');
-    // checkbox.checked
-    // 	? html.classList.add('dark')
+    event.stopPropagation(); // 	? html.classList.add('dark')
     // 	: html.classList.remove('dark');
 
     if (checkbox.checked) {
@@ -44,10 +41,9 @@
     } else {
       html.classList.remove('dark');
       localStorage.setItem('theme', '');
-    }
+    } // console.log(localStorage.getItem('theme'));
+    // console.log(localStorage);
 
-    console.log(localStorage.getItem('theme'));
-    console.log(localStorage);
   }; // toggleDarkMode();
 
 
@@ -33860,26 +33856,106 @@ var initMain = function initMain() {
 /* harmony default export */ const pageMain = (initMain);
 ;// CONCATENATED MODULE: ./assets/src/js/components/pageAbout.js
 
+
+
+gsap_gsapWithCSS.registerPlugin(ScrollTrigger);
 core.use([Navigation, Pagination, Autoplay]);
+gsap_gsapWithCSS.registerEffect({
+  name: 'counter',
+  extendTimeline: true,
+  defaults: {
+    end: 0,
+    duration: 2,
+    ease: 'power1',
+    increment: 1
+  },
+  effect: function effect(targets, config) {
+    var tl = gsap_gsapWithCSS.timeline();
+    var num = targets[0].innerText.replace(/,/g, '');
+    targets[0].innerText = num; // console.log(targets[0].dataset.num);
+
+    tl.to(targets, {
+      duration: config.duration,
+      innerText: config.end,
+      modifiers: {
+        innerText: function innerText(_innerText) {
+          return gsap_gsapWithCSS.utils.snap(config.increment, _innerText).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+      },
+      ease: config.ease
+    }, 0);
+    return tl;
+  }
+});
 
 var initAboutUs = function initAboutUs() {
+  var tlCount = gsap_gsapWithCSS.timeline({
+    scrollTrigger: {
+      trigger: '.num-up',
+      // markers: true,
+      toggleActions: 'play none none reset'
+    }
+  });
+  tlCount.counter('.num-up', {
+    end: function end(index, target) {
+      return target.dataset.num;
+    },
+    ease: 'power2'
+  });
+  var cursor = document.querySelector('.cursor');
+  var radius = 18;
+  var duration = 0.625;
+
+  var moveCursor = function moveCursor(e) {
+    var mouseX = e.clientX,
+        mouseY = e.clientY;
+    var tl = gsap_gsapWithCSS.timeline();
+    tl.to(cursor, {
+      duration: duration,
+      x: mouseX - radius,
+      y: mouseY - radius
+    });
+  };
+
+  var overCursor = function overCursor() {
+    var tl = gsap_gsapWithCSS.timeline();
+    tl.to(cursor, {
+      duration: duration,
+      scale: 1,
+      opacity: 1
+    });
+  };
+
+  var outCursor = function outCursor() {
+    var tl = gsap_gsapWithCSS.timeline();
+    tl.to(cursor, {
+      duration: duration,
+      scale: 0.5,
+      opacity: 0
+    });
+  };
+
+  var swiperZone = document.querySelector('.swiper-zone');
+  swiperZone.addEventListener('mousemove', moveCursor);
+  swiperZone.addEventListener('mouseover', overCursor);
+  swiperZone.addEventListener('mouseout', outCursor);
   var conponents = document.querySelectorAll('[data-component="swiper-history"]');
 
   var initSwiper = function initSwiper(el, index) {
-    var targetSwiper = el;
-    var btnPrev = el.querySelector('.swiper-prev');
-    var btnNext = el.querySelector('.swiper-next');
-    targetSwiper.classList.add('s' + index);
-    btnPrev.classList.add('l' + index);
-    btnNext.classList.add('r' + index);
+    var targetSwiper = el; // const btnPrev = el.querySelector('.swiper-prev');
+    // const btnNext = el.querySelector('.swiper-next');
+
+    targetSwiper.classList.add('s' + index); // btnPrev.classList.add('l' + index);
+    // btnNext.classList.add('r' + index);
+
     var sw = new core(targetSwiper, {
       // slidesPerView: 1,
       slidesPerView: 'auto',
-      // centeredSlides: true,
-      navigation: {
-        nextEl: '.r' + index,
-        prevEl: '.l' + index
-      }
+      centeredSlides: true // navigation: {
+      // 	nextEl: '.r' + index,
+      // 	prevEl: '.l' + index,
+      // },
+
     });
   };
 
@@ -34230,12 +34306,34 @@ var initCookie = function initCookie() {
 };
 
 /* harmony default export */ const cookies = (initCookie);
+;// CONCATENATED MODULE: ./assets/src/js/components/globally.js
+
+
+gsap_gsapWithCSS.registerPlugin(ScrollTrigger);
+
+var initGlobally = function initGlobally() {
+  var logo = document.querySelector('.site-branding');
+  var toggleDark = document.querySelector('.toggle-dark');
+  var menuToggle = document.querySelector('.menu-toggle');
+  var tl = gsap_gsapWithCSS.timeline();
+  tl.from(logo, {
+    duration: 1,
+    autoAlpha: 0,
+    ease: Power1.easeOut
+  }).from(menuToggle, {
+    duration: 0.5,
+    autoAlpha: 0
+  }, '<');
+};
+
+/* harmony default export */ const globally = (initGlobally);
 ;// CONCATENATED MODULE: ./assets/src/js/components/barbajs.js
 
 
 
 gsapWithCSS.registerPlugin(ScrollToPlugin);
 gsapWithCSS.registerPlugin(ScrollTrigger);
+
 
 
 
@@ -34330,7 +34428,8 @@ barba_umd_default().init({
       var next = _ref.next;
       var dataNamespace = next.namespace;
       initJs(dataNamespace);
-      components_header(); // animationEnter(next.container);
+      components_header();
+      globally(); // animationEnter(next.container);
     },
     leave: function leave(_ref2) {
       var current = _ref2.current;
@@ -34354,8 +34453,7 @@ window.addEventListener('DOMContentLoaded', function () {
   components_navigation();
   effHeader();
   components_scroll();
-  cookies(); // header();
-  // initJs();
+  cookies();
 });
 // EXTERNAL MODULE: ./node_modules/enquire.js/src/index.js
 var src = __webpack_require__(974);

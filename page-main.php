@@ -4,7 +4,8 @@ get_header();
 
 	<main id="primary" class="site-main" data-barba="container" data-barba-namespace="home">
 		<div class="h-screen w-screen flex items-center bg-black overflow-hidden relative">
-			<div class="inset-0 absolute bg-cover bg-no-repeat bg-right opacity-50" style="background-image:url(<?php bloginfo('template_url');?>/assets/public/images/bg-top-main.jpg); min-height: 600px;"></div>
+			<div class="inset-0 absolute bg-cover bg-no-repeat bg-right opacity-50 block dark:hidden" style="background-image:url(<?php bloginfo('template_url');?>/assets/public/images/bg-top-main-1.jpg); min-height: 600px;"></div>
+			<div class="inset-0 absolute bg-cover bg-no-repeat bg-right opacity-50 hidden dark:block" style="background-image:url(<?php bloginfo('template_url');?>/assets/public/images/bg-top-main.jpg); min-height: 600px;"></div>
       <div class="container mx-auto px-6 md:px-8 relative">
         <h1 class="slogan-title text-5xl md:text-7xl uppercase font-semibold text-white mb-10 text-opacity-30 dark:text-indigo-700 dark:text-opacity-50">
           Your<br />

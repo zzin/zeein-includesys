@@ -14,6 +14,21 @@
 			@screen xl {
 				width: 30%;
 			}
+			opacity: 0.4;
+			// filter: blur(4px);
+			transform: scale(0.95);
+			transition: all 0.4s ease 0.125s;
+			&.swiper-slide-prev,
+			&.swiper-slide-next {
+				transform: scale(0.985);
+				opacity: 0.6;
+				// filter: blur(2);
+			}
+			&.swiper-slide-active {
+				opacity: 1;
+				transform: scale(1);
+				// filter: blur(0);
+			}
 		}
 	}
 	.desc {
@@ -37,5 +52,75 @@
 				}
 			}
 		}
+	}
+}
+
+.page-slug-about-us {
+	.swiper-zone {
+		cursor: grab;
+	}
+}
+.cursor {
+	position: fixed;
+	width: 36px;
+	height: 36px;
+	border: 1px dashed black;
+	border-radius: 50%;
+	transform: scale(0.5);
+	z-index: 10;
+	pointer-events: none;
+	opacity: 0;
+	@apply dark:border-white;
+	&::before,
+	&::after {
+		content: '';
+		position: absolute;
+		display: block;
+		width: 12px;
+		height: 12px;
+		animation-duration: 1s;
+		animation-iteration-count: infinite;
+	}
+	&::before {
+		border-top: 2px solid black;
+		border-left: 2px solid black;
+		@apply dark:border-white;
+		top: 50%;
+		left: -10px;
+		transform: rotate(-45deg) translateY(-50%);
+		animation-name: cursorLeft;
+	}
+	&::after {
+		border-top: 2px solid black;
+		border-right: 2px solid black;
+		@apply dark:border-white;
+		top: 50%;
+		right: -10px;
+		transform: rotate(45deg) translateY(-50%);
+		animation-name: cursorRight;
+	}
+}
+
+@keyframes cursorLeft {
+	0% {
+		left: -10px;
+	}
+	50% {
+		left: -14px;
+	}
+	100% {
+		left: -10px;
+	}
+}
+
+@keyframes cursorRight {
+	0% {
+		right: -10px;
+	}
+	50% {
+		right: -14px;
+	}
+	100% {
+		right: -10px;
 	}
 }

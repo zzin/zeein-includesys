@@ -26,6 +26,7 @@ import {
 } from './animations';
 import initCookie from './cookies';
 import header from './header';
+import initGlobally from './globally';
 
 const body = document.body;
 
@@ -125,6 +126,7 @@ barba.init({
 				const dataNamespace = next.namespace;
 				initJs(dataNamespace);
 				header();
+				initGlobally();
 				// animationEnter(next.container);
 			},
 			leave: ({ current }) => animationLeave(current.container),
@@ -146,7 +148,4 @@ window.addEventListener('DOMContentLoaded', () => {
 	effHeader();
 	scroll();
 	initCookie();
-	// header();
-
-	// initJs();
 });

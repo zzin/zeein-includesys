@@ -17,9 +17,6 @@
 	const html = document.querySelector('html');
 	const toggleDarkMode = (event) => {
 		event.stopPropagation();
-		// e.preventDefault();
-		// console.log('toggle');
-		// checkbox.checked
 		// 	? html.classList.add('dark')
 		// 	: html.classList.remove('dark');
 		if (checkbox.checked) {
@@ -29,8 +26,8 @@
 			html.classList.remove('dark');
 			localStorage.setItem('theme', '');
 		}
-		console.log(localStorage.getItem('theme'));
-		console.log(localStorage);
+		// console.log(localStorage.getItem('theme'));
+		// console.log(localStorage);
 	};
 	// toggleDarkMode();
 	checkbox.addEventListener('click', toggleDarkMode);
